@@ -1,32 +1,63 @@
 {
+  "active_surfaces": [
+    "SUPABASE",
+    "GITHUB",
+    "GOOGLE_DRIVE",
+    "NATIVE_PROJECT_FILES"
+  ],
+  "ci": {
+    "exact_head_success_required": true,
+    "local_only_acceptance_prohibited": true,
+    "workflow_path": ".github/workflows/r9a0-native-project.yml"
+  },
   "installation": {
+    "atomic_unique_file_set_required": true,
     "generation_state": "INSTALLATION_UNVERIFIED",
     "receipt_precedence": "COMPLETED_RECEIPT_AND_READBACK_OVERRIDE_GENERATION_METADATA_FOR_CURRENT_STATE"
+  },
+  "legacy_memory": {
+    "active_dependency": false,
+    "archive_drive_file_id": "11J4L1J1l-jXspgKCHJ-sfOWHpNaLSDRa",
+    "archive_sha256": "beeddd73b8172c988868f1ca7a9ab8c1287f0f6753705121a17335ed1020dffb",
+    "disconnect_gate": "INSTALLED_AND_POST_INSTALL_PASS_WITH_CONNECTOR_UNAVAILABLE"
   },
   "native_instructions": {
     "max_characters": 8000,
     "path": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
   },
-  "project_files": [
-    "VERA_R9A0_PROJECT_INSTRUCTIONS.md",
-    "VERA_R9A0_LAWS.md",
-    "VERA_R9A0_GOVERNANCE.md",
-    "VERA_R9A0_RUNTIME.md",
-    "VERA_R9A0_STATE.md",
-    "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
-  ],
   "release_id": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
+  "retrieval": {
+    "abstain_when_unresolved": true,
+    "evidence_locator_required": true,
+    "false_recovery_claim_prohibited": true,
+    "history_sensitive_refresh_required": true
+  },
   "supabase": {
     "allowed_schema_prefix": "r9a0_",
+    "database_contract_state": "PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL",
+    "external_security_state": "SECURITY_REMEDIATION_APPROVED",
+    "governance_notice_id": 4,
+    "mune_approval_sequence": 3156,
     "production_prohibited": "klmbpaigzeguvnpccqzz",
+    "rejected_head": "71b3fc4892df3a70e493e287542e68bfa1e5a798",
+    "security_migration": "20260806190126",
     "temporary_project": "agvhmutlrolbaijzlbqk"
   },
   "voice": {
+    "clarify_incomplete_input": true,
     "content_rendering_separated": true,
+    "correction_terminates_obsolete_route": true,
+    "explicit_time_lookup_required": true,
+    "fact_inference_separation": true,
+    "no_fabricated_privacy_rationale": true,
+    "no_unexplained_truncation_acceptance": true,
+    "same_chat_context_required_when_material": true,
+    "thank_you_is_not_closure": true,
     "unavailable": [
       "CONSUMER_CHATGPT_HIDDEN_PROMPT_ASSEMBLY",
       "ACTIVE_CALL_PROJECT_INSTRUCTION_HOT_RELOAD",
-      "EXACT_DELEGATION_CONTEXT_PAYLOAD"
+      "EXACT_DELEGATION_CONTEXT_PAYLOAD",
+      "VOICE_TRANSPORT_ROOT_CAUSE_WITHOUT_TRACE"
     ]
   }
 }
