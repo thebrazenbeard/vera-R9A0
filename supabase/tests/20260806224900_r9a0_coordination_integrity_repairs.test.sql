@@ -205,7 +205,7 @@ declare
   v_definition text;
 begin
   select pg_get_functiondef(
-    'r9a0_governance.validate_event_graph()'::regprocedure
+    'r9a0_governance.validate_event_chain()'::regprocedure
   ) into v_definition;
 
   if position('pg_advisory_xact_lock' in v_definition) = 0 then
@@ -220,7 +220,7 @@ begin
     select 1
     from pg_proc
     where oid = 'r9a0_api.append_coordination_event(text,text,text,text,text,text,text,text,text,uuid,uuid,jsonb,jsonb)'::regprocedure
-      and proconfig @> array['search_path=pg_catalog, r9a0_governance, r9a0_coordination']
+      and proconfig @> array['search_path=pg_catalog']
   ) then
     raise exception 'append_coordination_event search_path is not pinned';
   end if;
