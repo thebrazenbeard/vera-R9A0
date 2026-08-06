@@ -1,25 +1,39 @@
 {
-  "schema": "VERA_R9A0_DATABASE_SLICE_MANIFEST_V1",
+  "schema": "VERA_R9A0_DATABASE_SLICE_MANIFEST_V2",
+  "repository": "thebrazenbeard/vera-R9A0",
+  "branch": "feature/r9a0-supabase-rebuild-v1",
+  "content_commit_binding": "FINAL_HEAD_RECORDED_IN_IMMUTABLE_HANDOFF_RECEIPT",
+  "file_count": 12,
   "files": [
     {
+      "path": "docs/database/R9A0_DATABASE_SUCCESSOR_REPAIR_REVIEW.md",
+      "bytes": 1920,
+      "sha256": "374a8ca22c25fd4cd3d87d7cefef3a55566fab77fb105995e35684a0beadedf8"
+    },
+    {
       "path": "docs/database/R9A0_PRIVILEGE_MATRIX.md",
-      "bytes": 862,
-      "sha256": "41aac4dd9aa01642f78b9336e26cb4302e14f39ff8ce10d54d550fa04be5fecf"
+      "bytes": 1119,
+      "sha256": "56879525a86a73f0720eb9d1b7b053f5a762964c4ce7e21f94c54e77087715a6"
     },
     {
       "path": "docs/database/R9A0_RECOVERY_AND_ROLLBACK.md",
-      "bytes": 1163,
-      "sha256": "174a14f1e5ba0d1e25f5e65a4e26f5ab957a16992b999870dba556a36a29f897"
+      "bytes": 2147,
+      "sha256": "5d9db6c281f96522d28045df7b394375d88b95e5426e4f0868ac48658aaade25"
     },
     {
       "path": "docs/database/R9A0_SUPABASE_ARCHITECTURE.md",
-      "bytes": 1972,
-      "sha256": "7264c9e6f04e242daf0116b5a095a7a68f0e7bc88dabe4553e787acb2ddc4436"
+      "bytes": 2766,
+      "sha256": "d0e01bfb1dedb98a5826b71afad3f2ba4095ddcd29de01e24097bd7ba989f1ef"
     },
     {
       "path": "supabase/MIGRATION_LEDGER.json",
-      "bytes": 928,
-      "sha256": "1e8f2358fffe4fcb252f001444f28a4fedf7594144a43700057f003eead9fdf7"
+      "bytes": 2714,
+      "sha256": "a325ddbfd5c9ebf6f915f7b734ad60298d0391c595083b5cc149ea41a74f4740"
+    },
+    {
+      "path": "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
+      "bytes": 12505,
+      "sha256": "2a8f64ccf81251a06f23b0adf3bba6f74f43cf322a7719940281ae0f0d7d3df6"
     },
     {
       "path": "supabase/migrations/20260806133000_r9a0_coordination_foundation.sql",
@@ -27,14 +41,29 @@
       "sha256": "36898d94223bae026e809d11808e66222d036347465313516d24b20b6b7032c3"
     },
     {
+      "path": "supabase/migrations/20260806224900_r9a0_coordination_integrity_repairs.sql",
+      "bytes": 7355,
+      "sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71"
+    },
+    {
       "path": "supabase/rollbacks/20260806133000_r9a0_coordination_foundation.down.sql",
       "bytes": 317,
       "sha256": "d90f772d64f083efc5ccd5fb790ee574191357b7936f39cd22e1de8601c49b3e"
     },
     {
+      "path": "supabase/rollbacks/20260806224900_r9a0_coordination_integrity_repairs.down.sql",
+      "bytes": 2242,
+      "sha256": "d43636c90fb910f8de3c366934934657ca717ed6d3020d15d0108ac3027e09e4"
+    },
+    {
       "path": "supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql",
       "bytes": 3466,
       "sha256": "9330072654a21c8912d806b353b03b42ebf0371c7ffaab8469194fd256cab4ae"
+    },
+    {
+      "path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
+      "bytes": 6883,
+      "sha256": "3fb702db98a2b7c1405ab6497e495544760b5e2259a078a6f7f2065c6c46edf7"
     }
   ]
 }
