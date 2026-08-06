@@ -1,5 +1,5 @@
 {
-  "schema": "VERA_R9A0_MIGRATION_LEDGER_V1",
+  "schema": "VERA_R9A0_MIGRATION_LEDGER_V2",
   "repository": "thebrazenbeard/vera-R9A0",
   "branch": "feature/r9a0-supabase-rebuild-v1",
   "base_sha": "d9255f97090fd0599ccb129911fec8b542a0804f",
@@ -23,8 +23,36 @@
       ],
       "test_status": "PASSED",
       "synthetic_rows_persisted": 0,
-      "status": "APPLIED_AND_TESTED",
-      "provenance_note": "The readable source specification and the exact applied statement are both retained. The initial apply used a whitespace-compacted equivalent, so the applied statement has its own exact repository artifact and digest rather than a false byte-equality claim."
+      "status": "APPLIED_AND_TESTED_WITH_RECORDED_PROVENANCE_DEVIATION",
+      "provenance_note": "The initial apply preceded the exact applied-statement commit. The deviation is retained as historical evidence and must not recur."
+    },
+    {
+      "version": "20260806224900",
+      "name": "r9a0_coordination_integrity_repairs",
+      "path": "supabase/migrations/20260806224900_r9a0_coordination_integrity_repairs.sql",
+      "sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71",
+      "rollback_path": "supabase/rollbacks/20260806224900_r9a0_coordination_integrity_repairs.down.sql",
+      "rollback_sha256": "d43636c90fb910f8de3c366934934657ca717ed6d3020d15d0108ac3027e09e4",
+      "test_path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
+      "test_sha256": "3fb702db98a2b7c1405ab6497e495544760b5e2259a078a6f7f2065c6c46edf7",
+      "target_project_ref": "agvhmutlrolbaijzlbqk",
+      "allowed_namespaces": [
+        "r9a0_governance",
+        "r9a0_coordination",
+        "r9a0_api"
+      ],
+      "finding_ids": [
+        "MUNE-R9A0-FND-001",
+        "MUNE-R9A0-FND-002",
+        "MUNE-R9A0-FND-003",
+        "MUNE-R9A0-FND-004",
+        "MUNE-R9A0-FND-005",
+        "MUNE-R9A0-FND-006"
+      ],
+      "repository_first": true,
+      "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
+      "test_status": "REPOSITORY_REVIEWED_HOSTED_EXECUTION_PENDING",
+      "status": "READY_FOR_REVIEW"
     }
   ]
 }
