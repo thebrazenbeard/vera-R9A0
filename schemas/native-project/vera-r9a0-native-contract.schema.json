@@ -1,0 +1,102 @@
+{
+  "$id": "https://vera.local/schemas/native-project/vera-r9a0-native-contract.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "installation": {
+      "additionalProperties": false,
+      "properties": {
+        "generation_state": {
+          "const": "INSTALLATION_UNVERIFIED"
+        },
+        "receipt_precedence": {
+          "const": "COMPLETED_RECEIPT_AND_READBACK_OVERRIDE_GENERATION_METADATA_FOR_CURRENT_STATE"
+        }
+      },
+      "required": [
+        "generation_state",
+        "receipt_precedence"
+      ],
+      "type": "object"
+    },
+    "native_instructions": {
+      "additionalProperties": false,
+      "properties": {
+        "max_characters": {
+          "maximum": 8000,
+          "type": "integer"
+        },
+        "path": {
+          "const": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+        }
+      },
+      "required": [
+        "path",
+        "max_characters"
+      ],
+      "type": "object"
+    },
+    "project_files": {
+      "items": {
+        "pattern": "^VERA_R9A0_[A-Z0-9_]+\\.(md|txt|json|yaml|sha256)$",
+        "type": "string"
+      },
+      "minItems": 6,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "release_id": {
+      "const": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1"
+    },
+    "supabase": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_schema_prefix": {
+          "const": "r9a0_"
+        },
+        "production_prohibited": {
+          "const": "klmbpaigzeguvnpccqzz"
+        },
+        "temporary_project": {
+          "const": "agvhmutlrolbaijzlbqk"
+        }
+      },
+      "required": [
+        "temporary_project",
+        "allowed_schema_prefix",
+        "production_prohibited"
+      ],
+      "type": "object"
+    },
+    "voice": {
+      "additionalProperties": false,
+      "properties": {
+        "content_rendering_separated": {
+          "const": true
+        },
+        "unavailable": {
+          "contains": {
+            "const": "CONSUMER_CHATGPT_HIDDEN_PROMPT_ASSEMBLY"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "content_rendering_separated",
+        "unavailable"
+      ],
+      "type": "object"
+    }
+  },
+  "required": [
+    "release_id",
+    "project_files",
+    "native_instructions",
+    "installation",
+    "supabase",
+    "voice"
+  ],
+  "title": "Vera R9A0 Native Project Contract",
+  "type": "object"
+}
