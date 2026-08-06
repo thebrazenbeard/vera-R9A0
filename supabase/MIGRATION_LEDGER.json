@@ -52,7 +52,9 @@
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
       "test_status": "REPOSITORY_REVIEWED_HOSTED_EXECUTION_PENDING",
-      "status": "READY_FOR_REVIEW"
+      "status": "READY_FOR_REVIEW",
+      "execution_path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
+      "execution_sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71"
     }
   ]
 }
