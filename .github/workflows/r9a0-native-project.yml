@@ -1,4 +1,5 @@
 name: R9A0 Native Project
+# CI synchronization marker: default-branch workflow installed 2026-08-06.
 
 on:
   push:
