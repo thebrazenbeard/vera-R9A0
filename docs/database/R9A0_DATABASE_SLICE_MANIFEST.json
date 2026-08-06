@@ -27,13 +27,13 @@
     },
     {
       "path": "scripts/supabase/test_r9a0_two_session_concurrency.sh",
-      "bytes": 6186,
-      "sha256": "8cc649709b61cb41b9d32fa42527b8b3dec5c342199386e6953d427cc2d01bc1"
+      "bytes": 10211,
+      "sha256": "6d32fcbb81efe204938830d29d8ecc82c3532d86eb3f60fc6c259378dbc6c332"
     },
     {
       "path": "supabase/MIGRATION_LEDGER.json",
-      "bytes": 3105,
-      "sha256": "07fa181e5244a405135e908c09f2da786ef139a92292caeafa658f112764f64f"
+      "bytes": 3118,
+      "sha256": "7982151a707699a9e7884535565db7ac7295070a40b964cfc95e9a26155bf2d2"
     },
     {
       "path": "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
