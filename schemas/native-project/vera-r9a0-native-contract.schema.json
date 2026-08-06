@@ -3,99 +3,72 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
+    "active_surfaces": {
+      "const": [
+        "SUPABASE",
+        "GITHUB",
+        "GOOGLE_DRIVE",
+        "NATIVE_PROJECT_FILES"
+      ],
+      "type": "array",
+      "uniqueItems": true
+    },
+    "ci": {
+      "type": "object"
+    },
     "installation": {
+      "type": "object"
+    },
+    "legacy_memory": {
       "additionalProperties": false,
       "properties": {
-        "generation_state": {
-          "const": "INSTALLATION_UNVERIFIED"
+        "active_dependency": {
+          "const": false
         },
-        "receipt_precedence": {
-          "const": "COMPLETED_RECEIPT_AND_READBACK_OVERRIDE_GENERATION_METADATA_FOR_CURRENT_STATE"
+        "archive_drive_file_id": {
+          "const": "11J4L1J1l-jXspgKCHJ-sfOWHpNaLSDRa"
+        },
+        "archive_sha256": {
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "disconnect_gate": {
+          "const": "INSTALLED_AND_POST_INSTALL_PASS_WITH_CONNECTOR_UNAVAILABLE"
         }
       },
       "required": [
-        "generation_state",
-        "receipt_precedence"
+        "active_dependency",
+        "archive_drive_file_id",
+        "archive_sha256",
+        "disconnect_gate"
       ],
       "type": "object"
     },
     "native_instructions": {
-      "additionalProperties": false,
-      "properties": {
-        "max_characters": {
-          "maximum": 8000,
-          "type": "integer"
-        },
-        "path": {
-          "const": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
-        }
-      },
-      "required": [
-        "path",
-        "max_characters"
-      ],
       "type": "object"
-    },
-    "project_files": {
-      "items": {
-        "pattern": "^VERA_R9A0_[A-Z0-9_]+\\.(md|txt|json|yaml|sha256)$",
-        "type": "string"
-      },
-      "minItems": 6,
-      "type": "array",
-      "uniqueItems": true
     },
     "release_id": {
       "const": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1"
     },
+    "retrieval": {
+      "type": "object"
+    },
     "supabase": {
-      "additionalProperties": false,
-      "properties": {
-        "allowed_schema_prefix": {
-          "const": "r9a0_"
-        },
-        "production_prohibited": {
-          "const": "klmbpaigzeguvnpccqzz"
-        },
-        "temporary_project": {
-          "const": "agvhmutlrolbaijzlbqk"
-        }
-      },
-      "required": [
-        "temporary_project",
-        "allowed_schema_prefix",
-        "production_prohibited"
-      ],
       "type": "object"
     },
     "voice": {
-      "additionalProperties": false,
-      "properties": {
-        "content_rendering_separated": {
-          "const": true
-        },
-        "unavailable": {
-          "contains": {
-            "const": "CONSUMER_CHATGPT_HIDDEN_PROMPT_ASSEMBLY"
-          },
-          "type": "array",
-          "uniqueItems": true
-        }
-      },
-      "required": [
-        "content_rendering_separated",
-        "unavailable"
-      ],
       "type": "object"
     }
   },
   "required": [
     "release_id",
-    "project_files",
-    "native_instructions",
+    "active_surfaces",
+    "legacy_memory",
+    "retrieval",
     "installation",
+    "native_instructions",
     "supabase",
-    "voice"
+    "voice",
+    "ci"
   ],
   "title": "Vera R9A0 Native Project Contract",
   "type": "object"
