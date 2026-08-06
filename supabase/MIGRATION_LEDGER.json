@@ -34,7 +34,7 @@
       "rollback_path": "supabase/rollbacks/20260806224900_r9a0_coordination_integrity_repairs.down.sql",
       "rollback_sha256": "d43636c90fb910f8de3c366934934657ca717ed6d3020d15d0108ac3027e09e4",
       "test_path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
-      "test_sha256": "3fb702db98a2b7c1405ab6497e495544760b5e2259a078a6f7f2065c6c46edf7",
+      "test_sha256": "78457b2e76d81b548a797a7facead31fdf9048db829dac75e90a17eba7c85a2e",
       "target_project_ref": "agvhmutlrolbaijzlbqk",
       "allowed_namespaces": [
         "r9a0_governance",
