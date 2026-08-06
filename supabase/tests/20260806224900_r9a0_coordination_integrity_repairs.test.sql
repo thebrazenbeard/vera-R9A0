@@ -229,6 +229,30 @@ $$;
 
 do $$
 begin
+  insert into r9a0_governance.migration_applications (
+    migration_version,
+    migration_name,
+    migration_sha256,
+    repository,
+    repository_commit,
+    repository_path,
+    target_project_ref,
+    target_namespace,
+    operation_id,
+    evidence
+  ) values (
+    '99999999999999',
+    'synthetic_integrity_test',
+    repeat('a', 64),
+    'thebrazenbeard/vera-R9A0',
+    repeat('b', 40),
+    'supabase/tests/synthetic.sql',
+    'synthetic-test-target',
+    'r9a0_coordination',
+    'r9a0-integrity-receipt-test-0001',
+    '{"synthetic":true}'::jsonb
+  );
+
   begin
     update r9a0_governance.migration_applications
     set evidence = evidence || '{"forbidden":true}'::jsonb;
