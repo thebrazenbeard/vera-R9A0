@@ -1,15 +1,15 @@
 # R9A0 Privilege Matrix
 
-| Surface | `anon` | `authenticated` | `service_role` | `postgres` |
-|---|---:|---:|---:|---:|
-| `r9a0_governance` schema | none | none | usage | owner/admin |
-| `r9a0_coordination` schema | none | none | usage | owner/admin |
-| `r9a0_api` schema | none | none | usage | owner/admin |
-| Coordination base table | none | none | select | owner/admin |
-| Coordination views | none | none | select | owner/admin |
-| Migration receipts | none | none | select | owner/admin |
-| `append_coordination_event` | none | none | execute | owner/admin |
-| Direct coordination insert | none | none | none | owner/admin |
-| Update/delete/truncate append-only rows | blocked | blocked | blocked | blocked by trigger |
+| Surface | `anon` | `authenticated` | `service_role` | `r9a0_owner` | `postgres` |
+|---|---:|---:|---:|---:|---:|
+| R9A0 schemas | none | none | usage | owner | admin |
+| Coordination base table | none | none | select only | owner policy | admin |
+| Coordination views | none | none | select | owner | admin |
+| Migration receipts | none | none | select | owner policy | admin |
+| `append_coordination_event` | none | none | execute | owner | admin |
+| Direct coordination insert | none | none | none | only through owned function or controlled SQL | admin |
+| Update/delete/truncate append-only rows | blocked | blocked | blocked | blocked by trigger | blocked by trigger |
+| Login capability | n/a | n/a | platform role | **NOLOGIN** | login/admin |
+| RLS bypass | no | no | platform-defined | **no** | admin |
 
-`service_role` bypassing RLS does not confer SQL privileges that were revoked. The write path remains the narrow security-definer RPC.
+`r9a0_owner` is the least-privilege ownership boundary for R9A0 schemas, tables, views, sequences, and privileged functions. RLS is forced on the append-only base tables. The service role has no direct mutation privileges and writes only through the narrow security-definer RPC.
