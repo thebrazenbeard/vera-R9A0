@@ -28,7 +28,7 @@
     {
       "path": "supabase/MIGRATION_LEDGER.json",
       "bytes": 2714,
-      "sha256": "a325ddbfd5c9ebf6f915f7b734ad60298d0391c595083b5cc149ea41a74f4740"
+      "sha256": "4fde574e1e90180ec723effc52a73a387b0b40998b2c38b588f8f379e265e349"
     },
     {
       "path": "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
@@ -62,8 +62,8 @@
     },
     {
       "path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
-      "bytes": 6883,
-      "sha256": "3fb702db98a2b7c1405ab6497e495544760b5e2259a078a6f7f2065c6c46edf7"
+      "bytes": 7449,
+      "sha256": "78457b2e76d81b548a797a7facead31fdf9048db829dac75e90a17eba7c85a2e"
     }
   ]
 }
