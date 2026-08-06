@@ -3,7 +3,7 @@
   "repository": "thebrazenbeard/vera-R9A0",
   "branch": "feature/r9a0-supabase-rebuild-v1",
   "content_commit_binding": "FINAL_HEAD_RECORDED_IN_IMMUTABLE_HANDOFF_RECEIPT",
-  "file_count": 12,
+  "file_count": 13,
   "files": [
     {
       "path": "docs/database/R9A0_DATABASE_SUCCESSOR_REPAIR_REVIEW.md",
@@ -27,13 +27,18 @@
     },
     {
       "path": "supabase/MIGRATION_LEDGER.json",
-      "bytes": 2714,
-      "sha256": "4fde574e1e90180ec723effc52a73a387b0b40998b2c38b588f8f379e265e349"
+      "bytes": 2909,
+      "sha256": "f3094009ef0755478df9dfdc8a24a6be01448b41d88a2bf504c217149f5f7397"
     },
     {
       "path": "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
       "bytes": 12505,
       "sha256": "2a8f64ccf81251a06f23b0adf3bba6f74f43cf322a7719940281ae0f0d7d3df6"
+    },
+    {
+      "path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
+      "bytes": 7355,
+      "sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71"
     },
     {
       "path": "supabase/migrations/20260806133000_r9a0_coordination_foundation.sql",
