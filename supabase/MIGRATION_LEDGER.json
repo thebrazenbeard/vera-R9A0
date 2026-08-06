@@ -1,0 +1,24 @@
+{
+  "schema": "VERA_R9A0_MIGRATION_LEDGER_V1",
+  "repository": "thebrazenbeard/vera-R9A0",
+  "branch": "feature/r9a0-supabase-rebuild-v1",
+  "base_sha": "d9255f97090fd0599ccb129911fec8b542a0804f",
+  "commit_binding": "BOUND_BY_IMMUTABLE_HANDOFF_RECEIPT",
+  "migrations": [
+    {
+      "version": "20260806133000",
+      "name": "r9a0_coordination_foundation",
+      "path": "supabase/migrations/20260806133000_r9a0_coordination_foundation.sql",
+      "sha256": "36898d94223bae026e809d11808e66222d036347465313516d24b20b6b7032c3",
+      "rollback_path": "supabase/rollbacks/20260806133000_r9a0_coordination_foundation.down.sql",
+      "test_path": "supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql",
+      "target_project_ref": "agvhmutlrolbaijzlbqk",
+      "allowed_namespaces": [
+        "r9a0_governance",
+        "r9a0_coordination",
+        "r9a0_api"
+      ],
+      "status": "READY_TO_APPLY"
+    }
+  ]
+}
