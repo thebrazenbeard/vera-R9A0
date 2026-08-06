@@ -1,0 +1,35 @@
+{
+  "active_surfaces": [
+    "SUPABASE",
+    "GITHUB",
+    "GOOGLE_DRIVE",
+    "NATIVE_PROJECT_FILES"
+  ],
+  "basic_memory_active_dependency": false,
+  "checksums_path": "VERA_R9A0_CHECKSUMS.sha256",
+  "database_contract_state": "PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL",
+  "external_security_state": "SECURITY_REMEDIATION_APPROVED",
+  "files": [
+    "VERA_R9A0_PROJECT_INSTRUCTIONS.md",
+    "VERA_R9A0_LAWS.md",
+    "VERA_R9A0_GOVERNANCE.md",
+    "VERA_R9A0_RUNTIME.md",
+    "VERA_R9A0_STATE.md",
+    "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt",
+    "VERA_R9A0_NATIVE_CONTRACT.json",
+    "VERA_R9A0_RETRIEVAL.md",
+    "VERA_R9A0_VOICE.md",
+    "VERA_R9A0_RECOVERY.md",
+    "VERA_R9A0_MANIFEST.json",
+    "VERA_R9A0_PACKAGE.json",
+    "VERA_R9A0_VALIDATION_REPORT.md",
+    "VERA_R9A0_INSTALLATION_RECEIPT_TEMPLATE.yaml",
+    "VERA_R9A0_COLD_START_PROTOCOL.md",
+    "VERA_R9A0_POST_INSTALL_AUDIT.md"
+  ],
+  "installation_state_at_generation": "INSTALLATION_UNVERIFIED",
+  "native_settings_path": "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt",
+  "release_id": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
+  "release_kind": "ATOMIC_NATIVE_CHATGPT_PROJECT_PACKAGE",
+  "unique_file_count": 16
+}
