@@ -36,7 +36,7 @@
       "test_path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
       "test_sha256": "a88ff904d68bfb12b76c19175a569384fcba3e13d0eeacf8dd34f982178104a3",
       "concurrency_test_path": "scripts/supabase/test_r9a0_two_session_concurrency.sh",
-      "concurrency_test_sha256": "8cc649709b61cb41b9d32fa42527b8b3dec5c342199386e6953d427cc2d01bc1",
+      "concurrency_test_sha256": "6d32fcbb81efe204938830d29d8ecc82c3532d86eb3f60fc6c259378dbc6c332",
       "target_project_ref": "agvhmutlrolbaijzlbqk",
       "allowed_namespaces": [
         "r9a0_governance",
@@ -53,7 +53,7 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
-      "test_status": "REPOSITORY_TESTS_CORRECTED_HOSTED_EXECUTION_PENDING",
+      "test_status": "DETERMINISTIC_CONCURRENCY_BARRIER_ADDED_HOSTED_EXECUTION_PENDING",
       "status": "READY_FOR_REVIEW",
       "execution_path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
       "execution_sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71"
