@@ -1,16 +1,22 @@
 name: R9A0 Native Project
 
 on:
-  pull_request:
+  push:
     branches:
-      - main
+      - feature/r9a0-native-project-v1
     paths:
       - 'project/**'
       - 'schemas/native-project/**'
       - 'scripts/validate_r9a0_project.py'
       - 'tests/native-project/**'
       - '.github/workflows/r9a0-native-project.yml'
-  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'project/**'
+      - 'schemas/native-project/**'
+      - 'scripts/validate_r9a0_project.py'
+      - 'tests/native-project/**'
+      - '.github/workflows/r9a0-native-project.yml'
 
 permissions:
   contents: read
