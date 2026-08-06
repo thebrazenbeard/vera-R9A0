@@ -1,0 +1,32 @@
+{
+  "installation": {
+    "generation_state": "INSTALLATION_UNVERIFIED",
+    "receipt_precedence": "COMPLETED_RECEIPT_AND_READBACK_OVERRIDE_GENERATION_METADATA_FOR_CURRENT_STATE"
+  },
+  "native_instructions": {
+    "max_characters": 8000,
+    "path": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+  },
+  "project_files": [
+    "VERA_R9A0_PROJECT_INSTRUCTIONS.md",
+    "VERA_R9A0_LAWS.md",
+    "VERA_R9A0_GOVERNANCE.md",
+    "VERA_R9A0_RUNTIME.md",
+    "VERA_R9A0_STATE.md",
+    "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+  ],
+  "release_id": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
+  "supabase": {
+    "allowed_schema_prefix": "r9a0_",
+    "production_prohibited": "klmbpaigzeguvnpccqzz",
+    "temporary_project": "agvhmutlrolbaijzlbqk"
+  },
+  "voice": {
+    "content_rendering_separated": true,
+    "unavailable": [
+      "CONSUMER_CHATGPT_HIDDEN_PROMPT_ASSEMBLY",
+      "ACTIVE_CALL_PROJECT_INSTRUCTION_HOT_RELOAD",
+      "EXACT_DELEGATION_CONTEXT_PAYLOAD"
+    ]
+  }
+}
