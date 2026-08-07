@@ -89,6 +89,10 @@ jobs:
         id: integrity_migration
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260806224900_r9a0_coordination_integrity_repairs.sql
 
+      - name: Apply owner extensions usage repair
+        id: owner_extensions_migration
+        run: psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260807005800_r9a0_owner_extensions_usage.sql
+
       - name: Run foundation SQL suite
         id: foundation_tests
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql
@@ -97,11 +101,15 @@ jobs:
         id: integrity_tests
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql
 
+      - name: Run owner extensions usage SQL suite
+        id: owner_extensions_tests
+        run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260807005800_r9a0_owner_extensions_usage.test.sql
+
       - name: Run deterministic two-session concurrency harness
         id: concurrency
         run: bash scripts/supabase/test_r9a0_two_session_concurrency.sh
 
-      - name: Verify 14-file database manifest
+      - name: Verify 18-file database manifest
         id: manifest
         run: |
           set -euo pipefail
@@ -113,8 +121,8 @@ jobs:
           manifest_path = Path('docs/database/R9A0_DATABASE_SLICE_MANIFEST.json')
           manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
           files = manifest.get('files')
-          if manifest.get('file_count') != 14 or not isinstance(files, list) or len(files) != 14:
-              raise SystemExit('manifest must bind exactly 14 files')
+          if manifest.get('file_count') != 18 or not isinstance(files, list) or len(files) != 18:
+              raise SystemExit('manifest must bind exactly 18 files')
 
           seen = set()
           for item in files:
@@ -130,7 +138,7 @@ jobs:
               if actual_hash != item['sha256']:
                   raise SystemExit(f'sha256 mismatch: {path}')
 
-          print('PASS: all 14 database manifest bindings match the PR merge candidate.')
+          print('PASS: all 18 database manifest bindings match the PR merge candidate.')
           PY
 
       - name: Write auditable validation receipt
@@ -146,8 +154,10 @@ jobs:
           BOOTSTRAP_RESULT: ${{ steps.bootstrap.outcome }}
           FOUNDATION_MIGRATION_RESULT: ${{ steps.foundation_migration.outcome }}
           INTEGRITY_MIGRATION_RESULT: ${{ steps.integrity_migration.outcome }}
+          OWNER_EXTENSIONS_MIGRATION_RESULT: ${{ steps.owner_extensions_migration.outcome }}
           FOUNDATION_TEST_RESULT: ${{ steps.foundation_tests.outcome }}
           INTEGRITY_TEST_RESULT: ${{ steps.integrity_tests.outcome }}
+          OWNER_EXTENSIONS_TEST_RESULT: ${{ steps.owner_extensions_tests.outcome }}
           CONCURRENCY_RESULT: ${{ steps.concurrency.outcome }}
           MANIFEST_RESULT: ${{ steps.manifest.outcome }}
         run: |
@@ -172,8 +182,10 @@ jobs:
                   'bootstrap': os.environ['BOOTSTRAP_RESULT'],
                   'foundation_migration': os.environ['FOUNDATION_MIGRATION_RESULT'],
                   'integrity_migration': os.environ['INTEGRITY_MIGRATION_RESULT'],
+                  'owner_extensions_usage_migration': os.environ['OWNER_EXTENSIONS_MIGRATION_RESULT'],
                   'foundation_sql_suite': os.environ['FOUNDATION_TEST_RESULT'],
                   'integrity_sql_suite': os.environ['INTEGRITY_TEST_RESULT'],
+                  'owner_extensions_usage_sql_suite': os.environ['OWNER_EXTENSIONS_TEST_RESULT'],
                   'deterministic_two_session_harness': os.environ['CONCURRENCY_RESULT'],
                   'manifest_bindings': os.environ['MANIFEST_RESULT'],
               },
