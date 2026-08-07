@@ -50,11 +50,16 @@ jobs:
           ref: ${{ github.sha }}
           fetch-depth: 0
 
-      - name: Record candidate identity
+      - name: Record and verify candidate identity
         id: identity
         run: |
           set -euo pipefail
           test "$(git rev-parse HEAD)" = "${{ github.sha }}"
+          parents="$(git show -s --format=%P HEAD)"
+          read -r base_parent head_parent extra_parent <<< "$parents"
+          test -z "${extra_parent:-}"
+          test "$base_parent" = "${{ github.event.pull_request.base.sha }}"
+          test "$head_parent" = "${{ github.event.pull_request.head.sha }}"
           printf 'base_sha=%s\n' '${{ github.event.pull_request.base.sha }}'
           printf 'head_sha=%s\n' '${{ github.event.pull_request.head.sha }}'
           printf 'merge_sha=%s\n' '${{ github.sha }}'
@@ -93,6 +98,10 @@ jobs:
         id: owner_extensions_migration
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260807005800_r9a0_owner_extensions_usage.sql
 
+      - name: Apply service-role read policy repair
+        id: service_role_read_migration
+        run: psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260807020800_r9a0_service_role_read_policy.sql
+
       - name: Run foundation SQL suite
         id: foundation_tests
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql
@@ -105,11 +114,15 @@ jobs:
         id: owner_extensions_tests
         run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260807005800_r9a0_owner_extensions_usage.test.sql
 
+      - name: Run service-role read policy SQL suite
+        id: service_role_read_tests
+        run: psql -X -v ON_ERROR_STOP=1 -f supabase/tests/20260807020800_r9a0_service_role_read_policy.test.sql
+
       - name: Run deterministic two-session concurrency harness
         id: concurrency
         run: bash scripts/supabase/test_r9a0_two_session_concurrency.sh
 
-      - name: Verify 18-file database manifest
+      - name: Verify 22-file database manifest
         id: manifest
         run: |
           set -euo pipefail
@@ -121,8 +134,8 @@ jobs:
           manifest_path = Path('docs/database/R9A0_DATABASE_SLICE_MANIFEST.json')
           manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
           files = manifest.get('files')
-          if manifest.get('file_count') != 18 or not isinstance(files, list) or len(files) != 18:
-              raise SystemExit('manifest must bind exactly 18 files')
+          if manifest.get('file_count') != 22 or not isinstance(files, list) or len(files) != 22:
+              raise SystemExit('manifest must bind exactly 22 files')
 
           seen = set()
           for item in files:
@@ -138,7 +151,7 @@ jobs:
               if actual_hash != item['sha256']:
                   raise SystemExit(f'sha256 mismatch: {path}')
 
-          print('PASS: all 18 database manifest bindings match the PR merge candidate.')
+          print('PASS: all 22 database manifest bindings match the PR merge candidate.')
           PY
 
       - name: Write auditable validation receipt
@@ -151,13 +164,16 @@ jobs:
           MERGE_SHA: ${{ github.sha }}
           RUN_ID: ${{ github.run_id }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
+          IDENTITY_RESULT: ${{ steps.identity.outcome }}
           BOOTSTRAP_RESULT: ${{ steps.bootstrap.outcome }}
           FOUNDATION_MIGRATION_RESULT: ${{ steps.foundation_migration.outcome }}
           INTEGRITY_MIGRATION_RESULT: ${{ steps.integrity_migration.outcome }}
           OWNER_EXTENSIONS_MIGRATION_RESULT: ${{ steps.owner_extensions_migration.outcome }}
+          SERVICE_ROLE_READ_MIGRATION_RESULT: ${{ steps.service_role_read_migration.outcome }}
           FOUNDATION_TEST_RESULT: ${{ steps.foundation_tests.outcome }}
           INTEGRITY_TEST_RESULT: ${{ steps.integrity_tests.outcome }}
           OWNER_EXTENSIONS_TEST_RESULT: ${{ steps.owner_extensions_tests.outcome }}
+          SERVICE_ROLE_READ_TEST_RESULT: ${{ steps.service_role_read_tests.outcome }}
           CONCURRENCY_RESULT: ${{ steps.concurrency.outcome }}
           MANIFEST_RESULT: ${{ steps.manifest.outcome }}
         run: |
@@ -179,13 +195,16 @@ jobs:
               'head_sha': os.environ['HEAD_SHA'],
               'merge_sha': os.environ['MERGE_SHA'],
               'steps': {
+                  'candidate_identity': os.environ['IDENTITY_RESULT'],
                   'bootstrap': os.environ['BOOTSTRAP_RESULT'],
                   'foundation_migration': os.environ['FOUNDATION_MIGRATION_RESULT'],
                   'integrity_migration': os.environ['INTEGRITY_MIGRATION_RESULT'],
                   'owner_extensions_usage_migration': os.environ['OWNER_EXTENSIONS_MIGRATION_RESULT'],
+                  'service_role_read_policy_migration': os.environ['SERVICE_ROLE_READ_MIGRATION_RESULT'],
                   'foundation_sql_suite': os.environ['FOUNDATION_TEST_RESULT'],
                   'integrity_sql_suite': os.environ['INTEGRITY_TEST_RESULT'],
                   'owner_extensions_usage_sql_suite': os.environ['OWNER_EXTENSIONS_TEST_RESULT'],
+                  'service_role_read_policy_sql_suite': os.environ['SERVICE_ROLE_READ_TEST_RESULT'],
                   'deterministic_two_session_harness': os.environ['CONCURRENCY_RESULT'],
                   'manifest_bindings': os.environ['MANIFEST_RESULT'],
               },
