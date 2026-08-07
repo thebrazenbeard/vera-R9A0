@@ -36,7 +36,7 @@
       "test_path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
       "test_sha256": "a88ff904d68bfb12b76c19175a569384fcba3e13d0eeacf8dd34f982178104a3",
       "concurrency_test_path": "scripts/supabase/test_r9a0_two_session_concurrency.sh",
-      "concurrency_test_sha256": "6d32fcbb81efe204938830d29d8ecc82c3532d86eb3f60fc6c259378dbc6c332",
+      "concurrency_test_sha256": "abac54af55d05591e95c69f8b1110f8726c4c18a36d53c5078516733a3c2f6bb",
       "target_project_ref": "agvhmutlrolbaijzlbqk",
       "allowed_namespaces": [
         "r9a0_governance",
@@ -53,12 +53,12 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
-      "test_status": "DISPOSABLE_CI_RUN_31137411068_FAILED_AT_SERVICE_ROLE_PROJECTION_READ",
-      "status": "SUPERSEDED_BY_FOLLOWUP_SERVICE_ROLE_RLS_REPAIR_PENDING_REEXECUTION",
+      "test_status": "DISPOSABLE_CI_RUN_31140959844_PASSED_SQL_SUITES_FAILED_HARNESS_UUID_AGGREGATE",
+      "status": "CONCURRENCY_HARNESS_FIXED_PENDING_REEXECUTION",
       "execution_path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
       "execution_sha256": "169fda11cfe6ca2d0246e53f65c214f0f54095b4fbd84b8a572d73db732d5c85",
-      "execution_run_id": 31137411068,
-      "execution_failure_id": "VOSS-R9A0-DB-SERVICE-ROLE-RLS-001"
+      "execution_run_id": 31140959844,
+      "execution_failure_id": "R9A0-CI-HARNESS-UUID-AGGREGATE-001"
     },
     {
       "version": "20260807005800",
@@ -80,8 +80,8 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_DISPOSABLE_CI_MUNE_REVIEW_AND_VOSS_APPROVAL",
-      "test_status": "MIGRATION_APPLIED_IN_RUN_31137411068_REGRESSION_SUITE_SKIPPED_AFTER_LATER_FAILURE",
-      "status": "APPLIED_IN_DISPOSABLE_CI_PENDING_FULL_SUITE"
+      "test_status": "PASSED_IN_DISPOSABLE_CI_RUN_31140959844",
+      "status": "DISPOSABLE_SQL_VERIFIED_PENDING_HARNESS_AND_MANIFEST"
     },
     {
       "version": "20260807020800",
@@ -110,8 +110,8 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_DISPOSABLE_CI_MUNE_REVIEW_AND_VOSS_APPROVAL",
-      "test_status": "REPOSITORY_REGRESSION_ADDED_EXECUTION_PENDING",
-      "status": "READY_FOR_DISPOSABLE_REEXECUTION"
+      "test_status": "PASSED_IN_DISPOSABLE_CI_RUN_31140959844",
+      "status": "DISPOSABLE_SQL_VERIFIED_PENDING_HARNESS_AND_MANIFEST"
     }
   ]
 }
