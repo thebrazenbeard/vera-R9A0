@@ -53,12 +53,12 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
-      "test_status": "DISPOSABLE_CI_EXPOSED_MISSING_R9A0_OWNER_EXTENSIONS_USAGE",
-      "status": "SUPERSEDED_BY_FOLLOWUP_PRIVILEGE_REPAIR_PENDING_REEXECUTION",
+      "test_status": "DISPOSABLE_CI_RUN_31137411068_FAILED_AT_SERVICE_ROLE_PROJECTION_READ",
+      "status": "SUPERSEDED_BY_FOLLOWUP_SERVICE_ROLE_RLS_REPAIR_PENDING_REEXECUTION",
       "execution_path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
       "execution_sha256": "169fda11cfe6ca2d0246e53f65c214f0f54095b4fbd84b8a572d73db732d5c85",
-      "execution_run_id": 31135561656,
-      "execution_failure_id": "VOSS-R9A0-DB-EXTENSIONS-USAGE-001"
+      "execution_run_id": 31137411068,
+      "execution_failure_id": "VOSS-R9A0-DB-SERVICE-ROLE-RLS-001"
     },
     {
       "version": "20260807005800",
@@ -77,6 +77,36 @@
       "created_objects": [],
       "finding_ids": [
         "VOSS-R9A0-DB-EXTENSIONS-USAGE-001"
+      ],
+      "repository_first": true,
+      "hosted_apply_status": "NOT_APPLIED_PENDING_DISPOSABLE_CI_MUNE_REVIEW_AND_VOSS_APPROVAL",
+      "test_status": "MIGRATION_APPLIED_IN_RUN_31137411068_REGRESSION_SUITE_SKIPPED_AFTER_LATER_FAILURE",
+      "status": "APPLIED_IN_DISPOSABLE_CI_PENDING_FULL_SUITE"
+    },
+    {
+      "version": "20260807020800",
+      "name": "r9a0_service_role_read_policy",
+      "path": "supabase/migrations/20260807020800_r9a0_service_role_read_policy.sql",
+      "sha256": "af1f0e3b377828a2df6b5cd685b0428fff418a456d05add761fad8a565be7bae",
+      "rollback_path": "supabase/rollbacks/20260807020800_r9a0_service_role_read_policy.down.sql",
+      "rollback_sha256": "f7948054c30f2aede5f117f82bf498d5cd22cbe49cc9993a2972e964a23b10e3",
+      "test_path": "supabase/tests/20260807020800_r9a0_service_role_read_policy.test.sql",
+      "test_sha256": "17189ca7aeb4eb3d349eaa54ee4f5cdb2fc96d0f20c947c912f344f5e9e8acf2",
+      "execution_path": "supabase/execution/20260807020800_r9a0_service_role_read_policy.sql",
+      "execution_sha256": "af1f0e3b377828a2df6b5cd685b0428fff418a456d05add761fad8a565be7bae",
+      "target_project_ref": "agvhmutlrolbaijzlbqk",
+      "policy_targets": [
+        "r9a0_coordination.events",
+        "r9a0_governance.migration_applications"
+      ],
+      "privilege_scope": "SELECT_TO_SERVICE_ROLE_ONLY",
+      "preserves_force_rls": true,
+      "created_objects": [
+        "events_service_role_read",
+        "migration_applications_service_role_read"
+      ],
+      "finding_ids": [
+        "VOSS-R9A0-DB-SERVICE-ROLE-RLS-001"
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_DISPOSABLE_CI_MUNE_REVIEW_AND_VOSS_APPROVAL",
