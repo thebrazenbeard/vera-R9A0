@@ -30,7 +30,7 @@
       "version": "20260806224900",
       "name": "r9a0_coordination_integrity_repairs",
       "path": "supabase/migrations/20260806224900_r9a0_coordination_integrity_repairs.sql",
-      "sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71",
+      "sha256": "169fda11cfe6ca2d0246e53f65c214f0f54095b4fbd84b8a572d73db732d5c85",
       "rollback_path": "supabase/rollbacks/20260806224900_r9a0_coordination_integrity_repairs.down.sql",
       "rollback_sha256": "d43636c90fb910f8de3c366934934657ca717ed6d3020d15d0108ac3027e09e4",
       "test_path": "supabase/tests/20260806224900_r9a0_coordination_integrity_repairs.test.sql",
@@ -53,10 +53,35 @@
       ],
       "repository_first": true,
       "hosted_apply_status": "NOT_APPLIED_PENDING_EXACT_AUTHORITY_AND_MUNE_REVIEW",
-      "test_status": "DETERMINISTIC_CONCURRENCY_BARRIER_ADDED_HOSTED_EXECUTION_PENDING",
-      "status": "READY_FOR_REVIEW",
+      "test_status": "DISPOSABLE_CI_EXPOSED_MISSING_R9A0_OWNER_EXTENSIONS_USAGE",
+      "status": "SUPERSEDED_BY_FOLLOWUP_PRIVILEGE_REPAIR_PENDING_REEXECUTION",
       "execution_path": "supabase/execution/20260806224900_r9a0_coordination_integrity_repairs.sql",
-      "execution_sha256": "08efa8c8e574c77fda177a5c6cc2a4f20edb622f097a488c3630ba51544d9d71"
+      "execution_sha256": "169fda11cfe6ca2d0246e53f65c214f0f54095b4fbd84b8a572d73db732d5c85",
+      "execution_run_id": 31135561656,
+      "execution_failure_id": "VOSS-R9A0-DB-EXTENSIONS-USAGE-001"
+    },
+    {
+      "version": "20260807005800",
+      "name": "r9a0_owner_extensions_usage",
+      "path": "supabase/migrations/20260807005800_r9a0_owner_extensions_usage.sql",
+      "sha256": "fe442a006b71f059bf7540eb9853840bc2442c2341b2c8ab3b22f6c9b5cda182",
+      "rollback_path": "supabase/rollbacks/20260807005800_r9a0_owner_extensions_usage.down.sql",
+      "rollback_sha256": "6e1ddd0d33aede09d62ef85ba8e75ad0baccc3e867ce9fc47e8057de677533c0",
+      "test_path": "supabase/tests/20260807005800_r9a0_owner_extensions_usage.test.sql",
+      "test_sha256": "cc55c03ce8e12b949a29ad8a50bca5ee8af46ab275f0a4db8370abdc9b61e223",
+      "execution_path": "supabase/execution/20260807005800_r9a0_owner_extensions_usage.sql",
+      "execution_sha256": "fe442a006b71f059bf7540eb9853840bc2442c2341b2c8ab3b22f6c9b5cda182",
+      "target_project_ref": "agvhmutlrolbaijzlbqk",
+      "privilege_target": "extensions",
+      "external_schema_privilege_exception": "USAGE_ON_EXISTING_EXTENSIONS_SCHEMA_TO_R9A0_OWNER_ONLY",
+      "created_objects": [],
+      "finding_ids": [
+        "VOSS-R9A0-DB-EXTENSIONS-USAGE-001"
+      ],
+      "repository_first": true,
+      "hosted_apply_status": "NOT_APPLIED_PENDING_DISPOSABLE_CI_MUNE_REVIEW_AND_VOSS_APPROVAL",
+      "test_status": "REPOSITORY_REGRESSION_ADDED_EXECUTION_PENDING",
+      "status": "READY_FOR_DISPOSABLE_REEXECUTION"
     }
   ]
 }
