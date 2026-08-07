@@ -198,7 +198,12 @@ select
     where supersedes_event_id = '${seed_id}'::uuid
        or acknowledges_event_id = '${seed_id}'::uuid
   ),
-  max(event_id) filter (where operation_id = '${fork_holder_op}'),
+  (
+    select event_id
+    from r9a0_coordination.events
+    where operation_id = '${fork_holder_op}'
+    limit 1
+  ),
   (
     select event_id
     from r9a0_coordination.latest_thread_state
