@@ -47,7 +47,7 @@ jobs:
       - name: Checkout PR merge candidate
         uses: actions/checkout@v4
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: ${{ github.sha }}
           fetch-depth: 0
 
       - name: Record candidate identity
