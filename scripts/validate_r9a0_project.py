@@ -55,6 +55,24 @@ FORBIDDEN_NATIVE = [
     "same-runtime continuation is verified",
 ]
 
+def _reject_duplicate_object(pairs: list[tuple[str, object]]) -> dict[str, object]:
+    result: dict[str, object] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"duplicate_json_key:{key}")
+        result[key] = value
+    return result
+
+def _reject_nonfinite_json_constant(token: str) -> object:
+    raise ValueError(f"non_finite_json_number:{token}")
+
+def strict_json_loads(text: str) -> object:
+    return json.loads(
+        text,
+        object_pairs_hook=_reject_duplicate_object,
+        parse_constant=_reject_nonfinite_json_constant,
+    )
+
 def parse_checksums(text: str) -> dict[str, str]:
     result: dict[str, str] = {}
     for lineno, line in enumerate(text.splitlines(), 1):
@@ -91,17 +109,17 @@ def validate(root: pathlib.Path) -> dict:
             errors.append(f"missing:{rel}")
 
     try:
-        manifest = json.loads((root / MANIFEST).read_text(encoding="utf-8"))
+        manifest = strict_json_loads((root / MANIFEST).read_text(encoding="utf-8"))
     except Exception as exc:
         errors.append(f"manifest_json:{exc}")
         manifest = {}
     try:
-        contract = json.loads((root / CONTRACT).read_text(encoding="utf-8"))
+        contract = strict_json_loads((root / CONTRACT).read_text(encoding="utf-8"))
     except Exception as exc:
         errors.append(f"contract_json:{exc}")
         contract = {}
     try:
-        json.loads((root / SCHEMA).read_text(encoding="utf-8"))
+        strict_json_loads((root / SCHEMA).read_text(encoding="utf-8"))
     except Exception as exc:
         errors.append(f"schema_json:{exc}")
 
@@ -114,6 +132,13 @@ def validate(root: pathlib.Path) -> dict:
         errors.append("manifest_file_membership")
     if manifest.get("basic_memory_active_dependency") is not False:
         errors.append("manifest_basic_memory_dependency")
+    expected_surfaces = ["SUPABASE", "GITHUB", "GOOGLE_DRIVE", "NATIVE_PROJECT_FILES"]
+    if manifest.get("active_surfaces") not in (None, expected_surfaces):
+        errors.append("manifest_active_surfaces")
+    if manifest.get("checksums_path") not in (None, pathlib.PurePath(CHECKSUMS).name):
+        errors.append("manifest_checksums_path")
+    if manifest.get("native_settings_path") not in (None, pathlib.PurePath(NATIVE).name):
+        errors.append("manifest_native_settings_path")
 
     project_root = root / "project"
     safe_paths: dict[str, pathlib.Path] = {}
@@ -176,6 +201,10 @@ def validate(root: pathlib.Path) -> dict:
         errors.append("contract_database_gate")
     if contract.get("ci", {}).get("exact_head_success_required") is not True:
         errors.append("contract_ci_gate")
+    if manifest.get("active_surfaces") is not None and manifest.get("active_surfaces") != contract.get("active_surfaces"):
+        errors.append("manifest_contract_active_surfaces_parity")
+    if manifest.get("installation_state_at_generation") is not None and manifest.get("installation_state_at_generation") != contract.get("installation", {}).get("generation_state"):
+        errors.append("manifest_installation_generation_parity")
 
     computed = {}
     for name, path in safe_paths.items():
