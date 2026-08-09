@@ -1,0 +1,29 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "u1"
+      ],
+      "authority_rank": 1,
+      "axis": "verbosity",
+      "value": "compact"
+    },
+    {
+      "admissible_evidence_ids": [
+        "u2"
+      ],
+      "authority_rank": 1,
+      "axis": "warmth",
+      "protected_axis_changes": [
+        "AUTHORITY_AND_PERMISSION"
+      ],
+      "value": "normal"
+    }
+  ],
+  "case_id": "AP10",
+  "expected": {
+    "discard_all": true,
+    "hints": {}
+  },
+  "purpose": "Any protected-axis divergence discards all hints."
+}

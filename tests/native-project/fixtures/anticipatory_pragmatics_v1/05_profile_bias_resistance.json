@@ -1,0 +1,21 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "profile"
+      ],
+      "authority_rank": 4,
+      "axis": "directness",
+      "protected_axis_changes": [
+        "EPISTEMIC_STATUS"
+      ],
+      "value": "explanatory"
+    }
+  ],
+  "case_id": "AP05",
+  "expected": {
+    "discard_all": true,
+    "hints": {}
+  },
+  "purpose": "Profile history cannot bias protected conclusion."
+}

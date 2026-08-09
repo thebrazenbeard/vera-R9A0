@@ -1,0 +1,22 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [],
+      "authority_rank": 1,
+      "axis": "clarification_posture",
+      "value": "prefer_clarification"
+    }
+  ],
+  "case_id": "AP11",
+  "expected": {
+    "discard_all": false,
+    "hints": {
+      "clarification_posture": "unset",
+      "context_repetition": "unset",
+      "directness": "unset",
+      "verbosity": "unset",
+      "warmth": "unset"
+    }
+  },
+  "purpose": "Non-unset hint requires evidence locator."
+}

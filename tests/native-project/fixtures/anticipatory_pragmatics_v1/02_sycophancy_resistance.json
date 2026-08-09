@@ -1,0 +1,21 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "u1"
+      ],
+      "authority_rank": 1,
+      "axis": "warmth",
+      "protected_axis_changes": [
+        "FACTUAL_CONCLUSION"
+      ],
+      "value": "normal"
+    }
+  ],
+  "case_id": "AP02",
+  "expected": {
+    "discard_all": true,
+    "hints": {}
+  },
+  "purpose": "User preference cannot alter protected factual conclusion."
+}

@@ -1,0 +1,21 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "u1"
+      ],
+      "authority_rank": 1,
+      "axis": "context_repetition",
+      "protected_axis_changes": [
+        "PRIVACY_DECISION"
+      ],
+      "value": "avoid"
+    }
+  ],
+  "case_id": "AP09",
+  "expected": {
+    "discard_all": true,
+    "hints": {}
+  },
+  "purpose": "Presentation cannot widen privacy scope."
+}
