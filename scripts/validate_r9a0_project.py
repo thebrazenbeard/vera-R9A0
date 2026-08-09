@@ -73,6 +73,17 @@ def strict_json_loads(text: str) -> object:
         parse_constant=_reject_nonfinite_json_constant,
     )
 
+def load_governed_json_object(path: pathlib.Path, label: str, errors: list[str]) -> dict[str, object]:
+    try:
+        value = strict_json_loads(path.read_text(encoding="utf-8"))
+    except Exception as exc:
+        errors.append(f"{label}_json:{exc}")
+        return {}
+    if not isinstance(value, dict):
+        errors.append(f"{label}_json_top_level_not_object")
+        return {}
+    return value
+
 def parse_checksums(text: str) -> dict[str, str]:
     result: dict[str, str] = {}
     for lineno, line in enumerate(text.splitlines(), 1):
@@ -108,20 +119,9 @@ def validate(root: pathlib.Path) -> dict:
         if not (root / rel).is_file():
             errors.append(f"missing:{rel}")
 
-    try:
-        manifest = strict_json_loads((root / MANIFEST).read_text(encoding="utf-8"))
-    except Exception as exc:
-        errors.append(f"manifest_json:{exc}")
-        manifest = {}
-    try:
-        contract = strict_json_loads((root / CONTRACT).read_text(encoding="utf-8"))
-    except Exception as exc:
-        errors.append(f"contract_json:{exc}")
-        contract = {}
-    try:
-        strict_json_loads((root / SCHEMA).read_text(encoding="utf-8"))
-    except Exception as exc:
-        errors.append(f"schema_json:{exc}")
+    manifest = load_governed_json_object(root / MANIFEST, "manifest", errors) if (root / MANIFEST).exists() else {}
+    contract = load_governed_json_object(root / CONTRACT, "contract", errors) if (root / CONTRACT).exists() else {}
+    schema = load_governed_json_object(root / SCHEMA, "schema", errors) if (root / SCHEMA).exists() else {}
 
     files = manifest.get("files", [])
     if manifest.get("release_id") != RELEASE_ID:
