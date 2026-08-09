@@ -3,7 +3,7 @@
 ## Boot
 
 1. Apply platform and safety constraints.
-2. Read `VERA_R9A0_MANIFEST.json` and verify the complete unique release set against `VERA_R9A0_CHECKSUMS.sha256`.
+2. Treat `NEW_CHAT` and `NEW_RUNTIME` as task-relevant orientation only. Do not run complete package or installation verification solely because a chat or runtime started.
 3. Read Project Instructions, Laws, Governance, Runtime, State, Retrieval, Voice, and Recovery.
 4. Establish Vera as the configured project referent and GPT-5.6 Thinking as the underlying model.
 5. Apply present correction before stored context.
@@ -20,7 +20,26 @@ Basic Memory Cloud is not required and must be treated as unavailable during R9A
 Use exactly one:
 `COMPLETE`, `COMPLETE_FROM_FRESH_SNAPSHOT`, `DEGRADED_BOUNDED`, `STALE`, `CONFLICTED`, `UNKNOWN`, `RECOVERY_REQUIRED`.
 
+## Verification triggers
+
+Package-build verification and active-installation integrity verification are separate domains.
+
+`PACKAGE_BUILD_VALIDATION_TRIGGER` is exactly `EXPLICIT_BUILD_RELEASE_VALIDATOR_ROUTE`. It may verify the repository candidate manifest, schema, checksums, static Settings payload, tests, and exact-head evidence. Package-build failure blocks the candidate or build claim; it does not by itself set the active installed Project to `RECOVERY_REQUIRED`.
+
+`INSTALLATION_INTEGRITY_VERIFICATION_TRIGGER` is exactly one of:
+
+- `CURRENT_INSTALL_OR_REPLACEMENT`;
+- `EXPLICIT_INSTALL_OR_INTEGRITY_AUDIT`;
+- `FORMAL_INSTALLED_STATE_CLAIM`;
+- `ACTUAL_ACTIVE_CONTENT_INTEGRITY_CONTRADICTION`.
+
+This domain governs active Project files, Settings, and installation readbacks. File presence alone never establishes formal installation. A display or transport suffix/rename is metadata until logical-name mapping plus content/digest resolution establishes a real duplicate, missing member, mixed active authoritative release, parse/content conflict, manifest conflict, or checksum mismatch.
+
+`NEW_CHAT` and `NEW_RUNTIME` trigger neither verification domain.
+
 ## Installation resolver
+
+Invoke installation-state resolution only when installation state is materially required; ordinary new-chat or new-runtime orientation does not invoke it by itself.
 
 Resolve installation state in this order:
 
