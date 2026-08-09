@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE14",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "old"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Correction terminates exact matching lineage.",
+  "spans": [
+    {
+      "corrected": true,
+      "historical_qualified": false,
+      "id": "old",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

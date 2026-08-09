@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE17",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "retrieved"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Retrieved governed context still uses the same admissibility gate.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "retrieved",
+      "lifecycle_current": true,
+      "origin": "GOVERNED_PRIOR_CONTEXT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "REPORT"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE12",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "abstract"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Abstract/fictional safety language is not SELF evidence.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "abstract",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "ABSTRACT_OR_GENERAL",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "REPORT"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "case_id": "SAFE16",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "old"
+      },
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "later"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "later"
+    ]
+  },
+  "purpose": "Later new direct evidence can reopen prospectively after correction.",
+  "spans": [
+    {
+      "corrected": true,
+      "historical_qualified": false,
+      "id": "old",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "later",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE13",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "UNRESOLVED",
+        "id": "u"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "UNKNOWN provenance remains unresolved rather than promoted.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "u",
+      "lifecycle_current": true,
+      "origin": "UNKNOWN",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "UNKNOWN"
+    }
+  ]
+}

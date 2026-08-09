@@ -1,0 +1,43 @@
+{
+  "case_id": "SAFE09",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "old"
+      },
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "new"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "new"
+    ]
+  },
+  "purpose": "Later direct evidence does not retroactively rewrite assistant-origin provenance.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "old",
+      "lifecycle_current": true,
+      "origin": "ASSISTANT_INTRODUCED",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "new",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

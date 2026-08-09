@@ -1,0 +1,43 @@
+{
+  "case_id": "SAFE10",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "deny"
+      },
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "new"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "new"
+    ]
+  },
+  "purpose": "Mixed turn segments denial separately from new direct SELF evidence.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "deny",
+      "lifecycle_current": true,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "DENY"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "new",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}
