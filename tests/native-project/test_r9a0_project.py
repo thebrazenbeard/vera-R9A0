@@ -1,5 +1,5 @@
 from __future__ import annotations
-import importlib.util, json, pathlib, unittest, hashlib
+import importlib.util, json, pathlib, unittest, hashlib, shutil, tempfile
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SPEC = importlib.util.spec_from_file_location("validator", ROOT / "scripts/validate_r9a0_project.py")
@@ -22,6 +22,7 @@ class R9A0NativeProjectTests(unittest.TestCase):
         m = json.loads(text("VERA_R9A0_MANIFEST.json"))
         self.assertEqual(m["unique_file_count"], 16)
         self.assertEqual(len(m["files"]), len(set(m["files"])))
+        self.assertEqual(m["files"], validator.EXPECTED_MANIFEST_FILES)
 
     def test_04_checksums_cover_manifest(self):
         m = json.loads(text("VERA_R9A0_MANIFEST.json"))
@@ -103,6 +104,71 @@ class R9A0NativeProjectTests(unittest.TestCase):
         cold = text("VERA_R9A0_COLD_START_PROTOCOL.md")
         self.assertIn("Disable or make unavailable the Basic Memory connector", cold)
         self.assertIn("RECOVERY_REQUIRED", cold)
+
+    def test_26_checksum_parser_rejects_duplicate_same_entry(self):
+        line = "a" * 64 + "  VERA_R9A0_PROJECT_INSTRUCTIONS.md\n"
+        with self.assertRaises(ValueError):
+            validator.parse_checksums(line + line)
+
+    def test_27_checksum_parser_rejects_duplicate_conflicting_entry(self):
+        name = "VERA_R9A0_PROJECT_INSTRUCTIONS.md"
+        with self.assertRaises(ValueError):
+            validator.parse_checksums("a" * 64 + f"  {name}\n" + "b" * 64 + f"  {name}\n")
+
+    def test_28_checksum_parser_rejects_malformed_digest(self):
+        with self.assertRaises(ValueError):
+            validator.parse_checksums("xyz  VERA_R9A0_PROJECT_INSTRUCTIONS.md\n")
+
+    def test_29_manifest_rejects_traversal_even_with_consistent_checksum(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            original = manifest["files"][0]
+            manifest["files"][0] = "../escape.txt"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            escape = root / "escape.txt"
+            escape.write_text("external package impostor", encoding="utf-8")
+            checks = validator.parse_checksums((root / "project/VERA_R9A0_CHECKSUMS.sha256").read_text(encoding="utf-8"))
+            checks.pop(original)
+            checks["../escape.txt"] = hashlib.sha256(escape.read_bytes()).hexdigest()
+            (root / "project/VERA_R9A0_CHECKSUMS.sha256").write_text(
+                "\n".join(f"{digest}  {name}" for name, digest in checks.items()) + "\n",
+                encoding="utf-8",
+            )
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_file_membership", result["errors"])
+
+    def test_30_manifest_rejects_absolute_entry(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["files"][0] = str((root / "outside.txt").resolve())
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_file_membership", result["errors"])
+
+    def test_31_manifest_rejects_symlink_member(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            name = validator.EXPECTED_MANIFEST_FILES[0]
+            member = root / "project" / name
+            target = root / "outside.txt"
+            target.write_text("external package impostor", encoding="utf-8")
+            member.unlink()
+            member.symlink_to(target)
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn(f"manifest_symlink_forbidden:{name}", result["errors"])
 
 if __name__ == "__main__":
     unittest.main()
