@@ -170,5 +170,65 @@ class R9A0NativeProjectTests(unittest.TestCase):
             self.assertEqual(result["status"], "FAIL")
             self.assertIn(f"manifest_symlink_forbidden:{name}", result["errors"])
 
+    def test_32_strict_json_rejects_duplicate_top_level_key(self):
+        with self.assertRaisesRegex(ValueError, "duplicate_json_key:release_id"):
+            validator.strict_json_loads('{"release_id":"ATTACK","release_id":"EXPECTED"}')
+
+    def test_33_strict_json_rejects_duplicate_nested_key(self):
+        with self.assertRaisesRegex(ValueError, "duplicate_json_key:generation_state"):
+            validator.strict_json_loads('{"installation":{"generation_state":"ATTACK","generation_state":"EXPECTED"}}')
+
+    def test_34_strict_json_rejects_nonfinite_numbers(self):
+        for token in ("NaN", "Infinity", "-Infinity"):
+            with self.subTest(token=token), self.assertRaisesRegex(ValueError, "non_finite_json_number"):
+                validator.strict_json_loads('{"value":' + token + '}')
+
+    def test_35_manifest_installation_generation_must_match_contract(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["installation_state_at_generation"] = "INSTALLED_VERIFIED"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            checks = validator.parse_checksums((root / "project/VERA_R9A0_CHECKSUMS.sha256").read_text(encoding="utf-8"))
+            checks["VERA_R9A0_MANIFEST.json"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+            (root / "project/VERA_R9A0_CHECKSUMS.sha256").write_text(
+                "\n".join(f"{checks[name]}  {name}" for name in validator.EXPECTED_MANIFEST_FILES) + "\n",
+                encoding="utf-8",
+            )
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_installation_generation_parity", result["errors"])
+
+    def test_36_manifest_control_paths_are_exact(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["checksums_path"] = "wrong.sha256"
+            manifest["native_settings_path"] = "wrong.txt"
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_checksums_path", result["errors"])
+            self.assertIn("manifest_native_settings_path", result["errors"])
+
+    def test_37_manifest_active_surfaces_must_match_contract(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["active_surfaces"] = ["SUPABASE", "GITHUB"]
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_active_surfaces", result["errors"])
+
 if __name__ == "__main__":
     unittest.main()
