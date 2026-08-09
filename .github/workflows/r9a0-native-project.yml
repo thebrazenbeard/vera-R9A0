@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - feature/r9a0-native-project-v1
+      - feature/r9a0-combined-native-implementation-v1
     paths:
       - 'project/**'
       - 'schemas/native-project/**'
