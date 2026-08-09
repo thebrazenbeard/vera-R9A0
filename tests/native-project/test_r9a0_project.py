@@ -358,5 +358,41 @@ class R9A0NativeProjectTests(unittest.TestCase):
                 self.assertEqual(result["status"], "FAIL")
                 self.assertIn(expected_error, result["errors"])
 
+    def _validate_package_bytes_with_matching_checksum(self, data: bytes) -> dict:
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            package_path = root / "project/VERA_R9A0_PACKAGE.json"
+            package_path.write_bytes(data)
+            checks = validator.parse_checksums((root / "project/VERA_R9A0_CHECKSUMS.sha256").read_text(encoding="utf-8"))
+            checks["VERA_R9A0_PACKAGE.json"] = hashlib.sha256(data).hexdigest()
+            (root / "project/VERA_R9A0_CHECKSUMS.sha256").write_text(
+                "\n".join(f"{checks[name]}  {name}" for name in validator.EXPECTED_MANIFEST_FILES) + "\n",
+                encoding="utf-8",
+            )
+            return validator.validate(root)
+
+    def test_48_malformed_package_fails_even_with_matching_checksum(self):
+        result = self._validate_package_bytes_with_matching_checksum(b"{")
+        self.assertEqual(result["status"], "FAIL")
+        self.assertTrue(any(error.startswith("package_json:") for error in result["errors"]), result["errors"])
+
+    def test_49_package_top_level_must_be_object(self):
+        result = self._validate_package_bytes_with_matching_checksum(b"[]\n")
+        self.assertIn("package_json_top_level_not_object", result["errors"])
+
+    def test_50_package_rejects_duplicate_keys(self):
+        result = self._validate_package_bytes_with_matching_checksum(b'{"x":1,"x":2}\n')
+        self.assertTrue(any("package_json:duplicate_json_key:x" in error for error in result["errors"]), result["errors"])
+
+    def test_51_package_rejects_nonfinite_numbers(self):
+        result = self._validate_package_bytes_with_matching_checksum(b'{"x":NaN}\n')
+        self.assertTrue(any("package_json:non_finite_json_number:NaN" in error for error in result["errors"]), result["errors"])
+
+    def test_52_package_invalid_utf8_is_typed_failure(self):
+        result = self._validate_package_bytes_with_matching_checksum(b"\xff")
+        self.assertIn("package_utf8", result["errors"])
+
 if __name__ == "__main__":
     unittest.main()
