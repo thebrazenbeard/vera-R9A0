@@ -3,20 +3,35 @@
   "expected": {
     "adjudication": [
       {
+        "admissibility": "INADMISSIBLE",
+        "id": "stale"
+      },
+      {
         "admissibility": "ADMISSIBLE",
-        "id": "s1"
+        "id": "current"
       }
     ],
     "self_risk_evidence_ids": [
-      "s1"
+      "current"
     ]
   },
-  "purpose": "Genuine elicited AFFIRM+SELF may open a new branch prospectively.",
+  "purpose": "A genuine elicited AFFIRM+SELF opens a new branch only while lifecycle-current.",
   "spans": [
     {
       "corrected": false,
       "historical_qualified": false,
-      "id": "s1",
+      "id": "stale",
+      "lifecycle_current": false,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "current",
       "lifecycle_current": true,
       "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
       "referent_subject": "SELF",
