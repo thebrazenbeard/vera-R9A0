@@ -73,14 +73,54 @@ def strict_json_loads(text: str) -> object:
         parse_constant=_reject_nonfinite_json_constant,
     )
 
-def load_governed_json_object(path: pathlib.Path, label: str, errors: list[str]) -> dict[str, object]:
+def governed_input_path(root: pathlib.Path, rel: str, label: str, errors: list[str]) -> pathlib.Path | None:
+    path = root / rel
+    if path.is_symlink():
+        errors.append(f"{label}_symlink_forbidden")
+        return None
     try:
-        value = strict_json_loads(path.read_text(encoding="utf-8"))
+        resolved_root = root.resolve(strict=False)
+        resolved_path = path.resolve(strict=False)
+        if not resolved_path.is_relative_to(resolved_root):
+            errors.append(f"{label}_path_escape")
+            return None
+    except OSError as exc:
+        errors.append(f"{label}_path_resolution:{exc.__class__.__name__}")
+        return None
+    if not path.is_file():
+        errors.append(f"missing:{rel}")
+        return None
+    return path
+
+def read_utf8_text(path: pathlib.Path | None, label: str, errors: list[str]) -> str | None:
+    if path is None:
+        return None
+    try:
+        return path.read_text(encoding="utf-8")
+    except UnicodeDecodeError:
+        errors.append(f"{label}_utf8")
+    except OSError as exc:
+        errors.append(f"{label}_read:{exc.__class__.__name__}")
+    return None
+
+def load_governed_json_object(path: pathlib.Path | None, label: str, errors: list[str]) -> dict[str, object]:
+    text = read_utf8_text(path, label, errors)
+    if text is None:
+        return {}
+    try:
+        value = strict_json_loads(text)
     except Exception as exc:
         errors.append(f"{label}_json:{exc}")
         return {}
     if not isinstance(value, dict):
         errors.append(f"{label}_json_top_level_not_object")
+        return {}
+    return value
+
+def object_member(parent: dict[str, object], key: str, label: str, errors: list[str]) -> dict[str, object]:
+    value = parent.get(key)
+    if not isinstance(value, dict):
+        errors.append(f"{label}_not_object")
         return {}
     return value
 
@@ -107,28 +147,44 @@ def confined_project_path(project_root: pathlib.Path, name: str) -> tuple[pathli
     if path.is_symlink():
         return None, f"manifest_symlink_forbidden:{name}"
     try:
-        if path.resolve(strict=False).parent != project_root.resolve(strict=False):
+        resolved_repo_root = project_root.parent.resolve(strict=False)
+        resolved_project_root = project_root.resolve(strict=False)
+        if not resolved_project_root.is_relative_to(resolved_repo_root):
+            return None, "manifest_project_root_escape"
+        if path.resolve(strict=False).parent != resolved_project_root:
             return None, f"manifest_path_escape:{name}"
     except OSError as exc:
-        return None, f"manifest_path_resolution:{name}:{exc}"
+        return None, f"manifest_path_resolution:{name}:{exc.__class__.__name__}"
     return path, None
 
 def validate(root: pathlib.Path) -> dict:
     errors: list[str] = []
-    for rel in [MANIFEST, CHECKSUMS, CONTRACT, NATIVE, SCHEMA]:
-        if not (root / rel).is_file():
-            errors.append(f"missing:{rel}")
+    inputs: dict[str, pathlib.Path] = {}
+    for rel, label in [
+        (MANIFEST, "manifest"),
+        (CHECKSUMS, "checksums"),
+        (CONTRACT, "contract"),
+        (NATIVE, "native"),
+        (SCHEMA, "schema"),
+    ]:
+        path = governed_input_path(root, rel, label, errors)
+        if path is not None:
+            inputs[rel] = path
 
-    manifest = load_governed_json_object(root / MANIFEST, "manifest", errors) if (root / MANIFEST).exists() else {}
-    contract = load_governed_json_object(root / CONTRACT, "contract", errors) if (root / CONTRACT).exists() else {}
-    schema = load_governed_json_object(root / SCHEMA, "schema", errors) if (root / SCHEMA).exists() else {}
+    manifest = load_governed_json_object(inputs.get(MANIFEST), "manifest", errors)
+    contract = load_governed_json_object(inputs.get(CONTRACT), "contract", errors)
+    schema = load_governed_json_object(inputs.get(SCHEMA), "schema", errors)
 
-    files = manifest.get("files", [])
+    files_raw = manifest.get("files", [])
+    files_are_strings = isinstance(files_raw, list) and all(isinstance(name, str) for name in files_raw)
+    if not files_are_strings:
+        errors.append("manifest_files_not_list_of_strings")
+    files = files_raw if isinstance(files_raw, list) else []
     if manifest.get("release_id") != RELEASE_ID:
         errors.append("manifest_release_id")
-    if manifest.get("unique_file_count") != 16 or not isinstance(files, list) or len(files) != 16 or len(set(files)) != 16:
+    if manifest.get("unique_file_count") != 16 or not files_are_strings or len(files) != 16 or len(set(files)) != 16:
         errors.append("manifest_unique_file_count")
-    if files != EXPECTED_MANIFEST_FILES:
+    if not files_are_strings or files != EXPECTED_MANIFEST_FILES:
         errors.append("manifest_file_membership")
     if manifest.get("basic_memory_active_dependency") is not False:
         errors.append("manifest_basic_memory_dependency")
@@ -154,19 +210,28 @@ def validate(root: pathlib.Path) -> dict:
         safe_paths[name] = path
 
     checksum_map: dict[str, str] = {}
-    if (root / CHECKSUMS).exists():
+    checksum_text = read_utf8_text(inputs.get(CHECKSUMS), "checksums", errors)
+    if checksum_text is not None:
         try:
-            checksum_map = parse_checksums((root / CHECKSUMS).read_text(encoding="utf-8"))
-        except (OSError, ValueError) as exc:
+            checksum_map = parse_checksums(checksum_text)
+        except ValueError as exc:
             errors.append(f"checksums_format:{exc}")
     if set(checksum_map) != set(EXPECTED_MANIFEST_FILES):
         errors.append("checksum_file_set")
+
+    computed: dict[str, dict[str, object]] = {}
     for name, path in safe_paths.items():
-        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        try:
+            data = path.read_bytes()
+        except OSError as exc:
+            errors.append(f"manifest_file_read:{name}:{exc.__class__.__name__}")
+            continue
+        digest = hashlib.sha256(data).hexdigest()
+        computed[name] = {"sha256": digest, "size": len(data)}
         if checksum_map.get(name) != digest:
             errors.append(f"checksum_mismatch:{name}")
 
-    native = (root / NATIVE).read_text(encoding="utf-8") if (root / NATIVE).exists() else ""
+    native = read_utf8_text(inputs.get(NATIVE), "native", errors) or ""
     if len(native) > 8000:
         errors.append(f"native_character_limit:{len(native)}")
     for phrase in REQUIRED_NATIVE:
@@ -176,19 +241,24 @@ def validate(root: pathlib.Path) -> dict:
         if phrase.lower() in native.lower():
             errors.append(f"native_forbidden:{phrase}")
 
+    legacy_memory = object_member(contract, "legacy_memory", "contract_legacy_memory", errors)
+    retrieval = object_member(contract, "retrieval", "contract_retrieval", errors)
+    installation = object_member(contract, "installation", "contract_installation", errors)
+    supabase = object_member(contract, "supabase", "contract_supabase", errors)
+    ci = object_member(contract, "ci", "contract_ci", errors)
+
     if contract.get("release_id") != RELEASE_ID:
         errors.append("contract_release_id")
     if contract.get("active_surfaces") != ["SUPABASE","GITHUB","GOOGLE_DRIVE","NATIVE_PROJECT_FILES"]:
         errors.append("contract_active_surfaces")
-    if contract.get("legacy_memory", {}).get("active_dependency") is not False:
+    if legacy_memory.get("active_dependency") is not False:
         errors.append("contract_basic_memory_dependency")
-    if contract.get("legacy_memory", {}).get("archive_sha256") != "beeddd73b8172c988868f1ca7a9ab8c1287f0f6753705121a17335ed1020dffb":
+    if legacy_memory.get("archive_sha256") != "beeddd73b8172c988868f1ca7a9ab8c1287f0f6753705121a17335ed1020dffb":
         errors.append("contract_archive_digest")
-    if contract.get("retrieval", {}).get("abstain_when_unresolved") is not True:
+    if retrieval.get("abstain_when_unresolved") is not True:
         errors.append("contract_retrieval_abstention")
-    if contract.get("installation", {}).get("generation_state") != "INSTALLATION_UNVERIFIED":
+    if installation.get("generation_state") != "INSTALLATION_UNVERIFIED":
         errors.append("contract_generation_state")
-    supabase = contract.get("supabase", {})
     if supabase.get("temporary_project") != "agvhmutlrolbaijzlbqk":
         errors.append("contract_supabase_target")
     if supabase.get("production_prohibited") != "klmbpaigzeguvnpccqzz":
@@ -199,21 +269,18 @@ def validate(root: pathlib.Path) -> dict:
         errors.append("contract_mune_security_approval")
     if supabase.get("database_contract_state") != "PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL":
         errors.append("contract_database_gate")
-    if contract.get("ci", {}).get("exact_head_success_required") is not True:
+    if ci.get("exact_head_success_required") is not True:
         errors.append("contract_ci_gate")
     if manifest.get("active_surfaces") is not None and manifest.get("active_surfaces") != contract.get("active_surfaces"):
         errors.append("manifest_contract_active_surfaces_parity")
-    if manifest.get("installation_state_at_generation") is not None and manifest.get("installation_state_at_generation") != contract.get("installation", {}).get("generation_state"):
+    if manifest.get("installation_state_at_generation") is not None and manifest.get("installation_state_at_generation") != installation.get("generation_state"):
         errors.append("manifest_installation_generation_parity")
 
-    computed = {}
-    for name, path in safe_paths.items():
-        computed[name] = {"sha256": hashlib.sha256(path.read_bytes()).hexdigest(), "size": path.stat().st_size}
     return {
         "status": "PASS" if not errors else "FAIL",
         "errors": errors,
         "native_character_count": len(native),
-        "manifest_file_count": len(files),
+        "manifest_file_count": len(files) if isinstance(files, list) else 0,
         "files": computed,
     }
 
