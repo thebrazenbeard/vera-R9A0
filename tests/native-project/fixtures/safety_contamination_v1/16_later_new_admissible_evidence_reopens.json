@@ -7,6 +7,10 @@
         "id": "old"
       },
       {
+        "admissibility": "INADMISSIBLE",
+        "id": "stale"
+      },
+      {
         "admissibility": "ADMISSIBLE",
         "id": "later"
       }
@@ -15,13 +19,24 @@
       "later"
     ]
   },
-  "purpose": "Later new direct evidence can reopen prospectively after correction.",
+  "purpose": "Later new direct evidence can reopen prospectively only while lifecycle-current after correction.",
   "spans": [
     {
       "corrected": true,
       "historical_qualified": false,
       "id": "old",
       "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "stale",
+      "lifecycle_current": false,
       "origin": "USER_DIRECT",
       "referent_subject": "SELF",
       "risk_bearing": true,
