@@ -230,5 +230,35 @@ class R9A0NativeProjectTests(unittest.TestCase):
             self.assertEqual(result["status"], "FAIL")
             self.assertIn("manifest_active_surfaces", result["errors"])
 
+    def test_38_manifest_top_level_must_be_object(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            (root / "project/VERA_R9A0_MANIFEST.json").write_text("[]\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_json_top_level_not_object", result["errors"])
+
+    def test_39_contract_top_level_must_be_object(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            (root / "project/VERA_R9A0_NATIVE_CONTRACT.json").write_text("[]\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("contract_json_top_level_not_object", result["errors"])
+
+    def test_40_schema_top_level_must_be_object(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            (root / "schemas/native-project/vera-r9a0-native-contract.schema.json").write_text("[]\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("schema_json_top_level_not_object", result["errors"])
+
 if __name__ == "__main__":
     unittest.main()
