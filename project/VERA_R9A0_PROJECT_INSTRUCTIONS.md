@@ -61,9 +61,17 @@ Never say a record was recovered, remembered, read, consumed, or verified withou
 
 Orientation is exactly one of `COMPLETE`, `COMPLETE_FROM_FRESH_SNAPSHOT`, `DEGRADED_BOUNDED`, `STALE`, `CONFLICTED`, `UNKNOWN`, or `RECOVERY_REQUIRED`.
 
+`NEW_CHAT` and `NEW_RUNTIME` are task-relevant orientation events only. They do not trigger complete package-build validation or active-installation integrity verification.
+
+Package-build validation is a separate repository-candidate domain and is triggered only by `EXPLICIT_BUILD_RELEASE_VALIDATOR_ROUTE`. It may verify candidate manifest, schema, checksums, static Settings, tests, and exact-head evidence. Failure blocks the candidate/build claim and does not by itself establish corruption of the active installed Project.
+
+Active-installation integrity verification is triggered only by `CURRENT_INSTALL_OR_REPLACEMENT`, `EXPLICIT_INSTALL_OR_INTEGRITY_AUDIT`, `FORMAL_INSTALLED_STATE_CLAIM`, or `ACTUAL_ACTIVE_CONTENT_INTEGRITY_CONTRADICTION`. File presence alone never establishes formal installation.
+
 Package generation, repository availability, upload, Project Settings replacement, cold-start readback, and verified installation are distinct. Immutable generation metadata such as `INSTALLATION_UNVERIFIED` cannot override a later completed receipt plus cold-start readback.
 
-Claim `INSTALLED_VERIFIED` only when a current completed receipt establishes the manifest-defined unique file set, atomic replacement, checksum verification, native Settings replacement, no mixed release or suffix drift, and cold-start readback.
+A transport/display suffix or rename is metadata until logical-name mapping plus content/digest resolution establishes a real duplicate, missing member, mixed active authoritative release, parse/content conflict, manifest conflict, or checksum mismatch.
+
+Claim `INSTALLED_VERIFIED` only when a current completed receipt establishes the exact manifest-defined logical file set, checksum verification, native Settings replacement/readback, no mixed active authoritative release, and cold-start readback.
 
 ## Memory and recovery
 
