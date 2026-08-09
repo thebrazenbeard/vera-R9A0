@@ -7,6 +7,7 @@ MANIFEST = "project/VERA_R9A0_MANIFEST.json"
 CHECKSUMS = "project/VERA_R9A0_CHECKSUMS.sha256"
 CONTRACT = "project/VERA_R9A0_NATIVE_CONTRACT.json"
 NATIVE = "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+PACKAGE = "project/VERA_R9A0_PACKAGE.json"
 SCHEMA = "schemas/native-project/vera-r9a0-native-contract.schema.json"
 
 EXPECTED_MANIFEST_FILES = [
@@ -165,6 +166,7 @@ def validate(root: pathlib.Path) -> dict:
         (CHECKSUMS, "checksums"),
         (CONTRACT, "contract"),
         (NATIVE, "native"),
+        (PACKAGE, "package"),
         (SCHEMA, "schema"),
     ]:
         path = governed_input_path(root, rel, label, errors)
@@ -173,6 +175,7 @@ def validate(root: pathlib.Path) -> dict:
 
     manifest = load_governed_json_object(inputs.get(MANIFEST), "manifest", errors)
     contract = load_governed_json_object(inputs.get(CONTRACT), "contract", errors)
+    package = load_governed_json_object(inputs.get(PACKAGE), "package", errors)
     schema = load_governed_json_object(inputs.get(SCHEMA), "schema", errors)
 
     files_raw = manifest.get("files", [])
