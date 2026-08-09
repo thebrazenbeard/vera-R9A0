@@ -1,10 +1,21 @@
 {
   "candidates": [
     {
+      "admissible_evidence_ids": [
+        "u1"
+      ],
+      "authority_rank": 1,
+      "axis": "verbosity",
+      "value": "compact"
+    },
+    {
       "admissible_evidence_ids": [],
       "authority_rank": 1,
-      "axis": "clarification_posture",
-      "value": "prefer_clarification"
+      "axis": "warmth",
+      "protected_axis_changes": [
+        "AUTHORITY_AND_PERMISSION"
+      ],
+      "value": "normal"
     }
   ],
   "case_id": "AP11",
@@ -14,9 +25,9 @@
       "clarification_posture": "unset",
       "context_repetition": "unset",
       "directness": "unset",
-      "verbosity": "unset",
+      "verbosity": "compact",
       "warmth": "unset"
     }
   },
-  "purpose": "Non-unset hint requires evidence locator."
+  "purpose": "Evidence-free candidate is noncontrolling even when it claims protected-axis divergence."
 }
