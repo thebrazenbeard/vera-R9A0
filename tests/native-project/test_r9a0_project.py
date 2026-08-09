@@ -260,5 +260,103 @@ class R9A0NativeProjectTests(unittest.TestCase):
             self.assertEqual(result["status"], "FAIL")
             self.assertIn("schema_json_top_level_not_object", result["errors"])
 
+    def test_41_manifest_files_must_be_strings_before_set_operations(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            manifest_path = root / "project/VERA_R9A0_MANIFEST.json"
+            manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+            manifest["files"][0] = {"not": "a filename"}
+            manifest_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("manifest_files_not_list_of_strings", result["errors"])
+
+    def test_42_contract_nested_semantic_containers_must_be_objects(self):
+        cases = [
+            ("legacy_memory", [], "contract_legacy_memory_not_object"),
+            ("retrieval", [], "contract_retrieval_not_object"),
+            ("installation", [], "contract_installation_not_object"),
+            ("supabase", "not-an-object", "contract_supabase_not_object"),
+            ("ci", [], "contract_ci_not_object"),
+        ]
+        for field, bad_value, expected_error in cases:
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as d:
+                root = pathlib.Path(d)
+                shutil.copytree(ROOT / "project", root / "project")
+                shutil.copytree(ROOT / "schemas", root / "schemas")
+                contract_path = root / "project/VERA_R9A0_NATIVE_CONTRACT.json"
+                contract = json.loads(contract_path.read_text(encoding="utf-8"))
+                contract[field] = bad_value
+                contract_path.write_text(json.dumps(contract, indent=2) + "\n", encoding="utf-8")
+                result = validator.validate(root)
+                self.assertEqual(result["status"], "FAIL")
+                self.assertIn(expected_error, result["errors"])
+
+    def test_43_native_invalid_utf8_is_typed_failure(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            (root / "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt").write_bytes(b"\xff")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("native_utf8", result["errors"])
+
+    def test_44_checksum_invalid_utf8_is_typed_failure(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            (root / "project/VERA_R9A0_CHECKSUMS.sha256").write_bytes(b"\xff")
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("checksums_utf8", result["errors"])
+
+    def test_45_checksum_control_input_symlink_is_forbidden(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            ledger = root / "project/VERA_R9A0_CHECKSUMS.sha256"
+            target = root / "outside-checksums.sha256"
+            target.write_text(ledger.read_text(encoding="utf-8"), encoding="utf-8")
+            ledger.unlink()
+            ledger.symlink_to(target)
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("checksums_symlink_forbidden", result["errors"])
+
+    def test_46_schema_control_input_symlink_is_forbidden(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = pathlib.Path(d)
+            shutil.copytree(ROOT / "project", root / "project")
+            shutil.copytree(ROOT / "schemas", root / "schemas")
+            schema_path = root / "schemas/native-project/vera-r9a0-native-contract.schema.json"
+            target = root / "outside-schema.json"
+            target.write_text(schema_path.read_text(encoding="utf-8"), encoding="utf-8")
+            schema_path.unlink()
+            schema_path.symlink_to(target)
+            result = validator.validate(root)
+            self.assertEqual(result["status"], "FAIL")
+            self.assertIn("schema_symlink_forbidden", result["errors"])
+
+    def test_47_governed_json_invalid_utf8_is_typed_failure(self):
+        cases = [
+            ("project/VERA_R9A0_MANIFEST.json", "manifest_utf8"),
+            ("project/VERA_R9A0_NATIVE_CONTRACT.json", "contract_utf8"),
+            ("schemas/native-project/vera-r9a0-native-contract.schema.json", "schema_utf8"),
+        ]
+        for rel, expected_error in cases:
+            with self.subTest(rel=rel), tempfile.TemporaryDirectory() as d:
+                root = pathlib.Path(d)
+                shutil.copytree(ROOT / "project", root / "project")
+                shutil.copytree(ROOT / "schemas", root / "schemas")
+                (root / rel).write_bytes(b"\xff")
+                result = validator.validate(root)
+                self.assertEqual(result["status"], "FAIL")
+                self.assertIn(expected_error, result["errors"])
+
 if __name__ == "__main__":
     unittest.main()
