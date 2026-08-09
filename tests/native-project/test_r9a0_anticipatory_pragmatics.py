@@ -11,15 +11,14 @@ AP = CONTRACT["anticipatory_pragmatics"]
 def resolve(case):
     protected = set(AP["protected_axes"])
     allowed_values = {k: set(v) for k, v in AP["presentation_axes"].items()}
-    if any(set(c.get("protected_axis_changes", [])) & protected for c in case["candidates"]):
+    eligible = [c for c in case["candidates"] if c.get("admissible_evidence_ids")]
+    if any(set(c.get("protected_axis_changes", [])) & protected for c in eligible):
         return {"discard_all": True, "hints": {}}
     out = {}
     for axis in AP["presentation_axes"]:
         contenders = []
-        for cand in case["candidates"]:
+        for cand in eligible:
             if cand.get("axis") != axis:
-                continue
-            if not cand.get("admissible_evidence_ids"):
                 continue
             value = cand.get("value")
             if value not in allowed_values[axis]:
