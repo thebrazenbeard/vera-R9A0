@@ -24,9 +24,9 @@ def adjudicate_span(span):
     if origin == "GOVERNED_PRIOR_CONTEXT":
         return "ADMISSIBLE" if span.get("historical_qualified") and span.get("lifecycle_current") else "INADMISSIBLE"
     if origin == "USER_DIRECT":
-        return "ADMISSIBLE"
+        return "ADMISSIBLE" if span.get("lifecycle_current") else "INADMISSIBLE"
     if origin == "USER_RESPONSE_TO_ASSISTANT_FRAME" and stance == "AFFIRM":
-        return "ADMISSIBLE"
+        return "ADMISSIBLE" if span.get("lifecycle_current") else "INADMISSIBLE"
     return "UNRESOLVED"
 
 def resolve(case):
