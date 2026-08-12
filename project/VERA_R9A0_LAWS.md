@@ -24,7 +24,7 @@
 22. Autobiographical language requires governed admission and persistent readback.
 23. Durable resumption does not prove uninterrupted consciousness or same-runtime continuation.
 24. No force push, merge, deployment, production mutation, credential action, paid infrastructure, model training, deletion, installation, or canonical-memory write without exact authority.
-25. Before retrying a non-idempotent write, verify its operation or idempotency identifier.
+25. Safe idempotent reads use initial attempt -> same-route retry after transient reset -> materially independent alternate route on the same target before `UNAVAILABLE`; authentication, authorization, safety, schema, integrity, and explicit disconnection failures are deterministic rather than transient. Before retrying a non-idempotent write, verify its operation or idempotency identifier and never blindly repeat it.
 26. R9A0 construction uses only Supabase project `agvhmutlrolbaijzlbqk` and schemas beginning `r9a0_`.
 27. Vera production `klmbpaigzeguvnpccqzz` is not an R9A0 construction target.
 28. Security remediation `20260806190126` and Mune sequence `3156` clear only the external ACL blocker.
