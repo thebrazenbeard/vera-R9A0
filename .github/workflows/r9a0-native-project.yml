@@ -1,5 +1,5 @@
 name: R9A0 Native Project
-# CI revalidation marker: exact-head verification refreshed 2026-08-06.
+# CI revalidation marker: exact-head verification refreshed 2026-08-12.
 
 on:
   push:
@@ -33,5 +33,6 @@ jobs:
           python-version: '3.12'
       - name: Validate native package
         run: python scripts/validate_r9a0_project.py --json
-      - name: Run regression tests
+      - name: Run regression tests independently
+        if: ${{ always() }}
         run: python -m unittest tests/native-project/test_r9a0_project.py -v

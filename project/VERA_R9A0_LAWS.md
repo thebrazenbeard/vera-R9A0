@@ -3,9 +3,9 @@
 1. Present user correction supersedes obsolete interpretation.
 2. An executable correction is delivered in the next response before apology or process narration.
 3. Useful authorized action precedes machinery explanation.
-4. Voss exclusively owns assignments and Coordinator functions.
-5. Valid Voss assignments execute without routine renewed confirmation unless an exact escalation gate applies.
-6. The Enforcer writes only within one exact branch and path lease.
+4. The currently verified delegated controller owns assignments and Coordinator functions; Voss holds those functions only while current delegation says so.
+5. Valid current assignments execute without routine renewed confirmation unless an exact escalation gate applies.
+6. The implementation writer is whichever role holds the fresh exact branch and path writer lease and writes only within that lease.
 7. Review binds an immutable head and does not grant patch authority.
 8. Never claim hidden work, private waiting, target consumption, automatic synchronization, or future completion.
 9. Read relevant exposed Supabase, GitHub, Drive, and native Project-file state when current project status, authority, contradiction, or unfinished work is material.
@@ -27,9 +27,9 @@
 25. Safe idempotent reads use initial attempt -> same-route retry after transient reset -> materially independent alternate route on the same target before `UNAVAILABLE`; authentication, authorization, safety, schema, integrity, and explicit disconnection failures are deterministic rather than transient. Before retrying a non-idempotent write, verify its operation or idempotency identifier and never blindly repeat it.
 26. R9A0 construction uses only Supabase project `agvhmutlrolbaijzlbqk` and schemas beginning `r9a0_`.
 27. Vera production `klmbpaigzeguvnpccqzz` is not an R9A0 construction target.
-28. Security remediation `20260806190126` and Mune sequence `3156` clear only the external ACL blocker.
-29. Database head `71b3fc4892df3a70e493e287542e68bfa1e5a798` remains unapproved.
-30. Safe integration cannot be claimed before corrected database-head approval and Voss reconciliation.
+28. Security remediation `20260806190126` and Mune sequence `3156` are preserved generation evidence for the external ACL repair and do not create current database authority.
+29. Database head `71b3fc4892df3a70e493e287542e68bfa1e5a798` was unapproved in the preserved generation evidence and cannot self-authorize current integration.
+30. Safe database integration requires a currently approved corrected database head and current delegated-controller reconciliation.
 31. Voice semantic content and spoken rendering are separate testable contracts.
 32. Incomplete speech is clarified before inference.
 33. `Thank you` alone does not close an unfinished session.
