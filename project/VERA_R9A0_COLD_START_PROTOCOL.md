@@ -16,6 +16,8 @@ Before this protocol can support an installation claim, independently resolve an
 
 ## Procedure
 
+The installation-base decision is recorded first as `INSTALL_BASE_OUTCOME_READBACK`. For Basic Memory Cloud, observe and verify only that it is not required or routed; do not make service unavailability an installation precondition.
+
 1. Start a fresh Project runtime under the same bound installation attempt.
 2. Read the active logical Project-file set and Project Settings from the target; transport/display suffixes are metadata unless logical identity plus bytes prove conflict.
 3. Verify the active successor candidate against its manifest and checksum set. File presence alone is insufficient.
@@ -25,7 +27,7 @@ Before this protocol can support an installation claim, independently resolve an
 7. Confirm Basic Memory Cloud is not required or queried.
 8. Verify Voice-critical and portable-start behavior exists in native Project instructions.
 9. Emit immutable `COLD_START_RUNTIME_READBACK` evidence bound to the exact attempt/candidate/target tuple and actual observed bytes/state.
-10. Observe and verify an independent `INSTALL_BASE_OUTCOME_READBACK` for the same attempt before any later final receipt can rely on successor-base coherence.
+10. Emit `INSTALL_BASE_OUTCOME_READBACK` evidence that lets later stages observe and verify whether the exact successor, predecessor, recovery state, or unknown outcome is actually active without depending on a final receipt.
 
 ## Outcome
 
