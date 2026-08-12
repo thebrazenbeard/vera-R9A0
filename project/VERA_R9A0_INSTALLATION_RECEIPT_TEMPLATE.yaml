@@ -1,24 +1,83 @@
-schema: VERA_R9A0_INSTALLATION_RECEIPT_V1
-release_id: VERA_PROJECT_INTEGRATION_R9A0_20260806_V1
-status: PENDING
-authorized_by: null
-installed_at: null
-repository_head: null
-manifest_sha256: null
-checksums_sha256: null
-unique_file_count_expected: 16
-unique_file_count_observed: null
-project_settings_replaced: false
-atomic_file_replacement_verified: false
-mixed_release_absent: false
-suffix_drift_absent: false
-checksums_verified: false
-cold_start_readback_passed: false
-basic_memory_connector_unavailable_during_test: false
-supabase_readback_passed: false
-google_drive_readback_passed: false
-voice_critical_context_native: false
-database_successor_approved: false
-security_advisors_clear: false
-final_state: INSTALLATION_UNVERIFIED
-notes: null
+{
+  "artifact_identity": {
+    "artifact_composition_root": null,
+    "checksums_sha256": null,
+    "manifest_sha256": null
+  },
+  "attempt_action_envelope_evidence": {
+    "ref": null,
+    "sha256": null
+  },
+  "attempt_binding": {
+    "candidate_digest": null,
+    "installation_attempt_id": null,
+    "route_class": null,
+    "target_binding_digest": null,
+    "transition_epoch": null
+  },
+  "authority_evidence": {
+    "ref": null,
+    "sha256": null
+  },
+  "evidence_roots": {
+    "cold_start_runtime_readback": {
+      "attempt_binding": {
+        "candidate_digest": null,
+        "installation_attempt_id": null,
+        "route_class": null,
+        "target_binding_digest": null,
+        "transition_epoch": null
+      },
+      "ref": null,
+      "result": null,
+      "sha256": null
+    },
+    "in_situ_project_qualification": {
+      "attempt_binding": {
+        "candidate_digest": null,
+        "installation_attempt_id": null,
+        "route_class": null,
+        "target_binding_digest": null,
+        "transition_epoch": null
+      },
+      "ref": null,
+      "result": null,
+      "sha256": null
+    },
+    "install_base_outcome_readback": {
+      "attempt_binding": {
+        "candidate_digest": null,
+        "installation_attempt_id": null,
+        "route_class": null,
+        "target_binding_digest": null,
+        "transition_epoch": null
+      },
+      "ref": null,
+      "result": null,
+      "sha256": null
+    },
+    "post_install_environment_check": {
+      "attempt_binding": {
+        "candidate_digest": null,
+        "installation_attempt_id": null,
+        "route_class": null,
+        "target_binding_digest": null,
+        "transition_epoch": null
+      },
+      "ref": null,
+      "result": null,
+      "sha256": null
+    }
+  },
+  "operator_decision_packet_evidence": {
+    "ref": null,
+    "sha256": null
+  },
+  "receipt_schema": "VERA_R9A0_INSTALLATION_RECEIPT_V2",
+  "release_id": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
+  "target_binding_evidence": {
+    "ref": null,
+    "sha256": null
+  },
+  "template_profile": "R9A0_INSTALLATION_RECEIPT_TEMPLATE_V2"
+}
