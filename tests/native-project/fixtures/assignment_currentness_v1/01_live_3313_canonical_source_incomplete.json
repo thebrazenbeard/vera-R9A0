@@ -1,0 +1,1 @@
+{"case_id":"CUR01","source_completeness":"INCOMPLETE","authority_binding_state":"VALID","events":[{"id":"root","relation":"ASSIGN","admitted":true,"owner":"bob","order":1}],"expected":{"assignment_state":"UNRESOLVED","owner":null,"blocking_state":"UNRESOLVED","workload_capacity":"UNRESOLVED","effect_eligible":false,"receipt_stale":false}}
