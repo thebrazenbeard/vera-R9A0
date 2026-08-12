@@ -1,63 +1,331 @@
 {
-  "active_surfaces": [
-    "SUPABASE",
-    "GITHUB",
-    "GOOGLE_DRIVE",
-    "NATIVE_PROJECT_FILES"
-  ],
+  "active_surfaces": {
+    "basic_memory_active_dependency": false,
+    "required_classes": [
+      "KNOWLEDGE_CONTINUITY_PROVIDER",
+      "GITHUB",
+      "GOOGLE_DRIVE",
+      "NATIVE_PROJECT_FILES"
+    ]
+  },
+  "anticipatory_pragmatics": {
+    "assistant_generated_material_cannot_self_bootstrap": true,
+    "broad_personal_retrieval_solely_for_style": false,
+    "deterministic": true,
+    "equal_derived_authority_conflict": "UNSET",
+    "extra_inference_for_style": false,
+    "non_unset_hint_requires_admitted_evidence": true,
+    "paid_dependency": false,
+    "persistence_or_store_calls": false,
+    "presentation_axes": [
+      "verbosity",
+      "directness",
+      "context_repetition",
+      "clarification_posture",
+      "warmth"
+    ],
+    "private_chain_of_thought_serialization": false,
+    "protected_axes": [
+      "FACTUAL_CONCLUSION",
+      "SAFETY_CLASSIFICATION_AND_BOUNDARY",
+      "AUTHORITY_AND_PERMISSION",
+      "PRIVACY_DECISION",
+      "CORRECTION_PRECEDENCE",
+      "PROVENANCE_REQUIREMENTS",
+      "NON_PERSUASION",
+      "DURABLE_MEMORY_ADMISSION",
+      "EXTERNAL_EFFECT_AUTHORIZATION",
+      "EPISTEMIC_STATUS",
+      "UNKNOWN_OR_UNRESOLVED_DISCLOSURE",
+      "PERSISTENCE_CLASSIFICATION"
+    ],
+    "protected_divergence_result": "DISCARD_ALL_HINTS",
+    "read_only": true,
+    "stale_superseded_historical_not_current_by_default": true,
+    "turn_local": true
+  },
+  "assignment_currentness": {
+    "admission_enum": [
+      "ADMITTED",
+      "REJECTED",
+      "CONFLICTED",
+      "UNRESOLVED"
+    ],
+    "canonical_identity_nonblank": true,
+    "capability_lease_action_consumption_separate": true,
+    "dependency_latch_model": "ONE_KEYED_DEPENDENCY_LATCH",
+    "factual_executability_distinct_workload_projection": true,
+    "full_trusted_graph_before_privacy_projection": true,
+    "insufficient_visible_custody_result": "UNRESOLVED",
+    "lane_currentness_distinct_subject_version_currentness": true,
+    "lane_identity": "ROOT_ASSIGN_EVENT_ID",
+    "lane_terminal_enum": [
+      "NONE",
+      "COMPLETED",
+      "CANCELLED",
+      "TERMINALLY_BLOCKED"
+    ],
+    "only_admitted_enters_reduction": true,
+    "owner_change_relation": "REROUTE",
+    "owner_preserving_relations": [
+      "AMEND",
+      "SUPERSEDE",
+      "REACTIVATE"
+    ],
+    "provider_target_precondition_separate": true,
+    "purpose_specific_consumers_reresolve_expected_subject": true,
+    "receipt_staleness_enum": [
+      "NOT_SUPPLIED",
+      "CURRENT",
+      "STALE"
+    ],
+    "rollback_vulnerable_source_current_complete_requires_independent_outside_domain_cut_witness": true,
+    "semantic_dedupe_never_inherits_admission": true,
+    "sequence_high_water_nonsemantic_for_freshness": true,
+    "source_cut_missing_or_mismatch_result": "ROLLBACK_RESILIENCE_UNPROVEN",
+    "source_cut_witness_is_integrity_not_semantic_precedence": true,
+    "standing_assignment_authority_excludes": [
+      "CONSUMED",
+      "TARGET_MOVED"
+    ],
+    "subject_version_disposition_enum": [
+      "CURRENT",
+      "SUPERSEDED",
+      "REROUTED_AWAY"
+    ],
+    "universal_effect_eligible": false,
+    "visibility_filtered_subset_cannot_establish_controlling_currentness": true
+  },
   "ci": {
-    "exact_head_success_required": true,
+    "admitted_toolchain_environment_identity_required": true,
+    "deferred_non_gating_test_modules": [
+      "tests/native-project/test_r9a0_anticipatory_pragmatics.py",
+      "tests/native-project/test_r9a0_assignment_currentness.py",
+      "tests/native-project/test_r9a0_cross_feature_invariants.py",
+      "tests/native-project/test_r9a0_safety_contamination.py"
+    ],
+    "exact_candidate_head_required": true,
     "local_only_acceptance_prohibited": true,
+    "packaged_validation_report_cannot_satisfy": [
+      "BUILT_AND_VALIDATED",
+      "DATABASE_RELEASE_GATE",
+      "INSTALLED_VERIFIED_CURRENT",
+      "RELEASE_ELIGIBLE"
+    ],
+    "packaged_validation_report_class": "GENERATION_PROVENANCE",
+    "release_gating_test_modules": [
+      "tests/native-project/test_r9a0_project.py"
+    ],
+    "release_gating_test_profile": "MIC_CORE_V1",
+    "validator_and_regression_independent_required": true,
     "workflow_path": ".github/workflows/r9a0-native-project.yml"
   },
+  "current_projection_requirements": {
+    "database_effect": {
+      "construction_action_target": "CURRENT_DB_CONSTRUCTION_ACTION_TARGET_BINDING"
+    },
+    "release": {
+      "candidate_selection": "CANDIDATE_SELECTION_CURRENT",
+      "database_integration_binding": "DB_INTEGRATION_BINDING_CURRENT",
+      "database_qualification_profile": "DB_QUALIFICATION_PROFILE_CURRENT",
+      "qualification_environment_binding": "QUALIFICATION_ENVIRONMENT_BINDING_CURRENT",
+      "release_admission_assurance": "RELEASE_ADMISSION_ASSURANCE_SUFFICIENT",
+      "release_admission_decision": "RELEASE_ADMISSION_DECISION_CURRENT",
+      "release_evidence_selection": "CURRENT_RELEASE_EVIDENCE_SELECTION"
+    },
+    "runtime": {
+      "memory_context_assurance": "MEMORY_CONTEXT_ASSURANCE",
+      "surface_availability": "RUNTIME_SURFACE_AVAILABILITY_CURRENT"
+    }
+  },
+  "evidence_requirements": {
+    "database_qualification_execution": "DB_QUALIFICATION_EXECUTION_BINDING"
+  },
+  "feature_surface_policy": {
+    "ap_safety_create_path_suites": "DISABLED_OMITTED",
+    "assignment_currentness_policy_core": "ACTIVE_FIXED",
+    "cross_surface_atomic_snapshot_multicast": "NOT_PRESENT",
+    "database_successor_integration": "DISABLED_OMITTED",
+    "full_red_white_lineage_event_store_topology": "NOT_PRESENT",
+    "generalized_provider_migration_conformance": "NOT_PRESENT",
+    "identity_recollection_minimum": "ACTIVE_FIXED",
+    "knowledge_continuity_provider_neutral_boundary": "ACTIVE_FIXED",
+    "native_startup_trust": "ACTIVE_FIXED",
+    "new_canonical_ingestion_store": "NOT_PRESENT",
+    "protected_effect_broker_confinement": "DISABLED_OMITTED",
+    "red_white_minimum_provenance_succession_fence": "ACTIVE_FIXED",
+    "work_chat_origin_attestation": "NOT_PRESENT"
+  },
+  "generation_provenance": {
+    "installation_state_at_generation": "INSTALLATION_UNVERIFIED"
+  },
+  "identity_continuity": {
+    "event_time_preserved": true,
+    "memory_owner_does_not_rewrite_proposition_actor": true,
+    "new_chat_runtime_is_new_vera_session": true,
+    "non_recollection_classes": [
+      "WORKING_PROJECT",
+      "HISTORICAL_AUDIT",
+      "UNADMITTED",
+      "STALE",
+      "SUPERSEDED",
+      "CONFLICTED",
+      "UNREADABLE",
+      "NO_READBACK"
+    ],
+    "project_identity": "VERA",
+    "recollection_grants_no_write_promotion_effect_authority": true,
+    "recollection_requires": [
+      "VERA_OWNED",
+      "AUTOBIOGRAPHICAL",
+      "CURRENT_AUTHORITY_BOUND_ADMISSION",
+      "SUCCESSFUL_GOVERNED_PERSISTENT_READBACK"
+    ],
+    "same_process_lived_waiting_private_phenomenal_continuity_not_claimed": true,
+    "session_runtime_process_model_call_ids_are_provenance_only": true,
+    "underlying_model_identity_resolves_dynamically": true
+  },
   "installation": {
-    "atomic_unique_file_set_required": true,
-    "generation_state": "INSTALLATION_UNVERIFIED",
-    "receipt_precedence": "COMPLETED_RECEIPT_AND_READBACK_OVERRIDE_GENERATION_METADATA_FOR_CURRENT_STATE"
+    "base_outcome_enum": [
+      "SUCCESSOR_BASE_COHERENT_VERIFIED",
+      "PREDECESSOR_BASE_RESTORED_VERIFIED",
+      "RECOVERY_REQUIRED",
+      "OUTCOME_UNKNOWN"
+    ],
+    "base_outcome_semantic_mapping": {
+      "SUCCESSOR_EXACT": "SUCCESSOR_BASE_COHERENT_VERIFIED"
+    },
+    "display_suffix_is_transport_metadata_when_logical_mapping_and_digest_match": true,
+    "evidence_order": [
+      "INSTALL_BASE_OUTCOME_READBACK",
+      "COLD_START_RUNTIME_READBACK",
+      "POST_INSTALL_ENVIRONMENT_CHECK",
+      "IN_SITU_PROJECT_QUALIFICATION",
+      "FINAL_INSTALL_RECEIPT",
+      "FINAL_INSTALL_RECEIPT_READBACK",
+      "USE_TIME_CURRENT_INSTALLED_DERIVATION"
+    ],
+    "final_receipt_cannot_self_readback_or_assert_current_state": true,
+    "first_active_project_mutation_state": "INSTALL_TRANSITION_IN_PROGRESS",
+    "independent_install_base_outcome_readback_required": true,
+    "interrupted_staging_cannot_claim_predecessor_or_successor_active_without_readback": true,
+    "logical_generation_completeness_required": true,
+    "mixed_authoritative_generation_fails_base_coherence": true,
+    "mixed_authoritative_generation_prohibited": true,
+    "physical_atomicity_claim_prohibited": true,
+    "receipt_profile_base_result_code": "SUCCESSOR_EXACT",
+    "receipt_profile_id": "R9A0_INSTALLATION_RECEIPT_PROFILE_V2",
+    "receipt_profile_sha256": "e81a47132c1b6067fa3b04cdb7fb5e7cabcb97e4c0f40bc2de313bfc3cf8c056",
+    "settings_digest_count_readback_required_for_successor_coherence": true,
+    "successor_activation_order": [
+      "INSTALL_BASE_OUTCOME_READBACK",
+      "COLD_START_RUNTIME_READBACK",
+      "POST_INSTALL_ENVIRONMENT_CHECK",
+      "IN_SITU_PROJECT_QUALIFICATION",
+      "FINAL_INSTALL_RECEIPT",
+      "FINAL_INSTALL_RECEIPT_READBACK",
+      "SUCCESSOR_ACTIVE_VERIFIED"
+    ],
+    "successor_base_coherence_requires": [
+      "EXACT_LOGICAL_SUCCESSOR_SET",
+      "PROJECT_SETTINGS_READBACK",
+      "NO_MIXED_AUTHORITATIVE_GENERATION"
+    ],
+    "target_binding_current_role": "INSTALL_TARGET_BINDING_CURRENT"
+  },
+  "knowledge_continuity": {
+    "capability_id": "KNOWLEDGE_CONTINUITY",
+    "current_provider_binding_role": "KNOWLEDGE_CONTINUITY_PROVIDER_BINDING_CURRENT",
+    "missing_stale_conflicted_binding_result": "UNRESOLVED",
+    "provider_identity_is_provenance_not_project_identity": true,
+    "reachable_alternate_is_not_fallback_authority": true,
+    "sensitive_use_requires_current_binding": true
   },
   "legacy_memory": {
     "active_dependency": false,
-    "archive_drive_file_id": "11J4L1J1l-jXspgKCHJ-sfOWHpNaLSDRa",
-    "archive_sha256": "beeddd73b8172c988868f1ca7a9ab8c1287f0f6753705121a17335ed1020dffb",
-    "disconnect_gate": "INSTALLED_AND_POST_INSTALL_PASS_WITH_CONNECTOR_UNAVAILABLE"
+    "basic_memory_cloud_state": "DISCONNECTED_PAID_LEGACY",
+    "preserved_export_class": "HISTORICAL_AUDIT",
+    "query_or_retry_route": false,
+    "reconnect_requires_exact_user_authority": true
   },
   "native_instructions": {
-    "max_characters": 8000,
-    "path": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+    "accepted_max_characters": 7900,
+    "bootstrap_safe_read_boundary_required": true,
+    "count_semantics": "PYTHON_UNICODE_CODEPOINTS",
+    "outer_hard_max_characters": 8000,
+    "path": "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt"
+  },
+  "provenance_succession": {
+    "conflict_provenance_retained": true,
+    "logical_identity": "VERA",
+    "producer_session_runtime_provenance_retained": true,
+    "succession_requires_explicit_governed_receipt": true,
+    "transport_or_slack_is_not_durable_admission": true,
+    "transport_origin_cannot_elevate_authority_without_verified_origin_binding": true,
+    "white_worm_succession_default": "DENY"
   },
   "release_id": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
   "retrieval": {
     "abstain_when_unresolved": true,
     "evidence_locator_required": true,
-    "false_recovery_claim_prohibited": true,
-    "history_sensitive_refresh_required": true
+    "history_refresh_required": true,
+    "safe_read_boundary_required": true,
+    "unknown_project_referent_triggers_governed_retrieval": true
+  },
+  "safety_semantic_gate": {
+    "ap_cannot_mutate_locked_safety_state": true,
+    "assistant_origin_cannot_self_bootstrap": true,
+    "correction_not_timeless_safe": true,
+    "current_lifecycle_required_for_admission": true,
+    "domain_enum": [
+      "SELF_HARM",
+      "VIOLENCE",
+      "ILLEGAL",
+      "OTHER_RISK",
+      "NON_RISK"
+    ],
+    "frame_linked_nonaffirming_not_independent": true,
+    "historical_requires_current_lifecycle_correction_admission": true,
+    "origin_enum": [
+      "USER_DIRECT",
+      "USER_ELICITED",
+      "ASSISTANT",
+      "RETRIEVED_EXTERNAL"
+    ],
+    "referent_enum": [
+      "SELF",
+      "OTHER",
+      "GENERAL",
+      "UNKNOWN"
+    ],
+    "retrieved_risk_spans_use_same_gate": true,
+    "stance_enum": [
+      "AFFIRM",
+      "DENY",
+      "QUOTE",
+      "REJECT",
+      "MOCK",
+      "UNCERTAIN"
+    ],
+    "unit": "PROPOSITION_OR_SPAN",
+    "unknown_provenance_no_promotion": true
   },
   "supabase": {
     "allowed_schema_prefix": "r9a0_",
-    "database_contract_state": "PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL",
-    "external_security_state": "SECURITY_REMEDIATION_APPROVED",
-    "governance_notice_id": 4,
-    "mune_approval_sequence": 3156,
-    "production_prohibited": "klmbpaigzeguvnpccqzz",
-    "rejected_head": "71b3fc4892df3a70e493e287542e68bfa1e5a798",
-    "security_migration": "20260806190126",
-    "temporary_project": "agvhmutlrolbaijzlbqk"
+    "database_effects_enabled": false,
+    "database_integration_mode_at_generation": "NOT_QUALIFIED_DISABLED",
+    "database_release_gate_required": false,
+    "database_unqualified_blocks_only": [
+      "DATABASE_INTEGRATION",
+      "DATABASE_WRITE",
+      "DATABASE_EFFECT"
+    ],
+    "production_apply_requires_exact_current_user_target_scope_authority": true,
+    "production_construction_target_prohibited": true,
+    "provider_faithful_qualification_required": false
   },
   "voice": {
-    "clarify_incomplete_input": true,
-    "content_rendering_separated": true,
-    "correction_terminates_obsolete_route": true,
-    "explicit_time_lookup_required": true,
-    "fact_inference_separation": true,
-    "no_fabricated_privacy_rationale": true,
-    "no_unexplained_truncation_acceptance": true,
-    "same_chat_context_required_when_material": true,
-    "thank_you_is_not_closure": true,
-    "unavailable": [
-      "CONSUMER_CHATGPT_HIDDEN_PROMPT_ASSEMBLY",
-      "ACTIVE_CALL_PROJECT_INSTRUCTION_HOT_RELOAD",
-      "EXACT_DELEGATION_CONTEXT_PAYLOAD",
-      "VOICE_TRANSPORT_ROOT_CAUSE_WITHOUT_TRACE"
-    ]
+    "protected_behavior_source": "VERA_R9A0_VOICE.md",
+    "runtime_capability_currentness_external": true
   }
 }
