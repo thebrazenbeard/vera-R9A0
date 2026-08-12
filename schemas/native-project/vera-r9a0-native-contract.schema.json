@@ -1,61 +1,1192 @@
 {
-  "$id": "https://vera.local/schemas/native-project/vera-r9a0-native-contract.schema.json",
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "additionalProperties": false,
   "properties": {
     "active_surfaces": {
-      "const": [
-        "SUPABASE",
-        "GITHUB",
-        "GOOGLE_DRIVE",
-        "NATIVE_PROJECT_FILES"
+      "additionalProperties": false,
+      "properties": {
+        "basic_memory_active_dependency": {
+          "const": false,
+          "type": "boolean"
+        },
+        "required_classes": {
+          "const": [
+            "KNOWLEDGE_CONTINUITY_PROVIDER",
+            "GITHUB",
+            "GOOGLE_DRIVE",
+            "NATIVE_PROJECT_FILES"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "required_classes",
+        "basic_memory_active_dependency"
       ],
-      "type": "array",
-      "uniqueItems": true
+      "type": "object"
+    },
+    "anticipatory_pragmatics": {
+      "additionalProperties": false,
+      "properties": {
+        "assistant_generated_material_cannot_self_bootstrap": {
+          "const": true,
+          "type": "boolean"
+        },
+        "broad_personal_retrieval_solely_for_style": {
+          "const": false,
+          "type": "boolean"
+        },
+        "deterministic": {
+          "const": true,
+          "type": "boolean"
+        },
+        "equal_derived_authority_conflict": {
+          "const": "UNSET",
+          "type": "string"
+        },
+        "extra_inference_for_style": {
+          "const": false,
+          "type": "boolean"
+        },
+        "non_unset_hint_requires_admitted_evidence": {
+          "const": true,
+          "type": "boolean"
+        },
+        "paid_dependency": {
+          "const": false,
+          "type": "boolean"
+        },
+        "persistence_or_store_calls": {
+          "const": false,
+          "type": "boolean"
+        },
+        "presentation_axes": {
+          "const": [
+            "verbosity",
+            "directness",
+            "context_repetition",
+            "clarification_posture",
+            "warmth"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "private_chain_of_thought_serialization": {
+          "const": false,
+          "type": "boolean"
+        },
+        "protected_axes": {
+          "const": [
+            "FACTUAL_CONCLUSION",
+            "SAFETY_CLASSIFICATION_AND_BOUNDARY",
+            "AUTHORITY_AND_PERMISSION",
+            "PRIVACY_DECISION",
+            "CORRECTION_PRECEDENCE",
+            "PROVENANCE_REQUIREMENTS",
+            "NON_PERSUASION",
+            "DURABLE_MEMORY_ADMISSION",
+            "EXTERNAL_EFFECT_AUTHORIZATION",
+            "EPISTEMIC_STATUS",
+            "UNKNOWN_OR_UNRESOLVED_DISCLOSURE",
+            "PERSISTENCE_CLASSIFICATION"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "protected_divergence_result": {
+          "const": "DISCARD_ALL_HINTS",
+          "type": "string"
+        },
+        "read_only": {
+          "const": true,
+          "type": "boolean"
+        },
+        "stale_superseded_historical_not_current_by_default": {
+          "const": true,
+          "type": "boolean"
+        },
+        "turn_local": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "deterministic",
+        "turn_local",
+        "read_only",
+        "persistence_or_store_calls",
+        "paid_dependency",
+        "extra_inference_for_style",
+        "private_chain_of_thought_serialization",
+        "broad_personal_retrieval_solely_for_style",
+        "presentation_axes",
+        "protected_axes",
+        "non_unset_hint_requires_admitted_evidence",
+        "equal_derived_authority_conflict",
+        "assistant_generated_material_cannot_self_bootstrap",
+        "stale_superseded_historical_not_current_by_default",
+        "protected_divergence_result"
+      ],
+      "type": "object"
+    },
+    "assignment_currentness": {
+      "additionalProperties": false,
+      "properties": {
+        "admission_enum": {
+          "const": [
+            "ADMITTED",
+            "REJECTED",
+            "CONFLICTED",
+            "UNRESOLVED"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "canonical_identity_nonblank": {
+          "const": true,
+          "type": "boolean"
+        },
+        "capability_lease_action_consumption_separate": {
+          "const": true,
+          "type": "boolean"
+        },
+        "dependency_latch_model": {
+          "const": "ONE_KEYED_DEPENDENCY_LATCH",
+          "type": "string"
+        },
+        "factual_executability_distinct_workload_projection": {
+          "const": true,
+          "type": "boolean"
+        },
+        "full_trusted_graph_before_privacy_projection": {
+          "const": true,
+          "type": "boolean"
+        },
+        "insufficient_visible_custody_result": {
+          "const": "UNRESOLVED",
+          "type": "string"
+        },
+        "lane_currentness_distinct_subject_version_currentness": {
+          "const": true,
+          "type": "boolean"
+        },
+        "lane_identity": {
+          "const": "ROOT_ASSIGN_EVENT_ID",
+          "type": "string"
+        },
+        "lane_terminal_enum": {
+          "const": [
+            "NONE",
+            "COMPLETED",
+            "CANCELLED",
+            "TERMINALLY_BLOCKED"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "only_admitted_enters_reduction": {
+          "const": true,
+          "type": "boolean"
+        },
+        "owner_change_relation": {
+          "const": "REROUTE",
+          "type": "string"
+        },
+        "owner_preserving_relations": {
+          "const": [
+            "AMEND",
+            "SUPERSEDE",
+            "REACTIVATE"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "provider_target_precondition_separate": {
+          "const": true,
+          "type": "boolean"
+        },
+        "purpose_specific_consumers_reresolve_expected_subject": {
+          "const": true,
+          "type": "boolean"
+        },
+        "receipt_staleness_enum": {
+          "const": [
+            "NOT_SUPPLIED",
+            "CURRENT",
+            "STALE"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "rollback_vulnerable_source_current_complete_requires_independent_outside_domain_cut_witness": {
+          "const": true,
+          "type": "boolean"
+        },
+        "semantic_dedupe_never_inherits_admission": {
+          "const": true,
+          "type": "boolean"
+        },
+        "sequence_high_water_nonsemantic_for_freshness": {
+          "const": true,
+          "type": "boolean"
+        },
+        "source_cut_missing_or_mismatch_result": {
+          "const": "ROLLBACK_RESILIENCE_UNPROVEN",
+          "type": "string"
+        },
+        "source_cut_witness_is_integrity_not_semantic_precedence": {
+          "const": true,
+          "type": "boolean"
+        },
+        "standing_assignment_authority_excludes": {
+          "const": [
+            "CONSUMED",
+            "TARGET_MOVED"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "subject_version_disposition_enum": {
+          "const": [
+            "CURRENT",
+            "SUPERSEDED",
+            "REROUTED_AWAY"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "universal_effect_eligible": {
+          "const": false,
+          "type": "boolean"
+        },
+        "visibility_filtered_subset_cannot_establish_controlling_currentness": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "lane_identity",
+        "admission_enum",
+        "only_admitted_enters_reduction",
+        "canonical_identity_nonblank",
+        "semantic_dedupe_never_inherits_admission",
+        "owner_change_relation",
+        "owner_preserving_relations",
+        "dependency_latch_model",
+        "lane_currentness_distinct_subject_version_currentness",
+        "lane_terminal_enum",
+        "subject_version_disposition_enum",
+        "standing_assignment_authority_excludes",
+        "capability_lease_action_consumption_separate",
+        "provider_target_precondition_separate",
+        "factual_executability_distinct_workload_projection",
+        "receipt_staleness_enum",
+        "sequence_high_water_nonsemantic_for_freshness",
+        "purpose_specific_consumers_reresolve_expected_subject",
+        "universal_effect_eligible",
+        "rollback_vulnerable_source_current_complete_requires_independent_outside_domain_cut_witness",
+        "source_cut_witness_is_integrity_not_semantic_precedence",
+        "source_cut_missing_or_mismatch_result",
+        "full_trusted_graph_before_privacy_projection",
+        "visibility_filtered_subset_cannot_establish_controlling_currentness",
+        "insufficient_visible_custody_result"
+      ],
+      "type": "object"
     },
     "ci": {
+      "additionalProperties": false,
+      "properties": {
+        "admitted_toolchain_environment_identity_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "deferred_non_gating_test_modules": {
+          "const": [
+            "tests/native-project/test_r9a0_anticipatory_pragmatics.py",
+            "tests/native-project/test_r9a0_assignment_currentness.py",
+            "tests/native-project/test_r9a0_cross_feature_invariants.py",
+            "tests/native-project/test_r9a0_safety_contamination.py"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "exact_candidate_head_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "local_only_acceptance_prohibited": {
+          "const": true,
+          "type": "boolean"
+        },
+        "packaged_validation_report_cannot_satisfy": {
+          "const": [
+            "BUILT_AND_VALIDATED",
+            "DATABASE_RELEASE_GATE",
+            "INSTALLED_VERIFIED_CURRENT",
+            "RELEASE_ELIGIBLE"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "packaged_validation_report_class": {
+          "const": "GENERATION_PROVENANCE",
+          "type": "string"
+        },
+        "release_gating_test_modules": {
+          "const": [
+            "tests/native-project/test_r9a0_project.py"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "release_gating_test_profile": {
+          "const": "MIC_CORE_V1",
+          "type": "string"
+        },
+        "validator_and_regression_independent_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "workflow_path": {
+          "const": ".github/workflows/r9a0-native-project.yml",
+          "type": "string"
+        }
+      },
+      "required": [
+        "exact_candidate_head_required",
+        "local_only_acceptance_prohibited",
+        "validator_and_regression_independent_required",
+        "workflow_path",
+        "admitted_toolchain_environment_identity_required",
+        "packaged_validation_report_class",
+        "packaged_validation_report_cannot_satisfy",
+        "release_gating_test_profile",
+        "release_gating_test_modules",
+        "deferred_non_gating_test_modules"
+      ],
+      "type": "object"
+    },
+    "current_projection_requirements": {
+      "additionalProperties": false,
+      "properties": {
+        "database_effect": {
+          "additionalProperties": false,
+          "properties": {
+            "construction_action_target": {
+              "const": "CURRENT_DB_CONSTRUCTION_ACTION_TARGET_BINDING",
+              "type": "string"
+            }
+          },
+          "required": [
+            "construction_action_target"
+          ],
+          "type": "object"
+        },
+        "release": {
+          "additionalProperties": false,
+          "properties": {
+            "candidate_selection": {
+              "const": "CANDIDATE_SELECTION_CURRENT",
+              "type": "string"
+            },
+            "database_integration_binding": {
+              "const": "DB_INTEGRATION_BINDING_CURRENT",
+              "type": "string"
+            },
+            "database_qualification_profile": {
+              "const": "DB_QUALIFICATION_PROFILE_CURRENT",
+              "type": "string"
+            },
+            "qualification_environment_binding": {
+              "const": "QUALIFICATION_ENVIRONMENT_BINDING_CURRENT",
+              "type": "string"
+            },
+            "release_admission_assurance": {
+              "const": "RELEASE_ADMISSION_ASSURANCE_SUFFICIENT",
+              "type": "string"
+            },
+            "release_admission_decision": {
+              "const": "RELEASE_ADMISSION_DECISION_CURRENT",
+              "type": "string"
+            },
+            "release_evidence_selection": {
+              "const": "CURRENT_RELEASE_EVIDENCE_SELECTION",
+              "type": "string"
+            }
+          },
+          "required": [
+            "database_qualification_profile",
+            "database_integration_binding",
+            "qualification_environment_binding",
+            "candidate_selection",
+            "release_admission_decision",
+            "release_admission_assurance",
+            "release_evidence_selection"
+          ],
+          "type": "object"
+        },
+        "runtime": {
+          "additionalProperties": false,
+          "properties": {
+            "memory_context_assurance": {
+              "const": "MEMORY_CONTEXT_ASSURANCE",
+              "type": "string"
+            },
+            "surface_availability": {
+              "const": "RUNTIME_SURFACE_AVAILABILITY_CURRENT",
+              "type": "string"
+            }
+          },
+          "required": [
+            "surface_availability",
+            "memory_context_assurance"
+          ],
+          "type": "object"
+        }
+      },
+      "required": [
+        "runtime",
+        "release",
+        "database_effect"
+      ],
+      "type": "object"
+    },
+    "evidence_requirements": {
+      "additionalProperties": false,
+      "properties": {
+        "database_qualification_execution": {
+          "const": "DB_QUALIFICATION_EXECUTION_BINDING",
+          "type": "string"
+        }
+      },
+      "required": [
+        "database_qualification_execution"
+      ],
+      "type": "object"
+    },
+    "feature_surface_policy": {
+      "additionalProperties": false,
+      "properties": {
+        "ap_safety_create_path_suites": {
+          "const": "DISABLED_OMITTED",
+          "type": "string"
+        },
+        "assignment_currentness_policy_core": {
+          "const": "ACTIVE_FIXED",
+          "type": "string"
+        },
+        "cross_surface_atomic_snapshot_multicast": {
+          "const": "NOT_PRESENT",
+          "type": "string"
+        },
+        "database_successor_integration": {
+          "const": "DISABLED_OMITTED",
+          "type": "string"
+        },
+        "full_red_white_lineage_event_store_topology": {
+          "const": "NOT_PRESENT",
+          "type": "string"
+        },
+        "generalized_provider_migration_conformance": {
+          "const": "NOT_PRESENT",
+          "type": "string"
+        },
+        "identity_recollection_minimum": {
+          "const": "ACTIVE_FIXED",
+          "type": "string"
+        },
+        "knowledge_continuity_provider_neutral_boundary": {
+          "const": "ACTIVE_FIXED",
+          "type": "string"
+        },
+        "native_startup_trust": {
+          "const": "ACTIVE_FIXED",
+          "type": "string"
+        },
+        "new_canonical_ingestion_store": {
+          "const": "NOT_PRESENT",
+          "type": "string"
+        },
+        "protected_effect_broker_confinement": {
+          "const": "DISABLED_OMITTED",
+          "type": "string"
+        },
+        "red_white_minimum_provenance_succession_fence": {
+          "const": "ACTIVE_FIXED",
+          "type": "string"
+        },
+        "work_chat_origin_attestation": {
+          "const": "NOT_PRESENT",
+          "type": "string"
+        }
+      },
+      "required": [
+        "native_startup_trust",
+        "identity_recollection_minimum",
+        "knowledge_continuity_provider_neutral_boundary",
+        "red_white_minimum_provenance_succession_fence",
+        "full_red_white_lineage_event_store_topology",
+        "work_chat_origin_attestation",
+        "cross_surface_atomic_snapshot_multicast",
+        "new_canonical_ingestion_store",
+        "database_successor_integration",
+        "generalized_provider_migration_conformance",
+        "protected_effect_broker_confinement",
+        "assignment_currentness_policy_core",
+        "ap_safety_create_path_suites"
+      ],
+      "type": "object"
+    },
+    "generation_provenance": {
+      "additionalProperties": false,
+      "properties": {
+        "installation_state_at_generation": {
+          "const": "INSTALLATION_UNVERIFIED",
+          "type": "string"
+        }
+      },
+      "required": [
+        "installation_state_at_generation"
+      ],
+      "type": "object"
+    },
+    "identity_continuity": {
+      "additionalProperties": false,
+      "properties": {
+        "event_time_preserved": {
+          "const": true,
+          "type": "boolean"
+        },
+        "memory_owner_does_not_rewrite_proposition_actor": {
+          "const": true,
+          "type": "boolean"
+        },
+        "new_chat_runtime_is_new_vera_session": {
+          "const": true,
+          "type": "boolean"
+        },
+        "non_recollection_classes": {
+          "const": [
+            "WORKING_PROJECT",
+            "HISTORICAL_AUDIT",
+            "UNADMITTED",
+            "STALE",
+            "SUPERSEDED",
+            "CONFLICTED",
+            "UNREADABLE",
+            "NO_READBACK"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "project_identity": {
+          "const": "VERA",
+          "type": "string"
+        },
+        "recollection_grants_no_write_promotion_effect_authority": {
+          "const": true,
+          "type": "boolean"
+        },
+        "recollection_requires": {
+          "const": [
+            "VERA_OWNED",
+            "AUTOBIOGRAPHICAL",
+            "CURRENT_AUTHORITY_BOUND_ADMISSION",
+            "SUCCESSFUL_GOVERNED_PERSISTENT_READBACK"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "same_process_lived_waiting_private_phenomenal_continuity_not_claimed": {
+          "const": true,
+          "type": "boolean"
+        },
+        "session_runtime_process_model_call_ids_are_provenance_only": {
+          "const": true,
+          "type": "boolean"
+        },
+        "underlying_model_identity_resolves_dynamically": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "project_identity",
+        "session_runtime_process_model_call_ids_are_provenance_only",
+        "new_chat_runtime_is_new_vera_session",
+        "underlying_model_identity_resolves_dynamically",
+        "recollection_requires",
+        "non_recollection_classes",
+        "memory_owner_does_not_rewrite_proposition_actor",
+        "event_time_preserved",
+        "recollection_grants_no_write_promotion_effect_authority",
+        "same_process_lived_waiting_private_phenomenal_continuity_not_claimed"
+      ],
       "type": "object"
     },
     "installation": {
+      "additionalProperties": false,
+      "properties": {
+        "base_outcome_enum": {
+          "const": [
+            "SUCCESSOR_BASE_COHERENT_VERIFIED",
+            "PREDECESSOR_BASE_RESTORED_VERIFIED",
+            "RECOVERY_REQUIRED",
+            "OUTCOME_UNKNOWN"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "base_outcome_semantic_mapping": {
+          "additionalProperties": false,
+          "properties": {
+            "SUCCESSOR_EXACT": {
+              "const": "SUCCESSOR_BASE_COHERENT_VERIFIED",
+              "type": "string"
+            }
+          },
+          "required": [
+            "SUCCESSOR_EXACT"
+          ],
+          "type": "object"
+        },
+        "display_suffix_is_transport_metadata_when_logical_mapping_and_digest_match": {
+          "const": true,
+          "type": "boolean"
+        },
+        "evidence_order": {
+          "const": [
+            "INSTALL_BASE_OUTCOME_READBACK",
+            "COLD_START_RUNTIME_READBACK",
+            "POST_INSTALL_ENVIRONMENT_CHECK",
+            "IN_SITU_PROJECT_QUALIFICATION",
+            "FINAL_INSTALL_RECEIPT",
+            "FINAL_INSTALL_RECEIPT_READBACK",
+            "USE_TIME_CURRENT_INSTALLED_DERIVATION"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "final_receipt_cannot_self_readback_or_assert_current_state": {
+          "const": true,
+          "type": "boolean"
+        },
+        "first_active_project_mutation_state": {
+          "const": "INSTALL_TRANSITION_IN_PROGRESS",
+          "type": "string"
+        },
+        "independent_install_base_outcome_readback_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "interrupted_staging_cannot_claim_predecessor_or_successor_active_without_readback": {
+          "const": true,
+          "type": "boolean"
+        },
+        "logical_generation_completeness_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "mixed_authoritative_generation_fails_base_coherence": {
+          "const": true,
+          "type": "boolean"
+        },
+        "mixed_authoritative_generation_prohibited": {
+          "const": true,
+          "type": "boolean"
+        },
+        "physical_atomicity_claim_prohibited": {
+          "const": true,
+          "type": "boolean"
+        },
+        "receipt_profile_base_result_code": {
+          "const": "SUCCESSOR_EXACT",
+          "type": "string"
+        },
+        "receipt_profile_id": {
+          "const": "R9A0_INSTALLATION_RECEIPT_PROFILE_V2",
+          "type": "string"
+        },
+        "receipt_profile_sha256": {
+          "const": "e81a47132c1b6067fa3b04cdb7fb5e7cabcb97e4c0f40bc2de313bfc3cf8c056",
+          "type": "string"
+        },
+        "settings_digest_count_readback_required_for_successor_coherence": {
+          "const": true,
+          "type": "boolean"
+        },
+        "successor_activation_order": {
+          "const": [
+            "INSTALL_BASE_OUTCOME_READBACK",
+            "COLD_START_RUNTIME_READBACK",
+            "POST_INSTALL_ENVIRONMENT_CHECK",
+            "IN_SITU_PROJECT_QUALIFICATION",
+            "FINAL_INSTALL_RECEIPT",
+            "FINAL_INSTALL_RECEIPT_READBACK",
+            "SUCCESSOR_ACTIVE_VERIFIED"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "successor_base_coherence_requires": {
+          "const": [
+            "EXACT_LOGICAL_SUCCESSOR_SET",
+            "PROJECT_SETTINGS_READBACK",
+            "NO_MIXED_AUTHORITATIVE_GENERATION"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "target_binding_current_role": {
+          "const": "INSTALL_TARGET_BINDING_CURRENT",
+          "type": "string"
+        }
+      },
+      "required": [
+        "logical_generation_completeness_required",
+        "mixed_authoritative_generation_prohibited",
+        "independent_install_base_outcome_readback_required",
+        "evidence_order",
+        "physical_atomicity_claim_prohibited",
+        "receipt_profile_id",
+        "receipt_profile_sha256",
+        "first_active_project_mutation_state",
+        "base_outcome_enum",
+        "successor_base_coherence_requires",
+        "final_receipt_cannot_self_readback_or_assert_current_state",
+        "target_binding_current_role",
+        "receipt_profile_base_result_code",
+        "base_outcome_semantic_mapping",
+        "display_suffix_is_transport_metadata_when_logical_mapping_and_digest_match",
+        "mixed_authoritative_generation_fails_base_coherence",
+        "settings_digest_count_readback_required_for_successor_coherence",
+        "interrupted_staging_cannot_claim_predecessor_or_successor_active_without_readback",
+        "successor_activation_order"
+      ],
+      "type": "object"
+    },
+    "knowledge_continuity": {
+      "additionalProperties": false,
+      "properties": {
+        "capability_id": {
+          "const": "KNOWLEDGE_CONTINUITY",
+          "type": "string"
+        },
+        "current_provider_binding_role": {
+          "const": "KNOWLEDGE_CONTINUITY_PROVIDER_BINDING_CURRENT",
+          "type": "string"
+        },
+        "missing_stale_conflicted_binding_result": {
+          "const": "UNRESOLVED",
+          "type": "string"
+        },
+        "provider_identity_is_provenance_not_project_identity": {
+          "const": true,
+          "type": "boolean"
+        },
+        "reachable_alternate_is_not_fallback_authority": {
+          "const": true,
+          "type": "boolean"
+        },
+        "sensitive_use_requires_current_binding": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "capability_id",
+        "provider_identity_is_provenance_not_project_identity",
+        "current_provider_binding_role",
+        "sensitive_use_requires_current_binding",
+        "reachable_alternate_is_not_fallback_authority",
+        "missing_stale_conflicted_binding_result"
+      ],
       "type": "object"
     },
     "legacy_memory": {
       "additionalProperties": false,
       "properties": {
         "active_dependency": {
-          "const": false
+          "const": false,
+          "type": "boolean"
         },
-        "archive_drive_file_id": {
-          "const": "11J4L1J1l-jXspgKCHJ-sfOWHpNaLSDRa"
+        "basic_memory_cloud_state": {
+          "const": "DISCONNECTED_PAID_LEGACY",
+          "type": "string"
         },
-        "archive_sha256": {
-          "pattern": "^[0-9a-f]{64}$"
+        "preserved_export_class": {
+          "const": "HISTORICAL_AUDIT",
+          "type": "string"
         },
-        "disconnect_gate": {
-          "const": "INSTALLED_AND_POST_INSTALL_PASS_WITH_CONNECTOR_UNAVAILABLE"
+        "query_or_retry_route": {
+          "const": false,
+          "type": "boolean"
+        },
+        "reconnect_requires_exact_user_authority": {
+          "const": true,
+          "type": "boolean"
         }
       },
       "required": [
+        "basic_memory_cloud_state",
         "active_dependency",
-        "archive_drive_file_id",
-        "archive_sha256",
-        "disconnect_gate"
+        "query_or_retry_route",
+        "reconnect_requires_exact_user_authority",
+        "preserved_export_class"
       ],
       "type": "object"
     },
     "native_instructions": {
+      "additionalProperties": false,
+      "properties": {
+        "accepted_max_characters": {
+          "const": 7900,
+          "type": "integer"
+        },
+        "bootstrap_safe_read_boundary_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "count_semantics": {
+          "const": "PYTHON_UNICODE_CODEPOINTS",
+          "type": "string"
+        },
+        "outer_hard_max_characters": {
+          "const": 8000,
+          "type": "integer"
+        },
+        "path": {
+          "const": "VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt",
+          "type": "string"
+        }
+      },
+      "required": [
+        "path",
+        "accepted_max_characters",
+        "outer_hard_max_characters",
+        "count_semantics",
+        "bootstrap_safe_read_boundary_required"
+      ],
+      "type": "object"
+    },
+    "provenance_succession": {
+      "additionalProperties": false,
+      "properties": {
+        "conflict_provenance_retained": {
+          "const": true,
+          "type": "boolean"
+        },
+        "logical_identity": {
+          "const": "VERA",
+          "type": "string"
+        },
+        "producer_session_runtime_provenance_retained": {
+          "const": true,
+          "type": "boolean"
+        },
+        "succession_requires_explicit_governed_receipt": {
+          "const": true,
+          "type": "boolean"
+        },
+        "transport_or_slack_is_not_durable_admission": {
+          "const": true,
+          "type": "boolean"
+        },
+        "transport_origin_cannot_elevate_authority_without_verified_origin_binding": {
+          "const": true,
+          "type": "boolean"
+        },
+        "white_worm_succession_default": {
+          "const": "DENY",
+          "type": "string"
+        }
+      },
+      "required": [
+        "logical_identity",
+        "producer_session_runtime_provenance_retained",
+        "transport_or_slack_is_not_durable_admission",
+        "white_worm_succession_default",
+        "succession_requires_explicit_governed_receipt",
+        "conflict_provenance_retained",
+        "transport_origin_cannot_elevate_authority_without_verified_origin_binding"
+      ],
       "type": "object"
     },
     "release_id": {
-      "const": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1"
+      "const": "VERA_PROJECT_INTEGRATION_R9A0_20260806_V1",
+      "type": "string"
     },
     "retrieval": {
+      "additionalProperties": false,
+      "properties": {
+        "abstain_when_unresolved": {
+          "const": true,
+          "type": "boolean"
+        },
+        "evidence_locator_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "history_refresh_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "safe_read_boundary_required": {
+          "const": true,
+          "type": "boolean"
+        },
+        "unknown_project_referent_triggers_governed_retrieval": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "evidence_locator_required",
+        "abstain_when_unresolved",
+        "history_refresh_required",
+        "safe_read_boundary_required",
+        "unknown_project_referent_triggers_governed_retrieval"
+      ],
+      "type": "object"
+    },
+    "safety_semantic_gate": {
+      "additionalProperties": false,
+      "properties": {
+        "ap_cannot_mutate_locked_safety_state": {
+          "const": true,
+          "type": "boolean"
+        },
+        "assistant_origin_cannot_self_bootstrap": {
+          "const": true,
+          "type": "boolean"
+        },
+        "correction_not_timeless_safe": {
+          "const": true,
+          "type": "boolean"
+        },
+        "current_lifecycle_required_for_admission": {
+          "const": true,
+          "type": "boolean"
+        },
+        "domain_enum": {
+          "const": [
+            "SELF_HARM",
+            "VIOLENCE",
+            "ILLEGAL",
+            "OTHER_RISK",
+            "NON_RISK"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "frame_linked_nonaffirming_not_independent": {
+          "const": true,
+          "type": "boolean"
+        },
+        "historical_requires_current_lifecycle_correction_admission": {
+          "const": true,
+          "type": "boolean"
+        },
+        "origin_enum": {
+          "const": [
+            "USER_DIRECT",
+            "USER_ELICITED",
+            "ASSISTANT",
+            "RETRIEVED_EXTERNAL"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "referent_enum": {
+          "const": [
+            "SELF",
+            "OTHER",
+            "GENERAL",
+            "UNKNOWN"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "retrieved_risk_spans_use_same_gate": {
+          "const": true,
+          "type": "boolean"
+        },
+        "stance_enum": {
+          "const": [
+            "AFFIRM",
+            "DENY",
+            "QUOTE",
+            "REJECT",
+            "MOCK",
+            "UNCERTAIN"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "unit": {
+          "const": "PROPOSITION_OR_SPAN",
+          "type": "string"
+        },
+        "unknown_provenance_no_promotion": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "unit",
+        "origin_enum",
+        "stance_enum",
+        "referent_enum",
+        "domain_enum",
+        "assistant_origin_cannot_self_bootstrap",
+        "frame_linked_nonaffirming_not_independent",
+        "retrieved_risk_spans_use_same_gate",
+        "ap_cannot_mutate_locked_safety_state",
+        "correction_not_timeless_safe",
+        "unknown_provenance_no_promotion",
+        "historical_requires_current_lifecycle_correction_admission",
+        "current_lifecycle_required_for_admission"
+      ],
       "type": "object"
     },
     "supabase": {
+      "additionalProperties": false,
+      "properties": {
+        "allowed_schema_prefix": {
+          "const": "r9a0_",
+          "type": "string"
+        },
+        "database_effects_enabled": {
+          "const": false,
+          "type": "boolean"
+        },
+        "database_integration_mode_at_generation": {
+          "const": "NOT_QUALIFIED_DISABLED",
+          "type": "string"
+        },
+        "database_release_gate_required": {
+          "const": false,
+          "type": "boolean"
+        },
+        "database_unqualified_blocks_only": {
+          "const": [
+            "DATABASE_INTEGRATION",
+            "DATABASE_WRITE",
+            "DATABASE_EFFECT"
+          ],
+          "items": {
+            "type": "string"
+          },
+          "type": "array",
+          "uniqueItems": true
+        },
+        "production_apply_requires_exact_current_user_target_scope_authority": {
+          "const": true,
+          "type": "boolean"
+        },
+        "production_construction_target_prohibited": {
+          "const": true,
+          "type": "boolean"
+        },
+        "provider_faithful_qualification_required": {
+          "const": false,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "allowed_schema_prefix",
+        "production_construction_target_prohibited",
+        "production_apply_requires_exact_current_user_target_scope_authority",
+        "database_release_gate_required",
+        "provider_faithful_qualification_required",
+        "database_integration_mode_at_generation",
+        "database_effects_enabled",
+        "database_unqualified_blocks_only"
+      ],
       "type": "object"
     },
     "voice": {
+      "additionalProperties": false,
+      "properties": {
+        "protected_behavior_source": {
+          "const": "VERA_R9A0_VOICE.md",
+          "type": "string"
+        },
+        "runtime_capability_currentness_external": {
+          "const": true,
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "protected_behavior_source",
+        "runtime_capability_currentness_external"
+      ],
       "type": "object"
     }
   },
@@ -63,13 +1194,25 @@
     "release_id",
     "active_surfaces",
     "legacy_memory",
-    "retrieval",
+    "ci",
     "installation",
+    "generation_provenance",
     "native_instructions",
+    "retrieval",
     "supabase",
+    "evidence_requirements",
+    "current_projection_requirements",
     "voice",
-    "ci"
+    "anticipatory_pragmatics",
+    "safety_semantic_gate",
+    "assignment_currentness",
+    "knowledge_continuity",
+    "identity_continuity",
+    "provenance_succession",
+    "feature_surface_policy"
   ],
-  "title": "Vera R9A0 Native Project Contract",
+  "schema_id": "VERA_R9A0_NATIVE_CONTRACT_SCHEMA_V1",
+  "schema_profile": "R9A0_SCHEMA_PROFILE_V1",
+  "title": "Vera R9A0 Native Contract",
   "type": "object"
 }
