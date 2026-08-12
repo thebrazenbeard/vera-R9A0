@@ -34,4 +34,4 @@ jobs:
       - name: Validate native package
         run: python scripts/validate_r9a0_project.py --json
       - name: Run regression tests
-        run: python -m unittest discover -s tests/native-project -p 'test_*.py' -v
+        run: python -m unittest tests/native-project/test_r9a0_project.py -v

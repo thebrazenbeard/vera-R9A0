@@ -25,6 +25,7 @@ Before this protocol can support an installation claim, independently resolve an
 7. Confirm Basic Memory Cloud is not required or queried.
 8. Verify Voice-critical and portable-start behavior exists in native Project instructions.
 9. Emit immutable `COLD_START_RUNTIME_READBACK` evidence bound to the exact attempt/candidate/target tuple and actual observed bytes/state.
+10. Observe and verify an independent `INSTALL_BASE_OUTCOME_READBACK` for the same attempt before any later final receipt can rely on successor-base coherence.
 
 ## Outcome
 

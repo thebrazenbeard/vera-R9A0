@@ -23,6 +23,6 @@ Run this audit only against one exact installation attempt after cold-start evid
 
 ## Receipt ordering
 
-When all required post-install predicates pass, emit immutable `POST_INSTALL_AUDIT` and `IN_SITU_PROJECT_QUALIFICATION` evidence first. A final installation receipt may then be issued from exact referenced evidence. Receipt readback occurs after issuance and can support the final installed-state determination; the final receipt is never required as evidence for its own creation.
+When all required post-install predicates pass, emit immutable `POST_INSTALL_AUDIT` and `IN_SITU_PROJECT_QUALIFICATION` evidence first. A final installation receipt may then be issued from exact referenced evidence. An independent receipt-readback event occurs after issuance and can support the final installed-state determination; the final receipt is never required as evidence for its own creation.
 
 Failure, mismatch, stale authority/target evidence, conflicting currentness, or ambiguous effect outcome produces a bounded failure/recovery result and prohibits `INSTALLED_VERIFIED`.
