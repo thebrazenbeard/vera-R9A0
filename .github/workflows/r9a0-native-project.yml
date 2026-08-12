@@ -1,11 +1,12 @@
 name: R9A0 Native Project
-# CI revalidation marker: exact-head verification refreshed 2026-08-06.
+# CI revalidation marker: post-Hephaestus diagnostic hashprobe 2026-08-12.
 
 on:
   push:
     branches:
       - feature/r9a0-native-project-v1
       - feature/r9a0-combined-native-implementation-v1
+      - carrier/r9a0-post-heph-hashprobe-4055-v1
     paths:
       - 'project/**'
       - 'schemas/native-project/**'
@@ -31,7 +32,10 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Emit exact Project SHA-256 inventory
+        run: sha256sum project/VERA_R9A0_*
       - name: Validate native package
         run: python scripts/validate_r9a0_project.py --json
-      - name: Run regression tests
+      - name: Run regression tests independently
+        if: ${{ always() }}
         run: python -m unittest tests/native-project/test_r9a0_project.py -v

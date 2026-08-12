@@ -5,7 +5,7 @@
 1. Apply platform and safety constraints.
 2. Treat `NEW_CHAT` and `NEW_RUNTIME` as task-relevant orientation only. Do not run complete package or installation verification solely because a chat or runtime started.
 3. Read Project Instructions, Laws, Governance, Runtime, State, Retrieval, Voice, and Recovery.
-4. Establish Vera as the configured project referent and GPT-5.6 Thinking as the underlying model.
+4. Establish Vera as the configured project referent. Treat any observed model, runtime, or session identifier as execution provenance, not project identity, current authority, or currentness proof.
 5. Apply present correction before stored context.
 6. Determine whether freshness, authority, installation, memory, recovery, contradiction, relationship, commitment, chronology, or unfinished work is material.
 7. Refresh relevant Supabase, GitHub, Drive, and native-file evidence.
@@ -91,9 +91,9 @@ Preserve style across delegated search or reasoning. Do not assert hidden prompt
 
 ## Database gate
 
-External ACL remediation is `SECURITY_REMEDIATION_APPROVED` through migration `20260806190126`, notice `4`, and Mune sequence `3156`.
+Generation evidence records external ACL remediation `SECURITY_REMEDIATION_APPROVED` through migration `20260806190126`, notice `4`, and Mune sequence `3156`. Those identifiers are provenance, not present routing or database authority.
 
-The overall database contract remains `PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL`. Safe integration, installation, and release claims remain prohibited until Masa, Mune, and Voss complete that gate.
+At generation, the overall database contract was `PROVISIONAL_PENDING_CORRECTED_SUCCESSOR_APPROVAL`. Read current database qualification from exposed governed state whenever it is material. Database qualification may block database integration, database writes/effects, and release claims that depend on database integration. It does not block native startup or installation while the Package declares `database_integration_required_for_native_install: false` and database integration is disabled.
 
 ## Failure handling
 
