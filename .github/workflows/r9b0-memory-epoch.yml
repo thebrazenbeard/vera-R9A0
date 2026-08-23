@@ -46,7 +46,6 @@ jobs:
       PGDATABASE: r9b0_ci
       R9B0_DISPOSABLE_DATABASE_CONFIRMED: 'YES'
       R9B0_FIXTURE_GENERATION: BT2_R9B0_DISPOSABLE_347D_PREDECESSOR_V1
-      R9B0_EXPECTED_POSTGRES_VERSION: '17.6'
       R9B0_EXPECTED_POSTGRES_VERSION_NUM: '170006'
 
     steps:
@@ -62,7 +61,6 @@ jobs:
           set -euo pipefail
           observed_version="$(psql -X -At -v ON_ERROR_STOP=1 -c 'SHOW server_version')"
           observed_version_num="$(psql -X -At -v ON_ERROR_STOP=1 -c 'SHOW server_version_num')"
-          test "${observed_version}" = "${R9B0_EXPECTED_POSTGRES_VERSION}"
           test "${observed_version_num}" = "${R9B0_EXPECTED_POSTGRES_VERSION_NUM}"
           mkdir -p validation-receipt
           printf '%s\n' "${observed_version}" > validation-receipt/postgres-server-version.txt
