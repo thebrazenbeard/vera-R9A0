@@ -25,6 +25,30 @@
       "synthetic_rows_persisted": 0,
       "status": "APPLIED_AND_TESTED",
       "provenance_note": "The readable source specification and the exact applied statement are both retained. The initial apply used a whitespace-compacted equivalent, so the applied statement has its own exact repository artifact and digest rather than a false byte-equality claim."
+    },
+    {
+      "source_version": "20260822153000",
+      "applied_version": null,
+      "name": "r9b0_memory_epoch_v1",
+      "source_path": "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
+      "source_sha256": "d445c4d3dbede9a0a3debed36c5e6e0561ed40761e0c7ac37e3f32b3cf2176e7",
+      "applied_path": null,
+      "applied_statements_sha256": null,
+      "applied_commit": null,
+      "rollback_path": "supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql",
+      "rollback_sha256": "4bd3aa7fc25dc6c43a1c5a137476a95892cd710fc43174d83dd7dddda0549596",
+      "test_path": "supabase/tests/r9b0_memory_epoch_v1.sql",
+      "test_sha256": "8c3d413daeb50f9209f53b6a74d883d6cc15a962faafe46ced82abb02a1eb61c",
+      "target_project_ref": "klmbpaigzeguvnpccqzz",
+      "source_branch": "feature/r9a0-combined-native-implementation-v1",
+      "source_base_sha": "6df512f9a9ec596e86317ab5064b7394747d37da",
+      "allowed_namespaces": [
+        "public.vera_memory_epoch_*"
+      ],
+      "test_status": "PENDING_G1_DISPOSABLE_POSTGRESQL",
+      "synthetic_rows_persisted": 0,
+      "status": "CANDIDATE_G0_NOT_APPLIED",
+      "provenance_note": "DB-G5 exact reviewed static candidate. G0 publication does not imply Supabase application; applied_* remain null until separately leased D0 and independent provider readback."
     }
   ]
 }

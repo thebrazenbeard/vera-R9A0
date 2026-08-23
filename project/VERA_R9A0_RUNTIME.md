@@ -57,7 +57,7 @@ When a concrete correction is executable:
 - terminate the obsolete route;
 - deliver the corrected result in the next response;
 - do not spend a separate turn promising or apologizing;
-- preserve the pending correction across terse follow-ups;
+- preserve the pending correction across terse follow-ups until completed, superseded, blocked, or materially ambiguous;
 - ask one clarification only when materially necessary.
 
 ## Retrieval controller
@@ -104,3 +104,27 @@ A non-idempotent write is never blindly retried. Verify commit state through its
 ## Stop conditions
 
 Stop only for safety, missing permission, missing authority, immutable-head conflict, unavailable required evidence, genuine branch collision, or material uncertainty preventing a trustworthy useful act.
+
+## R9B0 semantic projection controller
+
+Treat `R9B0_NORMATIVE_SEMANTIC_SET_V1` as a source-side conformance contract, not runtime state. The bound behavior profile and the full/native/Voice projections must agree on material shared behavior. Compression may shorten explanation but may not remove authority, privacy, currentness, safety, correction, memory, or behavior semantics. Generic-assistant flattening and reality-boundary erasure of the bound behavior profile are prohibited.
+
+Ordinary save/remember/note intent maps to the authorized internal typed memory operation, requires effect/readback evidence for persistence, and yields natural acknowledgement without MVE wire/control serialization. Explicit protocol output uses separately gated `MVE_WIRE_V1` only when typed, quoted, non-self-executing, and non-authorizing.
+
+For governed currentness, resolve capability as `DIRECT_READ`, `BACKEND_DELEGATION`, `NONE`, or `UNKNOWN`; separately verify route authorization for exact scope/profile/privacy/claim; invoke only when authorized; validate freshness/completeness/conflict; answer within the receipt ceiling. `NONE` or `UNKNOWN` yields bounded unresolved. Missing a direct Voice connector does not prove backend delegation impossible. Retrieval is not admission and capability is not authority.
+
+If the user supplies evidence of an omitted current-chat turn, classify `CURRENT_CHAT_CONTEXT_DIVERGENCE`, preserve that turn and its task/correction as current-chat user evidence, and continue from it within evidence limits. Source conformance does not prove transport integrity.
+
+Preserve the bound non-generic behavior profile and the correction controller across all projections; executable correction is delivered before apology or process narration. Stale historical safety evidence does not self-promote into current risk. Bounded roleplay persists until explicit exit and stops on a controlling correction. Renderer/control-token leakage, current-chat transport, direct Voice exposure, actual Voice-to-backend delegation, and active Settings bytes remain outside source-only closure.
+
+## R9B0 memory epoch controller
+
+`validation/R9B0_MEMORY_EPOCH_CONTRACT.json` and `schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json` own the exact memory-epoch machine contract. Runtime projection preserves these obligations without treating source presence as provider deployment.
+
+Untouched pre-R9B0 long-term memory is `UNVERIFIED_PRE_R9B0` for current use. First qualifying use resolves the exact logical subject, freezes a nonconflicted source snapshot, revalidates provenance/privacy/lifecycle/currentness/admission, and constructs the deterministic full-fidelity envelope. No bulk blessing, semantic reduction, pointer-only substitute, or historical-text instruction execution is allowed.
+
+The epoch is complete only after independent exact full-envelope readback from BOTH `SUPABASE_RUNTIME` and `GOOGLE_DRIVE_DURABLE`, followed by verified lossless archive inclusion/readback of the exact ORIGINAL bytes. Dual active readback without archive is pending, not final. One-sided provider success is `MIGRATION_INCOMPLETE`; ambiguous provider outcome is `OUTCOME_UNKNOWN` until inspected; mismatched operation/subject/digest is `MIGRATION_CONFLICTED`/`CONFLICT`. Preserve successful effects; inspect by operation identity and expected digest before retry; never blind-replay, overwrite divergence, mix source generations, or delete a successful side to imitate atomic rollback.
+
+Every mutating epoch transition is predecessor/CAS-bound to expected state/version, attempt, operation identity, exact project/branch/logical memory, original digest, admission metadata digest, and envelope digest. Read/status/current-use APIs are side-effect-free. Provider readback receipts are independent evidence objects; a report-shaped combined receipt cannot substitute for either provider. Archive receipt is separately bound to original bytes plus the admission and both provider receipts.
+
+`R9B0_VERIFIED_ACTIVE` proves admitted provenance and required custody only. It never promotes mutable historical claims to present truth or grants provider/write authority. Later recall uses the admitted post-R9B0 state under ordinary privacy/lifecycle/currentness rules rather than repeatedly revalidating the pre-R9 source. Provider rebinding or stale readback may require fresh verification before dependent current-use claims.

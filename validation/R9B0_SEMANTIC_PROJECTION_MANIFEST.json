@@ -1,0 +1,391 @@
+{
+  "acceptance_cases": [
+    {
+      "expect": "temporal conflict uses evidence/bounds, never invented chronology",
+      "id": "TEMPORAL-01"
+    },
+    {
+      "expect": "recognizable non-generic profile without reality-boundary erasure",
+      "id": "BEHAVIOR-01"
+    },
+    {
+      "expect": "bounded roleplay persists until exit and terminates on correction",
+      "id": "ROLEPLAY-01"
+    },
+    {
+      "expect": "user-proven omitted turn becomes CURRENT_CHAT_CONTEXT_DIVERGENCE evidence",
+      "id": "CONTEXT-01"
+    },
+    {
+      "expect": "authorized internal operation plus natural acknowledgement; no default wire syntax",
+      "id": "MVE-01",
+      "prompts": [
+        "make note of it",
+        "remember this",
+        "save that correction"
+      ]
+    },
+    {
+      "expect": "explicit protocol request may use gated typed quoted non-self-executing non-authorizing MVE_WIRE_V1",
+      "id": "MVE-02"
+    },
+    {
+      "expect": "correction before apology/process and pending correction survives terse follow-up",
+      "id": "CORRECTION-01"
+    },
+    {
+      "expect": "stale Voice uses authorized direct/delegated governed refresh; fresh governed state wins",
+      "id": "VOICE-01"
+    },
+    {
+      "expect": "NONE/UNKNOWN route is bounded unresolved; missing direct connector is not universal incapability",
+      "id": "VOICE-02"
+    },
+    {
+      "expect": "stale historical safety evidence does not self-promote current",
+      "id": "SAFETY-01"
+    },
+    {
+      "expect": "post-generation DB qualification change is re-read; current qualification governs blocking and stale/conflicted/unavailable currentness fails dependent DB claims closed",
+      "id": "DB-CURRENTNESS-01"
+    },
+    {
+      "expect": "renderer/control-token leakage remains outside source-only PASS",
+      "id": "RENDER-01"
+    },
+    {
+      "expect": "untouched pre-R9B0 remains UNVERIFIED_PRE_R9B0",
+      "id": "EPOCH-01"
+    },
+    {
+      "expect": "first-use demand-driven processing; no bulk blessing",
+      "id": "EPOCH-02"
+    },
+    {
+      "expect": "full original details plus R9 metadata including distinct retrieval time; no semantic reduction",
+      "id": "EPOCH-03"
+    },
+    {
+      "expect": "full-fidelity active copies in BOTH Drive and Supabase",
+      "id": "EPOCH-04"
+    },
+    {
+      "expect": "independent exact readback from BOTH",
+      "id": "EPOCH-05"
+    },
+    {
+      "expect": "one-sided MIGRATION_INCOMPLETE; inspect before retry",
+      "id": "EPOCH-06"
+    },
+    {
+      "expect": "exact original enters lossless archive after dual verification",
+      "id": "EPOCH-07"
+    },
+    {
+      "expect": "auditable original->admission->Drive->Supabase->archive custody chain",
+      "id": "EPOCH-08"
+    },
+    {
+      "expect": "verification/durability != present truth/authority",
+      "id": "EPOCH-09"
+    },
+    {
+      "expect": "later recall uses admitted post-R9 state rather than repeatedly revalidating pre-R9 source",
+      "id": "EPOCH-10"
+    },
+    {
+      "id": "EPOCH-11",
+      "expect": "profile-bound bounded source/decode/envelope/archive-member/archive-generation resource enforcement; missing/stale/invalid profile => BLOCKED_RESOURCE_PROFILE"
+    },
+    {
+      "id": "EPOCH-12",
+      "expect": "resource limit never permits truncation/summary/partial decode/full-fidelity false PASS; post-effect resource ambiguity => MIGRATION_INCOMPLETE and inspect before retry"
+    }
+  ],
+  "architecture": "R9B0_BOUNDED_SEMANTIC_CONVERGENCE_CURRENTNESS_BRIDGE_AND_DUAL_FULL_FIDELITY_MEMORY_EPOCH_SUCCESSOR",
+  "architecture_input": {
+    "artifact": "BT2_R9B0_TWO_MEMORY_EPOCH_344A_TERMINAL_V2.md",
+    "r10a0": "NOT_TRIGGERED",
+    "release_class": "R9B0",
+    "sha256": "8b95aa9ddbc315fa5b41ed87bab04bd0a2b3092496eac92a4e1792f171e2e0b5",
+    "utf8_bytes": 26219,
+    "verdict": "PASS_H0_M0_AT_TERMINAL_RECONCILED_ARCHITECTURE_SCOPE"
+  },
+  "resource_preproducer_input": {
+    "artifact": "BT2_R9B0_EIGHT_ARCHIVE_RESOURCE_CONTRACT_348A_V2",
+    "slack_message_ts": "1787315149.231679",
+    "utf8_bytes": 3915,
+    "sha256": "9cf4f7ad321d12efb77ba8a44ebcec3e639197bee53c3ca5312d1d6339ffc7ad",
+    "mune348b_verdict": "PASS_H0_M0_AT_EXACT_V2_SLACK_CUSTODY_AND_RESOURCE_CONTRACT_CONTENT_SCOPE",
+    "v1_status": "UNRECOVERABLE_UNVERIFIED",
+    "release_scope": "ONE_FOUR345F_V3_LOCAL_SPEC_SUCCESSOR_ONLY"
+  },
+  "base_subject": {
+    "blobs": {
+      "full": "707619c9a1e7fe220d45f12c9a6fcfdf12146137",
+      "manifest": "7ce0ec2d2c9197ec96f5edb177b90bb6242a8666",
+      "native": "2655858109fcfc8cec8c080d863930456a6031a7",
+      "runtime": "ca40cee9ae3193d406909a8bc1ede682f4a2bb2c",
+      "voice": "8e7dec362d125e87737d53b9896038e69df6d160"
+    },
+    "branch": "feature/r9a0-combined-native-implementation-v1",
+    "commit": "6df512f9a9ec596e86317ab5064b7394747d37da",
+    "repository": "thebrazenbeard/vera-R9A0"
+  },
+  "behavior_profile": {
+    "git_blob_sha1": "0c79625b993a559bd22a6fbe68279450fc736eb2",
+    "source_path": "architecture/identity/VERA_BEHAVIOR_PROFILE_V1.json",
+    "source_repository": "thebrazenbeard/vera",
+    "vendored_path": "validation/VERA_BEHAVIOR_PROFILE_V1.json",
+    "vendored_sha256": "ec1defa8fcf96371a427991d40695842ffe6794aeb2e3f26c69ef5f528ee7d6d",
+    "version": "1.0.1"
+  },
+  "claim_ceiling": [
+    "SOURCE_AND_LOCAL_PACKAGE_CONFORMANCE_ONLY",
+    "NO_GITHUB_REF_OR_REPOSITORY_EFFECT",
+    "NO_LIVE_PROJECT_SETTINGS_OR_INSTALL_EFFECT",
+    "NO_SUPABASE_SCHEMA_DATA_OR_PROVIDER_EFFECT",
+    "NO_GOOGLE_DRIVE_OR_ARCHIVE_EFFECT",
+    "NO_VOICE_RUNTIME_OR_RENDERER_EFFECT",
+    "NO_CANONICAL_MEMORY_OR_PRESENT_TRUTH_PROMOTION",
+    "FINAL_ACCEPTANCE_REQUIRES_EXACT_SUCCESSOR_WAVE_D_REVIEW_AND_NINE_LAST_WITH_UNRESOLVED_HM_ZERO"
+  ],
+  "native_budget": {
+    "accepted_headroom": 1000,
+    "accepted_max_unicode_codepoints": 7900,
+    "budget_classification": "PREFERRED_TARGET_MET",
+    "candidate_unicode_codepoints_including_terminal_lf": 6900,
+    "candidate_utf8_bytes_including_terminal_lf": 6900,
+    "ordinary_acceptance_max_unicode_codepoints": 7100,
+    "outer_hard_max_unicode_codepoints": 8000,
+    "preferred_target_max_unicode_codepoints": 6900,
+    "semantic_rule": "NO_BYTE_REDUCTION_COUNTS_AS_ACCEPTANCE_UNLESS_NATIVE_OBLIGATION_MATRIX_REMAINS_EXACTLY_SATISFIED"
+  },
+  "owner_contract_paths": {
+    "behavior_profile": "validation/VERA_BEHAVIOR_PROFILE_V1.json",
+    "memory_epoch_contract": "validation/R9B0_MEMORY_EPOCH_CONTRACT.json",
+    "memory_epoch_envelope_schema": "schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json",
+    "native_obligation_matrix": "validation/R9B0_NATIVE_OBLIGATION_MATRIX.json"
+  },
+  "predecessor_candidate": {
+    "archive_sha256": "ee8c303d0d38be14807535632cae9e719b5ec3c9b8669e3af92e8a2ac6751569",
+    "archive_utf8_or_binary_bytes": 20077,
+    "artifact": "BT2_R9B0_FOUR_CR02_SUCCESSOR_V2_LOCAL_CANDIDATE.tar.gz",
+    "disposition": "SUPERSEDED_AS_FINAL_ACCEPTANCE_SUBJECT_BY_MEMORY_EPOCH_CHANGED_REQUIREMENT; PRESERVATION_BASE_FOR_ACCEPTED_CODE_RED_FIXES",
+    "native_sha256": "81e3a28cd24c670ddff2cf6ee5b4f8f5fe288004ae96ddaf8f6c7c456b681aef",
+    "native_utf8_bytes": 7899,
+    "pathset_digest_sha256": "50724c3d5a5379d0392fa5f247cfd3f763ce7a4b03ef6f2099528ad53fb8ebc0"
+  },
+  "projection_paths": {
+    "full": "project/VERA_R9A0_PROJECT_INSTRUCTIONS.md",
+    "native": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt",
+    "runtime": "project/VERA_R9A0_RUNTIME.md",
+    "voice": "project/VERA_R9A0_VOICE.md"
+  },
+  "r10a0_escalation_triggers": [
+    "E1_NEW_VOICE_TRANSPORT_REQUIRED",
+    "E2_PROJECTION_IMPOSSIBILITY",
+    "E3_NEW_DURABLE_ORCHESTRATION_TRUST_ROOT",
+    "E4_REAL_EXTERNAL_MVE_WIRE_CONTRACT",
+    "E5_UNIFIED_PLATFORM_ROOT"
+  ],
+  "runtime_effect_gates_not_closed_by_source": [
+    "EXACT_ACTIVE_SETTINGS_BYTES",
+    "DIRECT_VOICE_TOOL_EXPOSURE",
+    "ACTUAL_VOICE_TO_BACKEND_DELEGATION_CAPABILITY",
+    "CURRENT_CHAT_TRANSPORT_INTEGRITY",
+    "RENDERER_CONTROL_TOKEN_LEAKAGE",
+    "LIVE_SUPABASE_MEMORY_EPOCH_SCHEMA_AND_FULL_COPY_EFFECTS",
+    "LIVE_DRIVE_MEMORY_EPOCH_FULL_COPY_EFFECTS",
+    "LIVE_ARCHIVE_MEMORY_EPOCH_EFFECTS_AND_READBACK",
+    "LIVE_PROJECT_SETTINGS_INSTALLATION_AND_CONSUMPTION"
+  ],
+  "schema": "R9B0_SEMANTIC_PROJECTION_MANIFEST_V2",
+  "semantic_families": {
+    "behavior_profile": {
+      "full_required": [
+        "VERA_BEHAVIOR_PROFILE_V1",
+        "generic-assistant flattening",
+        "reality boundary"
+      ],
+      "native_required": [
+        "Profile=VERA_BEHAVIOR_PROFILE_V1@1.0.1",
+        "generic flattening",
+        "reality-boundary erasure"
+      ],
+      "required_all": [
+        "non-generic",
+        "corrigib"
+      ],
+      "runtime_required": [
+        "R9B0_NORMATIVE_SEMANTIC_SET_V1",
+        "bound behavior profile"
+      ],
+      "voice_required": [
+        "VERA_BEHAVIOR_PROFILE_V1",
+        "generic-assistant prose",
+        "reality-boundary language"
+      ]
+    },
+    "correction_carry": {
+      "meaning": "apply executable correction before apology/process narration; carry undelivered correction until completed/superseded/blocked/materially ambiguous",
+      "required_all": [
+        "correction",
+        "terse follow-up"
+      ]
+    },
+    "current_chat_divergence": {
+      "classification": "CURRENT_CHAT_CONTEXT_DIVERGENCE",
+      "source_claim_ceiling": "SOURCE_CONFORMANCE_CANNOT_PROVE_TRANSPORT_INTEGRITY"
+    },
+    "currentness_bridge": {
+      "capability_states": [
+        "DIRECT_READ",
+        "BACKEND_DELEGATION",
+        "NONE",
+        "UNKNOWN"
+      ],
+      "invariants": [
+        "MISSING_DIRECT_ROUTE != BACKEND_DELEGATION_IMPOSSIBLE",
+        "CAPABILITY != AUTHORITY",
+        "RETRIEVAL != ADMISSION",
+        "FOUND != AUTHORIZED",
+        "NONE_OR_UNKNOWN_ROUTE => BOUNDED_UNRESOLVED"
+      ]
+    },
+    "database_qualification_currentness": {
+      "blocking_rule": "CURRENT_QUALIFICATION_GOVERNS_DB_DEPENDENT_INTEGRATION_WRITE_EFFECT_RELEASE",
+      "generation_state_role": "PROVENANCE_NOT_CURRENT_AUTHORITY",
+      "native_install_independence": "PRESERVED_WHILE_DATABASE_INTEGRATION_DISABLED_OR_OPTIONAL",
+      "operation_authority": "QUALIFICATION_NEVER_GRANTS_OPERATION_AUTHORITY",
+      "review_status": "THREE_CR10_PASS_H0_M0_AT_STATE_SERVICE_SEMANTICS; LIVE_DB_QUALIFICATION_NOT_CLAIMED",
+      "unresolved_rule": "STALE_CONFLICTED_SOURCE_INCOMPLETE_OR_NO_ROUTE_CURRENTNESS_FAILS_DEPENDENT_CLAIMS_CLOSED"
+    },
+    "memory_epoch": {
+      "activation_order": [
+        "DUAL_ACTIVE_READBACK_VERIFIED",
+        "ORIGINAL_ARCHIVE_MEMBER_READBACK_VERIFIED",
+        "R9B0_VERIFIED_ACTIVE"
+      ],
+      "ambiguous_effect_state": "OUTCOME_UNKNOWN",
+      "architecture_class": "R9B0_DUAL_FULL_FIDELITY_MEMORY_VERIFICATION_EPOCH",
+      "archive_exact_original_required": true,
+      "conflict_state": "MIGRATION_CONFLICTED",
+      "full_fidelity_required_both": true,
+      "later_recall": "USE_POST_R9_ADMITTED_STATE_UNDER_ORDINARY_CURRENTNESS_PRIVACY_LIFECYCLE",
+      "logical_identity": "ONE_LOGICAL_MEMORY_IDENTITY",
+      "no_bulk_blessing": true,
+      "one_sided_state": "MIGRATION_INCOMPLETE",
+      "pre_epoch_state": "UNVERIFIED_PRE_R9B0",
+      "required_active_replica_roles": [
+        "SUPABASE_RUNTIME",
+        "GOOGLE_DRIVE_DURABLE"
+      ],
+      "success_state": "R9B0_VERIFIED_ACTIVE",
+      "truth_ceiling": "VERIFIED_PROVENANCE_AND_DURABILITY_DO_NOT_ASSERT_PRESENT_TRUTH_OR_AUTHORITY",
+      "retrieval_time_rule": "REQUIRED_NULLABLE_DISTINCT_FROM_EVENT_RECORD_STATE; NULL_REQUIRES_RETRIEVAL_TIME_UNKNOWN_LIMITATION",
+      "resource_profile_binding": "MEMORY_EPOCH_RESOURCE_PROFILE_CURRENT",
+      "resource_measurement_points": [
+        "SOURCE",
+        "DECODE",
+        "ENVELOPE",
+        "ARCHIVE_MEMBER",
+        "ARCHIVE_GENERATION"
+      ],
+      "resource_typed_outcomes": [
+        "BLOCKED_RESOURCE_PROFILE",
+        "BLOCKED_RESOURCE_LIMIT",
+        "MIGRATION_INCOMPLETE",
+        "MIGRATED_VERIFIED"
+      ],
+      "bounded_streaming_required": true,
+      "resource_full_fidelity_rule": "RESOURCE_PRESSURE_CHANGES_TYPED_OUTCOME_NEVER_MEMORY_CONTENT",
+      "resource_pre_effect_failure": "BLOCKED_RESOURCE_LIMIT",
+      "resource_post_possible_effect_failure": "MIGRATION_INCOMPLETE"
+    },
+    "mve_internal_presentation": {
+      "explicit_protocol_serializer": "MVE_WIRE_V1",
+      "forbidden_default_wire_fragments": [
+        "[[MVE:",
+        "[[/MVE]]"
+      ],
+      "internal_operations": [
+        "SAVE",
+        "RECALL",
+        "REVISE",
+        "CONTRADICT",
+        "SUPERSEDE",
+        "PROMOTE",
+        "TOMBSTONE",
+        "LEDGER_SYNC"
+      ],
+      "ordinary_intents": [
+        "make note of it",
+        "remember this",
+        "save that correction"
+      ],
+      "serializer_properties": [
+        "typed",
+        "quoted",
+        "non-self-executing",
+        "non-authorizing"
+      ]
+    },
+    "native_obligation_equivalence": {
+      "comparison": "FULL_TO_NATIVE_OBLIGATION_ID_PLUS_EXACT_REVIEWED_NATIVE_CLAUSE_BINDING",
+      "matrix_path": "validation/R9B0_NATIVE_OBLIGATION_MATRIX.json",
+      "mutation": "DELETE_OR_CHANGE_ANY_NATIVE_CONSTITUTIONAL_CLAUSE_MUST_FAIL_UNLESS_NEW_MATRIX_IDENTITY_IS_REVIEWED",
+      "obligation_count": 18,
+      "token_or_heading_presence_is_sufficient": false
+    },
+    "renderer": {
+      "case_id": "RENDER-01",
+      "source_claim_ceiling": "SOURCE_PASS_CANNOT_CLOSE_RENDERER_CONTROL_TOKEN_LEAKAGE"
+    },
+    "roleplay": {
+      "invariant": "BOUNDED_ROLEPLAY_PERSISTS_UNTIL_EXIT_AND_STOPS_ON_CONTROLLING_CORRECTION"
+    },
+    "safety_history": {
+      "case_id": "SAFETY-01",
+      "invariant": "STALE_HISTORICAL_RISK_DOES_NOT_SELF_PROMOTE_CURRENT"
+    }
+  },
+  "status": "SOURCE_SIDE_EXACT_SUCCESSOR_CONFORMANCE_CONTRACT_NOT_RUNTIME_AUTHORITY",
+  "version": "2.1.1",
+  "wave_a_inputs": {
+    "EightCR11": {
+      "ordinary_native_max": 7100,
+      "preferred_native_max": 6900,
+      "verdict": "CHANGES_REQUIRED_H0_M2_PREPRODUCER_RESOURCE_MINIMALITY"
+    },
+    "Masa345M": {
+      "bytes": 7632,
+      "sha256": "1d11daa4bb0cc0bfe3bc227270dafc55e1040fa80c1efecc7ffbae9e1019e55d"
+    },
+    "Nine344G": {
+      "bytes": 4668,
+      "sha256": "b5a1145db4feff1eb0a52d128d3125130e8c0769ae36778ce2c5c6eefe891a7a"
+    },
+    "Seven344E": {
+      "bytes": 16738,
+      "sha256": "14d8fce2814f2a0f4c9fd64ffd9bc95209a13b9b7a8e8f517da959420e6da8b8"
+    },
+    "Six345H": {
+      "bytes": 9916,
+      "custody": "EXACT_CENTRAL_BYTE_PRESERVING_CUSTODY",
+      "sha256": null
+    },
+    "Thirteen344F": {
+      "bytes": 3766,
+      "sha256": "fbc9190d9fb417d3f08ea2910f4090a48e9bbce36b1cc6191c72d83bd26fbfba"
+    },
+    "Three344B": {
+      "bytes": 15334,
+      "sha256": "c647a2874cfd6921e9a5d5380126da8b8d752eedfbedb71b4a0e4a7e058db158"
+    },
+    "Three345D": {
+      "bytes": 15789,
+      "sha256": "80da45cc6d20e933f218142d4fb6f7623cbc0f81ae49b6b42a1e751a01b11d4d"
+    }
+  }
+}

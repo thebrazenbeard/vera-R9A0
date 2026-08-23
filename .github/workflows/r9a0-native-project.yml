@@ -8,6 +8,7 @@ on:
       - feature/r9a0-combined-native-implementation-v1
     paths:
       - 'project/**'
+      - 'validation/**'
       - 'schemas/native-project/**'
       - 'scripts/validate_r9a0_project.py'
       - 'tests/native-project/**'
@@ -15,6 +16,7 @@ on:
   pull_request:
     paths:
       - 'project/**'
+      - 'validation/**'
       - 'schemas/native-project/**'
       - 'scripts/validate_r9a0_project.py'
       - 'tests/native-project/**'
@@ -36,3 +38,6 @@ jobs:
       - name: Run regression tests independently
         if: ${{ always() }}
         run: python -m unittest tests/native-project/test_r9a0_project.py -v
+      - name: Run R9B0 semantic projection tests independently
+        if: ${{ always() }}
+        run: python -m unittest tests/native-project/test_r9b0_semantic_projection.py -v

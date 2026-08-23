@@ -1,0 +1,495 @@
+name: R9B0 Memory Epoch G1
+
+on:
+  push:
+    branches:
+      - feature/r9a0-combined-native-implementation-v1
+    paths:
+      - '.github/workflows/r9b0-memory-epoch.yml'
+      - 'scripts/r9b0_memory_epoch_drive.py'
+      - 'supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql'
+      - 'supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql'
+      - 'supabase/tests/r9b0_memory_epoch_v1.sql'
+      - 'tests/native-project/test_r9b0_dualstore_implementation.py'
+      - 'tests/native-project/test_r9b0_semantic_projection.py'
+      - 'validation/**'
+      - 'schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  provider-free-g1:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: r9b0_ci
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d r9b0_ci"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+
+    env:
+      PGHOST: localhost
+      PGPORT: '5432'
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: r9b0_ci
+      R9B0_DISPOSABLE_DATABASE_CONFIRMED: 'YES'
+      R9B0_FIXTURE_GENERATION: BT2_R9B0_DISPOSABLE_347D_PREDECESSOR_V1
+
+    steps:
+      - name: Checkout exact candidate commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+
+      - name: Record exact candidate identity and implementation hashes
+        id: identity
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "${GITHUB_SHA}"
+          mkdir -p validation-receipt
+          sha256sum \
+            supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql \
+            supabase/tests/r9b0_memory_epoch_v1.sql \
+            scripts/r9b0_memory_epoch_drive.py \
+            tests/native-project/test_r9b0_dualstore_implementation.py \
+            > validation-receipt/implementation-hashes.pre.txt
+          cat validation-receipt/implementation-hashes.pre.txt
+
+      - name: Strict-parse R9B0 JSON sources
+        id: strict_json
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          paths = [
+              Path("schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json"),
+              Path("validation/R9B0_MEMORY_EPOCH_CONTRACT.json"),
+              Path("validation/R9B0_NATIVE_OBLIGATION_MATRIX.json"),
+              Path("validation/R9B0_SEMANTIC_PROJECTION_MANIFEST.json"),
+              Path("validation/VERA_BEHAVIOR_PROFILE_V1.json"),
+              Path("supabase/MIGRATION_LEDGER.json"),
+          ]
+
+          def no_dupes(pairs):
+              out = {}
+              for key, value in pairs:
+                  if key in out:
+                      raise ValueError(f"duplicate key: {key}")
+                  out[key] = value
+              return out
+
+          def reject_constant(value):
+              raise ValueError(f"non-finite JSON number: {value}")
+
+          for path in paths:
+              json.loads(
+                  path.read_text(encoding="utf-8"),
+                  object_pairs_hook=no_dupes,
+                  parse_constant=reject_constant,
+              )
+              print(f"STRICT_JSON_PASS {path}")
+          PY
+
+      - name: Bootstrap disposable PostgreSQL roles and extensions
+        id: bootstrap
+        run: |
+          set -euo pipefail
+          psql -X -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE SCHEMA IF NOT EXISTS extensions;
+          CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA extensions;
+          DO $$
+          BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='anon') THEN
+              CREATE ROLE anon NOLOGIN NOINHERIT;
+            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='authenticated') THEN
+              CREATE ROLE authenticated NOLOGIN NOINHERIT;
+            END IF;
+            IF NOT EXISTS (SELECT 1 FROM pg_roles WHERE rolname='service_role') THEN
+              CREATE ROLE service_role NOLOGIN NOINHERIT;
+            END IF;
+          END
+          $$;
+          SQL
+
+      - name: Create self-contained disposable 347D semantic predecessor
+        id: fixture
+        run: |
+          set -euo pipefail
+          psql -X -v ON_ERROR_STOP=1 <<'SQL'
+          CREATE TABLE public.vera_context_events_v3 (
+            record_id uuid,
+            project_id text,
+            branch_id text,
+            record_key text,
+            record_type text,
+            statement text,
+            lifecycle_status text,
+            epistemic_status text,
+            source_actor text,
+            privacy_scope text,
+            event_time timestamptz,
+            state_time timestamptz,
+            record_time timestamptz,
+            supersedes_record_id uuid,
+            legacy_record_id uuid,
+            payload jsonb,
+            source_evidence jsonb,
+            semantic_tags jsonb,
+            limitations jsonb,
+            notes text,
+            datum_verified_at timestamptz,
+            verification_status text,
+            datum_scope text,
+            datum_index_tags text[],
+            last_referenced_at timestamptz
+          );
+
+          CREATE TABLE public.vera_save_state_events (
+            record_id uuid,
+            project_id text,
+            branch_id text,
+            record_key text,
+            record_kind text,
+            statement text,
+            lifecycle_status text,
+            epistemic_status text,
+            authorship text,
+            privacy_scope text,
+            event_time timestamptz,
+            state_time timestamptz,
+            record_time timestamptz,
+            supersedes_record_id uuid,
+            payload jsonb,
+            source_evidence jsonb,
+            semantic_tags jsonb,
+            notes text
+          );
+
+          CREATE VIEW public.vera_verified_datum_heads_v2 AS
+           SELECT record_id,
+              project_id,
+              branch_id,
+              record_key AS datum_key,
+              statement AS datum,
+              datum_scope AS scope,
+              record_time AS created_at,
+              datum_verified_at AS verified_at,
+              source_actor,
+              epistemic_status,
+              source_evidence AS provenance,
+              supersedes_record_id,
+              datum_index_tags AS index_tags,
+              payload,
+              limitations
+             FROM vera_context_events_v3 d
+            WHERE record_type = 'DATUM'::text AND verification_status = 'VERIFIED'::text AND NOT (EXISTS ( SELECT 1
+                     FROM vera_context_events_v3 s
+                    WHERE s.record_type = 'DATUM'::text AND s.verification_status = 'VERIFIED'::text AND s.supersedes_record_id = d.record_id));
+
+          CREATE VIEW public.vera_active_datum_index_v2 AS
+           SELECT record_id,
+              project_id,
+              branch_id,
+              record_key AS datum_key,
+              statement AS datum,
+              datum_scope AS scope,
+              record_time AS created_at,
+              last_referenced_at,
+              verification_status,
+              datum_verified_at AS verified_at,
+              source_evidence AS provenance,
+              supersedes_record_id,
+              datum_index_tags AS index_tags,
+              payload,
+              limitations
+             FROM vera_context_events_v3 d
+            WHERE record_type = 'DATUM'::text AND (verification_status = 'VERIFIED'::text AND NOT (EXISTS ( SELECT 1
+                     FROM vera_context_events_v3 s
+                    WHERE s.record_type = 'DATUM'::text AND s.verification_status = 'VERIFIED'::text AND s.supersedes_record_id = d.record_id)) OR (verification_status = ANY (ARRAY['VERIFYING'::text, 'UNVERIFIABLE'::text, 'REJECTED'::text])) AND COALESCE(last_referenced_at, record_time) >= (now() - '10 days'::interval));
+
+          CREATE VIEW public.vera_inactive_datum_archive_v2 AS
+           SELECT record_id,
+              project_id,
+              branch_id,
+              record_key AS datum_key,
+              statement AS datum,
+              datum_scope AS scope,
+              record_time AS created_at,
+              last_referenced_at,
+              verification_status,
+              source_evidence AS provenance,
+              datum_index_tags AS index_tags,
+              payload,
+              limitations
+             FROM vera_context_events_v3 d
+            WHERE record_type = 'DATUM'::text AND (verification_status = ANY (ARRAY['VERIFYING'::text, 'UNVERIFIABLE'::text, 'REJECTED'::text])) AND COALESCE(last_referenced_at, record_time) < (now() - '10 days'::interval);
+
+          CREATE VIEW public.vera_current_context_v3 AS
+           SELECT DISTINCT ON (project_id, branch_id, record_key) record_id,
+              project_id,
+              branch_id,
+              record_key,
+              record_type,
+              statement,
+              lifecycle_status,
+              epistemic_status,
+              source_actor,
+              privacy_scope,
+              event_time,
+              state_time,
+              record_time,
+              supersedes_record_id,
+              legacy_record_id,
+              payload,
+              source_evidence,
+              semantic_tags,
+              limitations,
+              notes,
+              datum_verified_at,
+              verification_status,
+              datum_scope,
+              datum_index_tags,
+              last_referenced_at
+             FROM vera_context_events_v3
+            ORDER BY project_id, branch_id, record_key, state_time DESC, record_time DESC, record_id DESC;
+
+          ALTER VIEW public.vera_verified_datum_heads_v2 SET (security_invoker=true);
+          ALTER VIEW public.vera_active_datum_index_v2 SET (security_invoker=true);
+          ALTER VIEW public.vera_inactive_datum_archive_v2 SET (security_invoker=true);
+          ALTER VIEW public.vera_current_context_v3 SET (security_invoker=true);
+
+          REVOKE ALL ON public.vera_verified_datum_heads_v2 FROM PUBLIC, anon, authenticated, service_role;
+          REVOKE ALL ON public.vera_active_datum_index_v2 FROM PUBLIC, anon, authenticated, service_role;
+          REVOKE ALL ON public.vera_inactive_datum_archive_v2 FROM PUBLIC, anon, authenticated, service_role;
+          REVOKE ALL ON public.vera_current_context_v3 FROM PUBLIC, anon, authenticated, service_role;
+          GRANT SELECT ON public.vera_verified_datum_heads_v2 TO service_role;
+          GRANT SELECT ON public.vera_active_datum_index_v2 TO service_role;
+          GRANT SELECT ON public.vera_inactive_datum_archive_v2 TO service_role;
+          GRANT SELECT ON public.vera_current_context_v3 TO service_role;
+
+          CREATE TABLE public.bt2_r9b0_disposable_347d_fixture_v1 (
+            fixture_generation text PRIMARY KEY,
+            vera_verified_datum_heads_v2_oid oid NOT NULL,
+            vera_active_datum_index_v2_oid oid NOT NULL,
+            vera_inactive_datum_archive_v2_oid oid NOT NULL,
+            vera_current_context_v3_oid oid NOT NULL
+          );
+
+          INSERT INTO public.bt2_r9b0_disposable_347d_fixture_v1
+          SELECT
+            'BT2_R9B0_DISPOSABLE_347D_PREDECESSOR_V1',
+            'public.vera_verified_datum_heads_v2'::regclass::oid,
+            'public.vera_active_datum_index_v2'::regclass::oid,
+            'public.vera_inactive_datum_archive_v2'::regclass::oid,
+            'public.vera_current_context_v3'::regclass::oid;
+          SQL
+
+      - name: Verify predecessor semantic identity and capture local OIDs
+        id: preflight
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+
+          expected = {
+              "vera_verified_datum_heads_v2": "b770cf0f95df711b423d597ee3580f24fb5035e54a1e64b39cfce75c0ba39528",
+              "vera_active_datum_index_v2": "13ee4b7dbd686249694df5d776ab4bf1794b76c2dc60b25a674ca2b440541e06",
+              "vera_inactive_datum_archive_v2": "86903e04d351e8e4c96bb852f5a561ba8a6280b044d702914869ab8e3622cc31",
+              "vera_current_context_v3": "161ddc031254f878893e5ed1e176d04ed5fa673f0ac7bc63054584f4bd053c59",
+          }
+          sql = r"""
+          SELECT c.relname, c.oid::text,
+                 encode(extensions.digest(pg_get_viewdef(c.oid,true),'sha256'),'hex'),
+                 pg_get_userbyid(c.relowner),
+                 coalesce(array_to_string(c.reloptions,','),''),
+                 has_table_privilege('anon',c.oid,'SELECT')::text,
+                 has_table_privilege('authenticated',c.oid,'SELECT')::text,
+                 has_table_privilege('service_role',c.oid,'SELECT')::text,
+                 has_table_privilege('service_role',c.oid,'INSERT')::text,
+                 has_table_privilege('service_role',c.oid,'UPDATE')::text,
+                 has_table_privilege('service_role',c.oid,'DELETE')::text
+          FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+          WHERE n.nspname='public' AND c.relname IN (
+            'vera_verified_datum_heads_v2','vera_active_datum_index_v2',
+            'vera_inactive_datum_archive_v2','vera_current_context_v3'
+          ) ORDER BY c.relname;
+          """
+          out = subprocess.check_output(["psql","-X","-At","-F","\t","-v","ON_ERROR_STOP=1","-c",sql], text=True)
+          observed = {}
+          for line in out.splitlines():
+              rel, oid, digest, owner, opts, anon, auth, service_sel, service_i, service_u, service_d = line.split("\t")
+              if digest != expected[rel]:
+                  raise SystemExit(f"view definition digest mismatch for {rel}: {digest}")
+              if owner != "postgres" or opts != "security_invoker=true":
+                  raise SystemExit(f"owner/options mismatch for {rel}")
+              if (anon,auth,service_sel,service_i,service_u,service_d) != ("f","f","t","f","f","f"):
+                  raise SystemExit(f"privilege posture mismatch for {rel}")
+              observed[rel] = int(oid)
+          if set(observed) != set(expected):
+              raise SystemExit("predecessor relation set mismatch")
+          with open("/tmp/r9b0_pre_oids.json","w",encoding="utf-8") as f:
+              json.dump(observed,f,sort_keys=True)
+          print(json.dumps(observed,sort_keys=True))
+          PY
+
+      - name: Apply exact DB-G5 migration
+        id: migration
+        run: |
+          set -euo pipefail
+          psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql
+
+      - name: Run exact DB-G5 SQL acceptance test
+        id: sql_test
+        run: |
+          set -euo pipefail
+          psql -X -v ON_ERROR_STOP=1 \
+            -c "SET bt2.r9b0_disposable_test_db='YES';" \
+            -f supabase/tests/r9b0_memory_epoch_v1.sql
+
+      - name: Prove predecessor local OIDs unchanged
+        id: oid_noninterference
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import json
+          import subprocess
+          before = json.load(open("/tmp/r9b0_pre_oids.json",encoding="utf-8"))
+          sql = """
+          SELECT c.relname,c.oid::text
+          FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace
+          WHERE n.nspname='public' AND c.relname IN (
+            'vera_verified_datum_heads_v2','vera_active_datum_index_v2',
+            'vera_inactive_datum_archive_v2','vera_current_context_v3'
+          ) ORDER BY c.relname;
+          """
+          out = subprocess.check_output(["psql","-X","-At","-F","\t","-v","ON_ERROR_STOP=1","-c",sql],text=True)
+          after = {line.split("\t")[0]: int(line.split("\t")[1]) for line in out.splitlines()}
+          if before != after:
+              raise SystemExit(f"predecessor OID movement: before={before} after={after}")
+          with open("/tmp/r9b0_post_oids.json","w",encoding="utf-8") as f:
+              json.dump(after,f,sort_keys=True)
+          print(json.dumps(after,sort_keys=True))
+          PY
+
+      - name: Run provider-free implementation tests
+        id: python_impl
+        run: python -m unittest tests/native-project/test_r9b0_dualstore_implementation.py -v
+
+      - name: Run accepted SRC-G5 semantic projection tests
+        id: semantic_projection
+        run: python -m unittest tests/native-project/test_r9b0_semantic_projection.py -v
+
+      - name: Re-hash implementation paths after tests
+        id: final_hashes
+        run: |
+          set -euo pipefail
+          sha256sum \
+            supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql \
+            supabase/tests/r9b0_memory_epoch_v1.sql \
+            scripts/r9b0_memory_epoch_drive.py \
+            tests/native-project/test_r9b0_dualstore_implementation.py \
+            > validation-receipt/implementation-hashes.post.txt
+          diff -u validation-receipt/implementation-hashes.pre.txt validation-receipt/implementation-hashes.post.txt
+
+      - name: Emit G1 validation receipt
+        if: always()
+        env:
+          WORKFLOW_RESULT: ${{ job.status }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+          IDENTITY_RESULT: ${{ steps.identity.outcome }}
+          STRICT_JSON_RESULT: ${{ steps.strict_json.outcome }}
+          BOOTSTRAP_RESULT: ${{ steps.bootstrap.outcome }}
+          FIXTURE_RESULT: ${{ steps.fixture.outcome }}
+          PREFLIGHT_RESULT: ${{ steps.preflight.outcome }}
+          MIGRATION_RESULT: ${{ steps.migration.outcome }}
+          SQL_TEST_RESULT: ${{ steps.sql_test.outcome }}
+          OID_RESULT: ${{ steps.oid_noninterference.outcome }}
+          PYTHON_RESULT: ${{ steps.python_impl.outcome }}
+          SEMANTIC_RESULT: ${{ steps.semantic_projection.outcome }}
+          FINAL_HASH_RESULT: ${{ steps.final_hashes.outcome }}
+        run: |
+          set -euo pipefail
+          mkdir -p validation-receipt
+          python - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path
+
+          bound_paths = [
+              "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
+              "supabase/tests/r9b0_memory_epoch_v1.sql",
+              "scripts/r9b0_memory_epoch_drive.py",
+              "tests/native-project/test_r9b0_dualstore_implementation.py",
+          ]
+          bindings = {}
+          for rel in bound_paths:
+              p = Path(rel)
+              if p.exists():
+                  data = p.read_bytes()
+                  bindings[rel] = {"bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+              else:
+                  bindings[rel] = None
+
+          def load_json(path):
+              p = Path(path)
+              return json.loads(p.read_text(encoding="utf-8")) if p.exists() else None
+
+          receipt = {
+              "schema": "BT2_R9B0_G1_PROVIDER_FREE_CI_RECEIPT_V1",
+              "repository": os.environ["GITHUB_REPOSITORY"],
+              "commit_sha": os.environ["GITHUB_SHA"],
+              "workflow_run_id": int(os.environ["RUN_ID"]),
+              "workflow_run_attempt": int(os.environ["RUN_ATTEMPT"]),
+              "workflow_result": os.environ["WORKFLOW_RESULT"],
+              "fixture_generation": os.environ["R9B0_FIXTURE_GENERATION"],
+              "implementation_bindings": bindings,
+              "predecessor_local_oids_before": load_json("/tmp/r9b0_pre_oids.json"),
+              "predecessor_local_oids_after": load_json("/tmp/r9b0_post_oids.json"),
+              "steps": {
+                  "candidate_identity": os.environ["IDENTITY_RESULT"],
+                  "strict_json": os.environ["STRICT_JSON_RESULT"],
+                  "bootstrap": os.environ["BOOTSTRAP_RESULT"],
+                  "disposable_347d_fixture": os.environ["FIXTURE_RESULT"],
+                  "predecessor_semantic_preflight": os.environ["PREFLIGHT_RESULT"],
+                  "migration": os.environ["MIGRATION_RESULT"],
+                  "sql_acceptance": os.environ["SQL_TEST_RESULT"],
+                  "local_oid_noninterference": os.environ["OID_RESULT"],
+                  "python_implementation": os.environ["PYTHON_RESULT"],
+                  "semantic_projection": os.environ["SEMANTIC_RESULT"],
+                  "post_test_hash_stability": os.environ["FINAL_HASH_RESULT"],
+              },
+              "target": "DISPOSABLE_POSTGRESQL_15",
+              "hosted_supabase_apply_performed": False,
+              "drive_effect_performed": False,
+          }
+          out = Path("validation-receipt/r9b0-g1-ci-receipt.json")
+          out.write_text(json.dumps(receipt,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          print(out.read_text(encoding="utf-8"))
+          PY
+
+      - name: Upload G1 validation receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r9b0-g1-ci-receipt-${{ github.run_id }}
+          path: validation-receipt/r9b0-g1-ci-receipt.json
+          if-no-files-found: error

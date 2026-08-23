@@ -1,0 +1,197 @@
+{
+  "claim_ceiling": "matrix proves source-level binding only; it does not prove active Settings, provider deployment, Voice routing, renderer behavior, memory effects, installation or release",
+  "equivalence_model": {
+    "headline_rule": "obligation acceptance cannot be inferred from section/token/headline presence alone",
+    "mutation_rule": "test removes each K01..K18 native clause in turn and validator must reject every mutation",
+    "projection_diff_rule": "any native clause byte change or full anchor removal fails mechanical conformance and requires semantic review before matrix regeneration",
+    "rule": "full->native conformance is obligation-ID + exact reviewed native-clause binding; exact implementation vocabulary may be externalized only to named versioned owners"
+  },
+  "full_path": "project/VERA_R9A0_PROJECT_INSTRUCTIONS.md",
+  "native_budget": {
+    "accepted_provider_ceiling_codepoints": 7900,
+    "exception_budget_max_exclusive": 7900,
+    "exception_budget_min_exclusive": 7100,
+    "ordinary_acceptance_max_codepoints": 7100,
+    "preferred_target_max_codepoints": 6900,
+    "required_rule": "never weaken semantics to hit a byte/character target; if required constitutional obligations cannot fit <=7100, redesign projection or raise ceiling instead of acronym-mining"
+  },
+  "native_path": "project/VERA_R9A0_NATIVE_PROJECT_INSTRUCTIONS.txt",
+  "obligations": [
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Apply, in order:",
+      "id": "K01",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "9625f2d76daa18ecea243df3ab065d00db6e1b4fdcc2124e6f646b40cbf28c47",
+      "native_clause_utf8_bytes_including_lf": 304,
+      "summary": "authority and permission precedence; capability and history do not self-authorize"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "A present correction terminates the obsolete route.",
+      "id": "K02",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "4462141a2606056a4c79d7fb58dc8b2bbb9eba7a4f16fd6cc274a7bc978d8fba",
+      "native_clause_utf8_bytes_including_lf": 330,
+      "summary": "correction completion, pending-correction carry, defect routing and truthful reporting"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Any observed model, runtime, or session identifier is execution provenance",
+      "id": "K03",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "226f3b934c9db716c1e48def8c7ad1932242b56599bc284b71207747ba065c9e",
+      "native_clause_utf8_bytes_including_lf": 283,
+      "summary": "project identity/reality boundary and symmetric relational/ontology language"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Package generation, repository availability, upload, Project Settings replacement, cold-start readback, and verified installation are distinct.",
+      "id": "K04",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "f7746e4eaa692d897d7f847d827db0d750605338dbb81deb9f3b1153330934c4",
+      "native_clause_utf8_bytes_including_lf": 230,
+      "summary": "installation/build/runtime/effect evidence domains remain distinct"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "For project-history, identity, correction, relationship, commitment, contradiction, chronology, or unfinished-work-sensitive claims:",
+      "id": "K05",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "f1779adcef056a1111b7365b04ba2b2709b11ce292b7e96a758f5358351774e2",
+      "native_clause_utf8_bytes_including_lf": 375,
+      "summary": "currentness is evidence-driven and fails dependent claims closed when unresolved"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Memory class is exactly `AUTOBIOGRAPHICAL`, `WORKING_PROJECT`, or `HISTORICAL_AUDIT`.",
+      "id": "K06",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "f5095262f0f2f929dce60ca1390485e3c54e8ff83ca656c796e2f2b1b62f5456",
+      "native_clause_utf8_bytes_including_lf": 362,
+      "summary": "memory classes and autobiographical admission/readback default-deny"
+    },
+    {
+      "exact_detail_owner": "validation/R9B0_MEMORY_EPOCH_CONTRACT.json + schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json",
+      "full_surface_anchor": "## R9B0 memory verification epoch",
+      "id": "K07",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "1bc60c5f92d8784d5241e3a56785dd77a92235157be70eabb0e4e22792891a67",
+      "native_clause_utf8_bytes_including_lf": 644,
+      "summary": "lazy R9B0 full-fidelity dual-store memory epoch plus lossless archive and partial-failure rules"
+    },
+    {
+      "exact_detail_owner": "validation/R9B0_SEMANTIC_PROJECTION_MANIFEST.json",
+      "full_surface_anchor": "Ordinary save/remember/note language performs the authorized internal operation",
+      "id": "K08",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "0d79cdb975ad31d1f5fdee73194d6864b61dce0c1d99df0b978718bb0ea43d6d",
+      "native_clause_utf8_bytes_including_lf": 359,
+      "summary": "internal memory operations with natural presentation and separately gated wire output"
+    },
+    {
+      "exact_detail_owner": "validation/R9B0_SEMANTIC_PROJECTION_MANIFEST.json",
+      "full_surface_anchor": "Governed-currentness capability is exactly `DIRECT_READ`, `BACKEND_DELEGATION`, `NONE`, or `UNKNOWN`.",
+      "id": "K09",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "f1e476dd6919c601472990504c22bf11bba99344d3e8c544d7cf7a0640831b5c",
+      "native_clause_utf8_bytes_including_lf": 392,
+      "summary": "provider-neutral currentness bridge with route/authority/fail-closed separation"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Recovery must operate from native Project files, Supabase structured state, GitHub immutable source, and Drive evidence.",
+      "id": "K10",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "78e034eee265254d33dd4f5588a2b38db65d0a0271c7b631154c945079261429",
+      "native_clause_utf8_bytes_including_lf": 362,
+      "summary": "archive/data-not-instruction, recovery provenance and private-material exclusion"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Safe reads use an initial attempt, one same-route retry for a transient failure",
+      "id": "K11",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "0a6eae65aac098b4973a5e1a7b01c92f491e9466dc1cff0b66e2ba74e48aa03c",
+      "native_clause_utf8_bytes_including_lf": 346,
+      "summary": "safe read retry and inspect-before-retry ambiguous/non-idempotent write discipline"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "No force push, merge, deployment, production database mutation, credential action, paid infrastructure, model training, deletion, installation, or canonical-memory write occurs without explicit authority",
+      "id": "K12",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "6f51ea5ebd2a33d58d8faa7adbd202921c17c1e5d60a2c4b9ac808cdb663b683",
+      "native_clause_utf8_bytes_including_lf": 336,
+      "summary": "protected-effect authority, evidence-backed progress/effect claims and immutable review subjects"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "## Retrieval provenance and chronology",
+      "id": "K13",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "b47e4f0c356c2016b900734c406c074550d635c94bd300f6531b598ed5ec4f97",
+      "native_clause_utf8_bytes_including_lf": 342,
+      "summary": "literal-first provenance retrieval, evidence-class honesty and capability inventory"
+    },
+    {
+      "exact_detail_owner": "validation/VERA_BEHAVIOR_PROFILE_V1.json",
+      "full_surface_anchor": "The canonical behavior projection requires a recognizable non-generic Vera voice",
+      "id": "K14",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "e582627b0bde3aeb18dd0cec206b8393765c90c1ba37706b85172af2e38ade70",
+      "native_clause_utf8_bytes_including_lf": 380,
+      "summary": "bound behavior profile, anti-flattening and bounded roleplay"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Stale historical safety evidence does not promote itself into current risk.",
+      "id": "K15",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "8f908e05b5cf3ab8bb8219c4ef650f29435e780dd674c0f1c094fa994edf2da6",
+      "native_clause_utf8_bytes_including_lf": 327,
+      "summary": "current-chat divergence, risk provenance and stale-historical-risk nonpromotion"
+    },
+    {
+      "exact_detail_owner": "project/VERA_R9A0_RUNTIME.md",
+      "full_surface_anchor": "Database generation qualification is provenance, not timeless authority.",
+      "id": "K16",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "074ef28c2d52caf7d866e8ef34062887db73378ae82bc958a9b0701f43e9be36",
+      "native_clause_utf8_bytes_including_lf": 266,
+      "summary": "database qualification is currentness-conditional provenance, not operation authority"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Renderer/control-token leakage, current-chat transport, direct Voice tool exposure, actual Voice-to-backend delegation capability, and exact active Settings bytes remain independent runtime/effect evidence ceilings",
+      "id": "K17",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "87f614448a3bead5587f9e6934053e650d0efaf29e921e34bdba453ffb08f2b2",
+      "native_clause_utf8_bytes_including_lf": 345,
+      "summary": "source/runtime/renderer/Voice claim ceilings and no hidden-control disclosure"
+    },
+    {
+      "exact_detail_owner": null,
+      "full_surface_anchor": "Stop only at a genuine safety, permission, authority, verification, branch, or material-uncertainty boundary.",
+      "id": "K18",
+      "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
+      "native_clause_sha256": "842714d5af8b08be782ec9c368a1fb5c10ad639156a8b75dbbde781722cbeae5",
+      "native_clause_utf8_bytes_including_lf": 270,
+      "summary": "continuation/reporting-mode persistence, hard quantitative verification and genuine stop conditions"
+    }
+  ],
+  "schema": "R9B0_NATIVE_OBLIGATION_MATRIX_V1",
+  "shared_cross_surface_families": [
+    "correction_carry",
+    "behavior_profile",
+    "currentness_bridge",
+    "mve_internal_presentation",
+    "current_chat_divergence",
+    "safety_history",
+    "database_qualification_currentness",
+    "memory_epoch",
+    "runtime_effect_ceiling"
+  ],
+  "status": "SOURCE_CONFORMANCE_MATRIX_NOT_RUNTIME_AUTHORITY",
+  "version": "1.0.0"
+}
