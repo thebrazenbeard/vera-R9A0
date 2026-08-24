@@ -351,7 +351,7 @@ jobs:
                   raise SystemExit(f"view definition digest mismatch for {rel}: {digest}")
               if owner != "postgres" or opts != "security_invoker=true":
                   raise SystemExit(f"owner/options mismatch for {rel}")
-              if (anon,auth,service_sel,service_i,service_u,service_d) != ("f","f","t","f","f","f"):
+              if (anon,auth,service_sel,service_i,service_u,service_d) != ("false","false","true","false","false","false"):
                   raise SystemExit(f"privilege posture mismatch for {rel}")
               observed[rel] = int(oid)
           if set(observed) != set(expected):
