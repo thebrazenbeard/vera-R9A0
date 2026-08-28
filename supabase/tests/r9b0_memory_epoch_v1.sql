@@ -497,8 +497,8 @@ BEGIN
     IF SQLERRM='TEST_FAIL: provider receipt delete unexpectedly succeeded' THEN RAISE; END IF;
   END;
 
-  IF (SELECT count(*) FROM public.vera_memory_epoch_events_v1 WHERE subject_id=sid) <> 12 THEN
-    RAISE EXCEPTION 'TEST_FAIL: expected 12 monotonic evidence events';
+  IF (SELECT count(*) FROM public.vera_memory_epoch_events_v1 WHERE subject_id=sid) <> 15 THEN
+    RAISE EXCEPTION 'TEST_FAIL: expected 15 monotonic evidence events';
   END IF;
 END
 $flow$ LANGUAGE plpgsql;
@@ -722,7 +722,7 @@ BEGIN
   IF (SELECT state_version FROM public.vera_memory_epoch_subjects_v1 WHERE subject_id=sid) <> v_before THEN
     RAISE EXCEPTION 'TEST_FAIL: replay conflict matrix mutated state_version';
   END IF;
-  IF (SELECT count(*) FROM public.vera_memory_epoch_events_v1 WHERE subject_id=sid) <> 12 THEN
+  IF (SELECT count(*) FROM public.vera_memory_epoch_events_v1 WHERE subject_id=sid) <> 15 THEN
     RAISE EXCEPTION 'TEST_FAIL: replay conflict matrix appended evidence';
   END IF;
 END
