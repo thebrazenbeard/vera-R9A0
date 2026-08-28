@@ -385,6 +385,11 @@ REVOKE ALL ON TABLE
   public.vera_memory_epoch_archive_receipts_v1
 FROM PUBLIC, anon, authenticated, service_role;
 
+-- The identity sequence is a separate privilege-bearing object. Supabase public-schema
+-- default sequence ACLs may expose client/service roles unless explicitly revoked.
+REVOKE ALL ON SEQUENCE public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq
+FROM PUBLIC, anon, authenticated, service_role;
+
 -- No RLS policies are created in v1. Initial callable posture is owner/postgres only.
 -- No service_role raw table privilege or RPC EXECUTE is granted by this migration.
 
@@ -439,7 +444,7 @@ BEGIN
     'lifecycle_status', s.lifecycle_status,
     'currentness_rule', s.currentness_rule,
     'provider_receipts', (
-      SELECT pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
+      SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
         'receipt_id', pr.receipt_id,
         'provider_class', pr.provider_class,
         'attempt_id', pr.attempt_id,
@@ -453,7 +458,7 @@ BEGIN
       WHERE pr.subject_id = s.subject_id
     ),
     'archive_receipts', (
-      SELECT pg_catalog.coalesce(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
+      SELECT COALESCE(pg_catalog.jsonb_agg(pg_catalog.jsonb_build_object(
         'archive_receipt_id', ar.archive_receipt_id,
         'attempt_id', ar.attempt_id,
         'operation_id', ar.operation_id,
@@ -508,7 +513,7 @@ BEGIN
     );
   END IF;
 
-  SELECT pg_catalog.coalesce((
+  SELECT COALESCE((
     SELECT pr.result = 'VERIFIED_EXACT' AND pr.envelope_sha256 = s.envelope_sha256
     FROM public.vera_memory_epoch_provider_receipts_v1 pr
     WHERE pr.subject_id = s.subject_id
@@ -518,7 +523,7 @@ BEGIN
     LIMIT 1
   ), false) INTO sup_exact;
 
-  SELECT pg_catalog.coalesce((
+  SELECT COALESCE((
     SELECT pr.result = 'VERIFIED_EXACT' AND pr.envelope_sha256 = s.envelope_sha256
     FROM public.vera_memory_epoch_provider_receipts_v1 pr
     WHERE pr.subject_id = s.subject_id
@@ -744,7 +749,7 @@ BEGIN
   ) VALUES (
     p_event_id,p_subject_id,next_version,p_expected_prior_state,next_state,p_attempt_id,p_operation_id,'ADMISSION',
     p_expected_state_version,p_envelope_sha256,
-    (pg_catalog.coalesce(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
+    (COALESCE(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
     pg_catalog.jsonb_build_object(
       'admitted',p_admitted,'admission_metadata_sha256',p_admission_metadata_sha256,
       'admission_generation_or_digest',p_admission_generation_or_digest,
@@ -822,7 +827,7 @@ BEGIN
     ) VALUES (
       p_event_id,p_subject_id,next_version,p_expected_prior_state,'MIGRATION_CONFLICTED',p_attempt_id,p_operation_id,
       'SUPABASE_REPLICA_WRITE',p_expected_state_version,p_envelope_sha256,
-      (pg_catalog.coalesce(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
+      (COALESCE(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
       pg_catalog.jsonb_build_object(
         'conflict_reason','DIVERGENT_EXISTING_SUPABASE_BYTES','replay_binding',replay_binding,
         'diagnostic_nonbinding_fields',pg_catalog.jsonb_build_array('p_event_payload')
@@ -844,7 +849,7 @@ BEGIN
   ) VALUES (
     p_event_id,p_subject_id,next_version,p_expected_prior_state,next_state,p_attempt_id,p_operation_id,
     'SUPABASE_REPLICA_WRITE',p_expected_state_version,p_envelope_sha256,
-    (pg_catalog.coalesce(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
+    (COALESCE(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') ||
     pg_catalog.jsonb_build_object(
       'incomplete_reasons',pg_catalog.jsonb_build_array('SUPABASE_WRITE_REQUIRES_INDEPENDENT_READBACK_AND_DRIVE'),
       'replay_binding',replay_binding,'diagnostic_nonbinding_fields',pg_catalog.jsonb_build_array('p_event_payload')
@@ -955,13 +960,13 @@ BEGIN
   ELSIF p_result IN ('ABSENT','AMBIGUOUS','ERROR') THEN
     next_state := 'MIGRATION_INCOMPLETE';
   ELSE
-    SELECT pg_catalog.coalesce((
+    SELECT COALESCE((
       SELECT x.result='VERIFIED_EXACT' AND x.envelope_sha256=s.envelope_sha256
       FROM public.vera_memory_epoch_provider_receipts_v1 x
       WHERE x.subject_id=s.subject_id AND x.attempt_id=p_attempt_id AND x.provider_class='SUPABASE_RUNTIME'
       ORDER BY x.observation_ordinal DESC LIMIT 1
     ), false) INTO sup_exact;
-    SELECT pg_catalog.coalesce((
+    SELECT COALESCE((
       SELECT x.result='VERIFIED_EXACT' AND x.envelope_sha256=s.envelope_sha256
       FROM public.vera_memory_epoch_provider_receipts_v1 x
       WHERE x.subject_id=s.subject_id AND x.attempt_id=p_attempt_id AND x.provider_class='GOOGLE_DRIVE_DURABLE'
@@ -1240,7 +1245,7 @@ BEGIN
   ) VALUES (
     p_event_id,p_subject_id,next_version,p_expected_prior_state,'R9B0_VERIFIED_ACTIVE',p_attempt_id,p_operation_id,'FINALIZE',
     p_expected_state_version,s.envelope_sha256,
-    (pg_catalog.coalesce(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') || pg_catalog.jsonb_build_object(
+    (COALESCE(p_event_payload,'{}'::jsonb) - 'replay_binding' - 'diagnostic_nonbinding_fields') || pg_catalog.jsonb_build_object(
       'admission_receipt_id',p_admission_receipt_id,'drive_receipt_id',p_drive_receipt_id,
       'supabase_receipt_id',p_supabase_receipt_id,'archive_receipt_id',p_archive_receipt_id,
       'present_truth_promoted',false,'replay_binding',replay_binding,

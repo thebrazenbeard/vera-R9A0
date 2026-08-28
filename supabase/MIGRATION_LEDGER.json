@@ -31,24 +31,24 @@
       "applied_version": null,
       "name": "r9b0_memory_epoch_v1",
       "source_path": "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
-      "source_sha256": "d445c4d3dbede9a0a3debed36c5e6e0561ed40761e0c7ac37e3f32b3cf2176e7",
+      "source_sha256": "b3854fe5147f3868c716f0602e95d0ad84bcbad7421e6d223d4f4b10b2ac8b30",
       "applied_path": null,
       "applied_statements_sha256": null,
       "applied_commit": null,
       "rollback_path": "supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql",
-      "rollback_sha256": "4bd3aa7fc25dc6c43a1c5a137476a95892cd710fc43174d83dd7dddda0549596",
+      "rollback_sha256": "e40732bb3c6446fd7611258b95b92d672368c58096c3b5266dbce9e106f4b9d6",
       "test_path": "supabase/tests/r9b0_memory_epoch_v1.sql",
-      "test_sha256": "8c3d413daeb50f9209f53b6a74d883d6cc15a962faafe46ced82abb02a1eb61c",
+      "test_sha256": "e2ac4fc30f36a11a5d0928ceff71983a85eba7b55e3d70fa1286f700beb72093",
       "target_project_ref": "klmbpaigzeguvnpccqzz",
       "source_branch": "feature/r9a0-combined-native-implementation-v1",
-      "source_base_sha": "6df512f9a9ec596e86317ab5064b7394747d37da",
+      "source_base_sha": "4a3c571436a83cc70df9a4b7fce4101576f45919",
       "allowed_namespaces": [
         "public.vera_memory_epoch_*"
       ],
       "test_status": "PENDING_G1_DISPOSABLE_POSTGRESQL",
       "synthetic_rows_persisted": 0,
       "status": "CANDIDATE_G0_NOT_APPLIED",
-      "provenance_note": "DB-G5 exact reviewed static candidate. G0 publication does not imply Supabase application; applied_* remain null until separately leased D0 and independent provider readback."
+      "provenance_note": "DB-G7 local runtime-corrected successor derived from exact DB-G6 after CI-G1-R3 exposed invalid schema-qualified COALESCE calls. Git integration and Supabase application are not yet performed; applied_* remain null until separately authorized and independently read back."
     }
   ]
 }

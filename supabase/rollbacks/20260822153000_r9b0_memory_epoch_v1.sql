@@ -17,6 +17,9 @@ REVOKE ALL ON TABLE
   public.vera_memory_epoch_archive_receipts_v1
 FROM PUBLIC, anon, authenticated, service_role;
 
+REVOKE ALL ON SEQUENCE public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq
+FROM PUBLIC, anon, authenticated, service_role;
+
 -- Existing evidence is intentionally preserved. Any correction is a reviewed successor migration.
 
 REVOKE ALL ON FUNCTION public._vera_memory_epoch_guard_v1() FROM PUBLIC, anon, authenticated, service_role;

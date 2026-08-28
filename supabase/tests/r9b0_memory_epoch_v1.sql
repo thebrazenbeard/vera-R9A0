@@ -70,6 +70,38 @@ BEGIN
     END IF;
   END LOOP;
 
+  IF pg_catalog.to_regclass('public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq') IS NULL THEN
+    RAISE EXCEPTION 'TEST_FAIL: provider observation ordinal identity sequence absent';
+  END IF;
+
+  IF (
+    SELECT pg_catalog.pg_get_userbyid(c.relowner)
+    FROM pg_catalog.pg_class c
+    WHERE c.oid=pg_catalog.to_regclass('public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq')
+  ) <> 'postgres' THEN
+    RAISE EXCEPTION 'TEST_FAIL: provider observation ordinal identity sequence owner is not postgres';
+  END IF;
+
+  IF EXISTS (
+    SELECT 1
+    FROM pg_catalog.pg_class c
+    CROSS JOIN LATERAL pg_catalog.aclexplode(
+      COALESCE(c.relacl,pg_catalog.acldefault('S',c.relowner))
+    ) acl
+    WHERE c.oid=pg_catalog.to_regclass('public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq')
+      AND acl.grantee=0
+  ) THEN
+    RAISE EXCEPTION 'TEST_FAIL: PUBLIC sequence privilege leaked on provider observation ordinal identity sequence';
+  END IF;
+
+  FOR r IN SELECT rolname FROM pg_catalog.pg_roles WHERE rolname IN ('anon','authenticated','service_role') LOOP
+    IF pg_catalog.has_sequence_privilege(r.rolname,'public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq','SELECT')
+       OR pg_catalog.has_sequence_privilege(r.rolname,'public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq','USAGE')
+       OR pg_catalog.has_sequence_privilege(r.rolname,'public.vera_memory_epoch_provider_receipts_v1_observation_ordinal_seq','UPDATE') THEN
+      RAISE EXCEPTION 'TEST_FAIL: effective sequence privilege leaked to % on provider observation ordinal identity sequence',r.rolname;
+    END IF;
+  END LOOP;
+
   FOR r IN
     SELECT p.oid,p.proname,p.prosecdef,p.proconfig
     FROM pg_catalog.pg_proc p JOIN pg_catalog.pg_namespace n ON n.oid=p.pronamespace

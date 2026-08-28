@@ -361,13 +361,13 @@ jobs:
           print(json.dumps(observed,sort_keys=True))
           PY
 
-      - name: Apply exact DB-G5 migration
+      - name: Apply exact DB-G7 migration
         id: migration
         run: |
           set -euo pipefail
           psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql
 
-      - name: Run exact DB-G5 SQL acceptance test
+      - name: Run exact DB-G7 SQL acceptance test
         id: sql_test
         run: |
           set -euo pipefail
