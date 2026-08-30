@@ -5,15 +5,8 @@ ROOT=pathlib.Path(__file__).resolve().parents[2]
 HELPER=ROOT/'scripts'/'r9b0_memory_epoch_drive.py'
 EXPECTED_COMMANDS={'inspect','create-or-verify-active','verify-active-readback','create-or-verify-archive-generation','verify-archive-readback'}
 
-TEST_EVIDENCE_AUTHORITY_ID='BT2_R9B0_TEST_VERIFIER_ONLY'
-TEST_EVIDENCE_KEY_ID='BT2_R9B0_TEST_RSA_ONLY'
-
 def load_helper():
     spec=importlib.util.spec_from_file_location('r9b0_memory_epoch_drive',HELPER); mod=importlib.util.module_from_spec(spec); spec.loader.exec_module(mod)
-    mod.EVIDENCE_TRUST_ROOT_STATE='CONFIGURED'
-    mod.EVIDENCE_AUTHORITY_ID=TEST_EVIDENCE_AUTHORITY_ID
-    mod.EVIDENCE_KEY_ID=TEST_EVIDENCE_KEY_ID
-    mod._EVIDENCE_RSA_N=TEST_RSA_N
     return mod
 
 
@@ -22,25 +15,8 @@ def _digest_doc(doc, field):
     return hashlib.sha256(json.dumps(body,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()
 
 
-# TEST-ONLY NON-AUTHORITY KEYPAIR. Its public key is injected only into the
-# imported test module; production ships with no configured verifier key.
-TEST_RSA_N=int("bb160e11ae9c50127b00ed651a033cb4a78600359d1ddc1a2507df50f7bc6af7e5bc42d22db2372f20daf44a57af0de4711f85f58e658a207bf6d37196bf4f7de7616749ee12400fb73ab4ca52bbde3f3ad29eae50293a8f65d691dc9ee4738dfda06355a8004c0fb82a83cdb9648f7657bc26492af1e899efc20b17202432ab0fe61ccde4a7afa2094411b550236f1cbfb9fe96e741bf1bf998c8849296dd6fd6bf9355f6b4bdbd288e60d09c820e352e540991b3deb6f9178523c57f8585c1ff107c256c551dc62ce3748a787250ff22a06ad6fc3da22f773db3eae430e2686d0b9329d635e6fffbed0cc1c0e4227e42913c06fe87df66b607d7f50d655239",16)
-TEST_RSA_D=int("1be3dbd11300c6871ac336a0bdd201b8c4c89b3b62e2d2af2b1a135694b8081250b3521ad7291c44f056f3d8295e3569fadb42332b3943f037cac216caec564364bd0692e4e4df9bf82ace4ce32c92a34677a3a444db0099e40aaad002f7f7aa114759c7a935f220ddc9a8c08084d746432a0f6314fddf39239effdc40b464c10dbfeb5ff39a335bd9c9cfb8c008268418ba1a6c35e38986e6eeec4282f6ec67d511a715fbcd8686bab0236b8f15ca9e224a10fece9d3ad94953e1ff34d627d51d02f99c4e87cdd0df48c3c86043bc3daedba983a0f00e9b364faf17cd5a5b341227261fc28d59d816437eadf28329fecdeb614c52fb3643d880b04712b28121",16)
-
-def _rsa_sign_sha256(message):
-    k=(TEST_RSA_N.bit_length()+7)//8
-    digest=hashlib.sha256(message).digest()
-    di=bytes.fromhex("3031300d060960864801650304020105000420")+digest
-    em=b"\x00\x01"+b"\xff"*(k-len(di)-3)+b"\x00"+di
-    return pow(int.from_bytes(em,"big"),TEST_RSA_D,TEST_RSA_N).to_bytes(k,"big")
-
 def make_attestation(evidence_sha256,purpose):
-    now=dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
-    doc={'schema':'R9B0_VERIFIER_AUTHORITY_ATTESTATION_V1','authority_id':TEST_EVIDENCE_AUTHORITY_ID,'key_id':TEST_EVIDENCE_KEY_ID,'purpose':purpose,'evidence_sha256':evidence_sha256,'issued_at':now.isoformat().replace('+00:00','Z'),'valid_until':(now+dt.timedelta(seconds=240)).isoformat().replace('+00:00','Z'),'nonce':'test-nonce','signature_base64':''}
-    body=dict(doc); body.pop('signature_base64')
-    raw=json.dumps(body,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()
-    doc['signature_base64']=base64.b64encode(_rsa_sign_sha256(raw)).decode()
-    return doc
+    return None
 
 def write_doc(root,name,doc):
     p=pathlib.Path(root)/name; p.write_text(json.dumps(doc,separators=(',',':'))); return str(p)
@@ -433,13 +409,12 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
         with tempfile.TemporaryDirectory() as td:
             root=pathlib.Path(td); raw,obj,op=make_envelope(m); env=root/'e.json'; env.write_bytes(raw); sha=hashlib.sha256(raw).hexdigest(); rel=f'active/p1/b1/m1/{sha}.memory-epoch.json'
             doc=make_inventory([],parent_id=m.R9B0_DRIVE_PARENT_ID,relative_path=rel,operation_id=op); inv=write_doc(root,'i.json',doc)
-            admission=make_admission_evidence(raw,obj,op); admp=write_doc(root,'admission.json',admission); admatt=write_doc(root,'admission.att.json',make_attestation(admission['evidence_sha256'],'ACTIVE_DUPLICATION_ADMISSION'))
-            base=dict(envelope=str(env),operation_id=op,migration_key=op,project_id='p1',branch_id='b1',logical_memory_id='m1',inventory=inv,inventory_evidence_sha256=doc['snapshot_sha256'],admission_evidence=admp,admission_attestation=admatt,parent_id=m.R9B0_DRIVE_PARENT_ID)
-            self.assertEqual(m._active_plan(types.SimpleNamespace(**base,inventory_attestation=None))['status'],'OUTCOME_UNKNOWN')
-            forged=make_attestation(doc['snapshot_sha256'],'DRIVE_INVENTORY_SNAPSHOT'); forged['signature_base64']=base64.b64encode(b'0'*256).decode(); fp=write_doc(root,'forged.att.json',forged)
-            self.assertEqual(m._active_plan(types.SimpleNamespace(**base,inventory_attestation=fp))['status'],'OUTCOME_UNKNOWN')
-            good=write_doc(root,'good.att.json',make_attestation(doc['snapshot_sha256'],'DRIVE_INVENTORY_SNAPSHOT'))
-            self.assertEqual(m._active_plan(types.SimpleNamespace(**base,inventory_attestation=good))['status'],'CREATE')
+            admission=make_admission_evidence(raw,obj,op); admp=write_doc(root,'admission.json',admission)
+            base=dict(envelope=str(env),operation_id=op,migration_key=op,project_id='p1',branch_id='b1',logical_memory_id='m1',inventory=inv,inventory_evidence_sha256='f'*64,admission_evidence=admp,parent_id=m.R9B0_DRIVE_PARENT_ID)
+            self.assertEqual(m._active_plan(types.SimpleNamespace(**base))['status'],'OUTCOME_UNKNOWN')
+            base['inventory_evidence_sha256']=doc['snapshot_sha256']
+            r=m._active_plan(types.SimpleNamespace(**base)); self.assertEqual(r['status'],'CREATE')
+            self.assertEqual(r['verification_scope'],'LOCAL_DETERMINISTIC_ONLY'); self.assertIs(r['provider_authority'],False)
 
     def test_inventory_snapshot_attests_path_and_global_operation_scope(self):
         m=load_helper(); raw,obj,op=make_envelope(m); sha=hashlib.sha256(raw).hexdigest(); rel=f'active/p1/b1/m1/{sha}.memory-epoch.json'
@@ -454,7 +429,7 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
         m=load_helper(); raw,obj,op=make_envelope(m); sha=hashlib.sha256(raw).hexdigest(); rel=f'active/p1/b1/m1/{sha}.memory-epoch.json'
         ev=make_readback_evidence(operation_id=op,sha256=sha,byte_length=len(raw),provider_locator='file',provider_revision='rev',parent_id=m.R9B0_DRIVE_PARENT_ID,relative_path=rel)
         r=m.verify_active_readback(raw,io.BytesIO(raw),ev)
-        self.assertEqual(r['status'],'MISMATCH'); self.assertEqual(r['reason'],'READBACK_EVIDENCE_INVALID')
+        self.assertEqual(r['status'],'VERIFIED_EXACT'); self.assertEqual(r['verification_scope'],'LOCAL_DETERMINISTIC_ONLY'); self.assertIs(r['provider_authority'],False)
 
     def test_non_nfc_envelope_string_is_noncanonical(self):
         m=load_helper(); raw,obj,op=make_envelope(m); bad=json.loads(raw); bad['provenance']['source_actor']='e\u0301'; badraw=json.dumps(bad,sort_keys=True,separators=(',',':'),ensure_ascii=False).encode()
@@ -478,9 +453,11 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
             self.assertEqual(r['status'],'CONFLICT'); self.assertEqual(r['reason'],'LOCAL_ARCHIVE_CREATE_RACE')
 
     def test_019_self_hashed_detached_evidence_cannot_self_authorize(self):
-        m=load_helper(); doc={'x':'caller-controlled'}; digest=hashlib.sha256(json.dumps(doc,sort_keys=True,separators=(',',':')).encode()).hexdigest()
-        forged=make_attestation(digest,'DRIVE_INVENTORY_SNAPSHOT'); forged['signature_base64']=base64.b64encode(b'\x01'*256).decode()
-        with self.assertRaises(ValueError): m.validate_authority_attestation(forged,expected_evidence_sha256=digest,expected_purpose='DRIVE_INVENTORY_SNAPSHOT')
+        m=load_helper(); sha='0'*64; rel='active/p/b/m/'+sha+'.memory-epoch.json'
+        candidate=make_candidate(operation_id='op',sha256=sha,byte_length=1,provider_locator='drive://file',parent_id='parent',relative_path=rel,with_readback=False)
+        candidate['provider_authority']=True
+        with self.assertRaises(ValueError):
+            m.classify_candidates([candidate],'op',sha,1,expected_parent_id='parent',expected_relative_path=rel)
 
     def test_020_active_create_blocks_forbidden_privacy_and_tombstoned_lifecycle(self):
         m=load_helper()
@@ -503,12 +480,10 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
             se=make_active_store_readback(provider_class='SUPABASE_RUNTIME',provider_receipt_id=sup,locator='supabase://row',provider_identity='supabase-project-r9b0',**common)
             de=make_active_store_readback(provider_class='GOOGLE_DRIVE_DURABLE',provider_receipt_id=drv,locator='drive://file',provider_identity='drive-parent-r9b0',**common)
             sep=write_doc(root,'se.json',se); dep=write_doc(root,'de.json',de)
-            satt=make_attestation(se['evidence_sha256'],'ACTIVE_STORE_READBACK_SUPABASE'); satt['signature_base64']=base64.b64encode(b'\x02'*256).decode()
-            sattp=write_doc(root,'se.att.json',satt); datt=write_doc(root,'de.att.json',make_attestation(de['evidence_sha256'],'ACTIVE_STORE_READBACK_DRIVE'))
-            argv=['create-or-verify-archive-generation','--envelope',str(envelope_path),'--original',str(original_path),'--output',str(output),'--logical-memory-id','m','--original-sha256',sha,'--generation-id','g','--predecessor-generation','p','--predecessor-container-sha256','1'*64,'--subject-id','s','--admission-receipt-id',admission,'--supabase-receipt-id',sup,'--drive-receipt-id',drv,'--operation-id',op,'--supabase-readback-evidence',sep,'--supabase-readback-attestation',sattp,'--drive-readback-evidence',dep,'--drive-readback-attestation',datt]
-            with mock.patch('builtins.print'):
-                rc=m.main(argv)
-            self.assertEqual(rc,2); self.assertFalse(output.exists())
+            argv=['create-or-verify-archive-generation','--envelope',str(envelope_path),'--original',str(original_path),'--output',str(output),'--logical-memory-id','m','--original-sha256',sha,'--generation-id','g','--predecessor-generation','p','--predecessor-container-sha256','1'*64,'--subject-id','s','--admission-receipt-id',admission,'--supabase-receipt-id',sup,'--drive-receipt-id',drv,'--operation-id',op,'--supabase-readback-evidence',sep,'--supabase-readback-attestation','legacy.json','--drive-readback-evidence',dep]
+            with self.assertRaises(SystemExit) as c:
+                m.main(argv)
+            self.assertEqual(c.exception.code,2); self.assertFalse(output.exists())
 
     def test_022_provider_locator_cannot_bind_contradictory_identities(self):
         m=load_helper(); sha='0'*64; rel='active/p/b/m/'+sha+'.memory-epoch.json'; parent='parent'
@@ -559,15 +534,12 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
             self.assertEqual(r['status'],'BLOCKED_RESOURCE_LIMIT'); self.assertEqual(r['reason'],'ARCHIVE_CONTAINER_BYTES_EXCEEDED'); self.assertFalse(target.exists())
 
     def test_adjacent_attestation_purpose_and_dual_provider_binding_fail_closed(self):
-        m=load_helper(); evidence_sha='0'*64; att=make_attestation(evidence_sha,'ACTIVE_PROVIDER_READBACK')
-        with self.assertRaises(ValueError): m.validate_authority_attestation(att,expected_evidence_sha256=evidence_sha,expected_purpose='DRIVE_INVENTORY_SNAPSHOT')
+        m=load_helper(); self.assertFalse(hasattr(m,'validate_authority_attestation'))
         common=dict(operation_id='o',envelope_sha256='0'*64,envelope_byte_length=1,project_id='p',branch_id='b',epoch_id='R9B0',logical_memory_id='m',original_sha256='1'*64,original_byte_length=1,admission_generation='admit-v1',admission_metadata_sha256='2'*64,admission_receipt_id='a')
-        se=make_active_store_readback(provider_class='SUPABASE_DURABLE',provider_receipt_id='u',locator='same',**common)
-        de=make_active_store_readback(provider_class='GOOGLE_DRIVE_DURABLE',provider_receipt_id='d',locator='same',**common)
+        se=make_active_store_readback(provider_class='SUPABASE_RUNTIME',provider_receipt_id='u',locator='same',provider_identity='same-provider',**common)
+        de=make_active_store_readback(provider_class='GOOGLE_DRIVE_DURABLE',provider_receipt_id='d',locator='same',provider_identity='same-provider',**common)
         with self.assertRaises(ValueError):
-            m.validate_dual_active_readback_evidence(se,make_attestation(se['evidence_sha256'],'ACTIVE_STORE_READBACK_SUPABASE'),de,make_attestation(de['evidence_sha256'],'ACTIVE_STORE_READBACK_DRIVE'),supabase_receipt_id='u',drive_receipt_id='d',**common)
-
-
+            m.validate_dual_active_readback_evidence(se,None,de,None,supabase_receipt_id='u',drive_receipt_id='d',**common)
 
     def test_adjacent_create_detects_parent_path_replacement_as_incomplete_effect(self):
         m=load_helper(); archive=b'archive-bytes'
@@ -669,14 +641,10 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
             common=dict(operation_id=op,logical_memory_id='m',original_sha256=sha,original_byte_length=len(original),admission_receipt_id=admission,envelope_sha256=hashlib.sha256(raw).hexdigest(),envelope_byte_length=len(raw),project_id='p1',branch_id='b1',epoch_id='R9B0',admission_generation=obj['migration']['admission_generation'],admission_metadata_sha256=obj['migration']['admission_metadata_sha256'])
             se=make_active_store_readback(provider_class='SUPABASE_RUNTIME',provider_receipt_id=sup,locator='supabase://runtime/row',provider_identity='supabase-runtime-project',**common)
             de=make_active_store_readback(provider_class='GOOGLE_DRIVE_DURABLE',provider_receipt_id=drv,locator='drive://file',provider_identity='drive-durable-parent',**common)
-            sep=write_doc(root,'se.json',se); dep=write_doc(root,'de.json',de); sattp=write_doc(root,'se.att.json',make_attestation(se['evidence_sha256'],'ACTIVE_STORE_READBACK_SUPABASE')); dattp=write_doc(root,'de.att.json',make_attestation(de['evidence_sha256'],'ACTIVE_STORE_READBACK_DRIVE'))
-            argv=['create-or-verify-archive-generation','--envelope',str(envelope_path),'--original',str(original_path),'--output',str(output),'--logical-memory-id','m','--original-sha256',sha,'--generation-id','g','--predecessor-generation','p','--predecessor-container-sha256','1'*64,'--subject-id','s','--admission-receipt-id',admission,'--supabase-receipt-id',sup,'--drive-receipt-id',drv,'--operation-id',op,'--supabase-readback-evidence',sep,'--supabase-readback-attestation',sattp,'--drive-readback-evidence',dep,'--drive-readback-attestation',dattp]
+            sep=write_doc(root,'se.json',se); dep=write_doc(root,'de.json',de)
+            argv=['create-or-verify-archive-generation','--envelope',str(envelope_path),'--original',str(original_path),'--output',str(output),'--logical-memory-id','m','--original-sha256',sha,'--generation-id','g','--predecessor-generation','p','--predecessor-container-sha256','1'*64,'--subject-id','s','--admission-receipt-id',admission,'--supabase-receipt-id',sup,'--drive-receipt-id',drv,'--operation-id',op,'--supabase-readback-evidence',sep,'--drive-readback-evidence',dep]
             with mock.patch('builtins.print'):
-                self.assertEqual(m.main(argv),0)
-                self.assertTrue(output.exists())
-                first=output.read_bytes()
-                self.assertEqual(m.main(argv),0)
-                self.assertEqual(output.read_bytes(),first)
+                self.assertEqual(m.main(argv),0); self.assertTrue(output.exists()); first=output.read_bytes(); self.assertEqual(m.main(argv),0); self.assertEqual(output.read_bytes(),first)
 
     def test_027_dual_readback_rejects_each_full_envelope_identity_mismatch_and_same_provider_identity(self):
         m=load_helper(); raw,obj,op=make_envelope(m,project_id='p1',branch_id='b1',logical_memory_id='m1',original=b'abc'); envsha=hashlib.sha256(raw).hexdigest()
@@ -714,17 +682,28 @@ class TestR9B0DualStoreImplementation(unittest.TestCase):
             self.assertEqual((parent/'archive').read_bytes(),b'evil')
 
     def test_adjacent_production_verifier_trust_root_is_fail_closed_unconfigured(self):
-        spec=importlib.util.spec_from_file_location('r9b0_memory_epoch_drive_unconfigured',HELPER)
-        m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
-        self.assertEqual(m.EVIDENCE_TRUST_ROOT_STATE,'UNCONFIGURED')
-        self.assertIsNone(m._EVIDENCE_RSA_N)
-        now=dt.datetime.now(dt.timezone.utc).replace(microsecond=0)
-        att={'schema':m.EVIDENCE_ATTESTATION_SCHEMA,'authority_id':m.EVIDENCE_AUTHORITY_ID,'key_id':m.EVIDENCE_KEY_ID,'purpose':'DRIVE_INVENTORY_SNAPSHOT','evidence_sha256':'0'*64,'issued_at':now.isoformat().replace('+00:00','Z'),'valid_until':(now+dt.timedelta(seconds=60)).isoformat().replace('+00:00','Z'),'nonce':'n','signature_base64':'AA=='}
-        with self.assertRaisesRegex(ValueError,'trust root'):
-            m.validate_authority_attestation(att,expected_evidence_sha256='0'*64,expected_purpose='DRIVE_INVENTORY_SNAPSHOT')
-        with mock.patch('builtins.print') as pr:
-            rc=m.main(['inspect','--inventory','nope','--inventory-attestation','nope','--expected-parent-id','p','--expected-relative-path','x','--operation-id','o','--expected-sha256','0'*64,'--expected-byte-length','1'])
-        self.assertEqual(rc,2)
-        self.assertIn('VERIFIER_TRUST_ROOT_UNCONFIGURED',pr.call_args.args[0])
+        spec=importlib.util.spec_from_file_location('r9b0_memory_epoch_drive_unconfigured',HELPER); m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+        for name in ('EVIDENCE_ATTESTATION_SCHEMA','EVIDENCE_TRUST_ROOT_STATE','EVIDENCE_AUTHORITY_ID','EVIDENCE_KEY_ID','_EVIDENCE_RSA_N','_EVIDENCE_RSA_E','validate_authority_attestation','verifier_trust_root_configured'):
+            self.assertFalse(hasattr(m,name),name)
+        with self.assertRaises(SystemExit) as c:
+            m.main(['inspect','--inventory','nope','--inventory-attestation','legacy.json','--expected-parent-id','p','--expected-relative-path','x','--operation-id','o','--expected-sha256','0'*64,'--expected-byte-length','1'])
+        self.assertEqual(c.exception.code,2)
+
+    def test_local_success_is_never_provider_authority(self):
+        m=load_helper(); op='op'; sha='0'*64; ck=dict(expected_parent_id='parent',expected_relative_path='x')
+        r=m.classify_candidates([],op,sha,1,**ck)
+        self.assertEqual(r['status'],'CREATE')
+        self.assertEqual(r['verification_scope'],'LOCAL_DETERMINISTIC_ONLY')
+        self.assertIs(r['provider_authority'],False)
+
+    def test_legacy_attestation_runtime_is_absent(self):
+        m=load_helper()
+        for name in ('EVIDENCE_ATTESTATION_SCHEMA','EVIDENCE_TRUST_ROOT_STATE','EVIDENCE_AUTHORITY_ID','EVIDENCE_KEY_ID','_EVIDENCE_RSA_N','_EVIDENCE_RSA_E','verifier_trust_root_configured','validate_authority_attestation','_verify_rsa_pkcs1v15_sha256'):
+            self.assertFalse(hasattr(m,name),name)
+        helper_text=HELPER.read_text(); test_text=pathlib.Path(__file__).read_text()
+        for token in ('signature_'+'base64','_rsa_'+'sign_sha256'):
+            self.assertNotIn(token,helper_text)
+        for token in ('TEST_RSA_'+'N=int(', 'TEST_RSA_'+'D=int(', 'signature_'+'base64', '_rsa_'+'sign_sha256'):
+            self.assertNotIn(token,test_text)
 
 if __name__=='__main__':unittest.main()

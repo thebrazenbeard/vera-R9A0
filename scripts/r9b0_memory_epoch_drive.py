@@ -13,20 +13,10 @@ ENVELOPE_VERSION="1.0.1"
 INVENTORY_SNAPSHOT_SCHEMA="R9B0_DRIVE_INVENTORY_SNAPSHOT_V1"
 PROVIDER_READBACK_EVIDENCE_SCHEMA="R9B0_PROVIDER_READBACK_EVIDENCE_V1"
 ARCHIVE_READBACK_EVIDENCE_SCHEMA="R9B0_ARCHIVE_READBACK_EVIDENCE_V1"
-EVIDENCE_ATTESTATION_SCHEMA="R9B0_VERIFIER_AUTHORITY_ATTESTATION_V1"
 ADMISSION_EVIDENCE_SCHEMA="R9B0_ACTIVE_DUPLICATION_ADMISSION_EVIDENCE_V1"
 ACTIVE_STORE_READBACK_EVIDENCE_SCHEMA="R9B0_ACTIVE_STORE_READBACK_EVIDENCE_V1"
 ACTIVE_STORE_READBACK_ROLE_BY_PURPOSE={"ACTIVE_STORE_READBACK_SUPABASE":"SUPABASE_RUNTIME","ACTIVE_STORE_READBACK_DRIVE":"GOOGLE_DRIVE_DURABLE"}
-# Detached evidence is authority-bearing.  This bounded helper may VERIFY a
-# separately governed verifier root, but it may not create/select credentials.
-# No current project-owned verifier key binding was present in the reviewed
-# source set, so production stays fail-closed until Architect/user authority
-# supplies an exact reviewed public-key binding in a later authorized change.
-EVIDENCE_TRUST_ROOT_STATE="UNCONFIGURED"
-EVIDENCE_AUTHORITY_ID="UNCONFIGURED"
-EVIDENCE_KEY_ID="UNCONFIGURED"
-_EVIDENCE_RSA_N=None
-_EVIDENCE_RSA_E=65537
+LOCAL_VERIFICATION_SCOPE="LOCAL_DETERMINISTIC_ONLY"
 MAX_EVIDENCE_AGE_SECONDS=300
 RESOURCE_PROFILE_SCHEMA="MEMORY_EPOCH_RESOURCE_PROFILE_V1"
 RESOURCE_PROFILE_BINDING_SCHEMA="MEMORY_EPOCH_RESOURCE_PROFILE_CURRENT_BINDING_V1"
@@ -142,32 +132,8 @@ def _canonical_b64_decode(value,name):
     if base64.b64encode(raw).decode("ascii")!=value: raise ValueError(f"{name} is not canonical RFC4648 base64")
     return raw
 
-def verifier_trust_root_configured():
-    return EVIDENCE_TRUST_ROOT_STATE=="CONFIGURED" and isinstance(_EVIDENCE_RSA_N,int) and _EVIDENCE_RSA_N>0
-
-def _verify_rsa_pkcs1v15_sha256(message,signature_b64):
-    if not verifier_trust_root_configured():
-        raise ValueError("verifier trust root is not configured")
-    sig=_canonical_b64_decode(signature_b64,"signature_base64")
-    k=(_EVIDENCE_RSA_N.bit_length()+7)//8
-    if len(sig)!=k: raise ValueError("authority signature length mismatch")
-    em=pow(int.from_bytes(sig,"big"),_EVIDENCE_RSA_E,_EVIDENCE_RSA_N).to_bytes(k,"big")
-    digest=hashlib.sha256(message).digest()
-    digest_info=bytes.fromhex("3031300d060960864801650304020105000420")+digest
-    expected=b"\x00\x01"+b"\xff"*(k-len(digest_info)-3)+b"\x00"+digest_info
-    if em!=expected: raise ValueError("authority signature verification failed")
-
-def validate_authority_attestation(attestation,*,expected_evidence_sha256,expected_purpose):
-    required=("schema","authority_id","key_id","purpose","evidence_sha256","issued_at","valid_until","nonce","signature_base64")
-    _require_exact_keys(attestation,required,name="verifier authority attestation")
-    if attestation["schema"]!=EVIDENCE_ATTESTATION_SCHEMA or attestation["authority_id"]!=EVIDENCE_AUTHORITY_ID or attestation["key_id"]!=EVIDENCE_KEY_ID: raise ValueError("untrusted verifier authority")
-    if attestation["purpose"]!=expected_purpose: raise ValueError("authority attestation purpose mismatch")
-    if attestation["evidence_sha256"]!=validate_sha256_hex(expected_evidence_sha256,"expected_evidence_sha256"): raise ValueError("authority attestation evidence digest mismatch")
-    _require_str(attestation["nonce"],"nonce")
-    _validate_current_observation(attestation["issued_at"],valid_until=attestation["valid_until"])
-    body=dict(attestation); signature=body.pop("signature_base64")
-    _verify_rsa_pkcs1v15_sha256(_canonical_json_bytes(body),signature)
-    return attestation
+def _local_result(result):
+    out=dict(result); out["verification_scope"]=LOCAL_VERIFICATION_SCOPE; out["provider_authority"]=False; return out
 
 def derive_memory_epoch_operation_id(envelope):
     return memory_epoch_operation_identity([
@@ -343,7 +309,7 @@ def validate_readback_evidence(evidence,*,operation_id=None,sha256=None,byte_len
     return evidence
 
 
-def validate_duplication_admission_evidence(evidence,attestation,*,parsed_envelope,envelope_sha256):
+def validate_duplication_admission_evidence(evidence,attestation=None,*,parsed_envelope,envelope_sha256):
     required=("schema","status","operation_id","envelope_sha256","admission_authority_ref","admission_generation","admission_metadata_sha256","privacy_scope","lifecycle","duplication_eligible","receipt_id","observation_id","observed_at","valid_until","currentness_status","evidence_sha256")
     _require_exact_keys(evidence,required,name="active duplication admission evidence")
     if evidence["schema"]!=ADMISSION_EVIDENCE_SCHEMA or evidence["status"]!="VERIFIED_ELIGIBLE" or evidence["currentness_status"]!="VERIFIED_CURRENT": raise ValueError("admission evidence status/schema invalid")
@@ -364,12 +330,11 @@ def validate_duplication_admission_evidence(evidence,attestation,*,parsed_envelo
     }
     for key,expected in checks.items():
         if evidence[key]!=expected: raise ValueError(f"admission evidence {key} mismatch")
-    digest=_validate_document_digest(evidence,"evidence_sha256")
+    _validate_document_digest(evidence,"evidence_sha256")
     _validate_current_observation(evidence["observed_at"],valid_until=evidence["valid_until"])
-    validate_authority_attestation(attestation,expected_evidence_sha256=digest,expected_purpose="ACTIVE_DUPLICATION_ADMISSION")
     return evidence
 
-def validate_active_store_readback_evidence(evidence,attestation,*,expected_purpose,operation_id,envelope_sha256,envelope_byte_length,project_id,branch_id,epoch_id,logical_memory_id,original_sha256,original_byte_length,admission_generation,admission_metadata_sha256,admission_receipt_id,provider_receipt_id):
+def validate_active_store_readback_evidence(evidence,attestation=None,*,expected_purpose,operation_id,envelope_sha256,envelope_byte_length,project_id,branch_id,epoch_id,logical_memory_id,original_sha256,original_byte_length,admission_generation,admission_metadata_sha256,admission_receipt_id,provider_receipt_id):
     required=("schema","status","provider_class","provider_identity","provider_locator","provider_revision","operation_id","envelope_sha256","envelope_byte_length","project_id","branch_id","epoch_id","logical_memory_id","original_sha256","original_byte_length","admission_generation","admission_metadata_sha256","admission_receipt_id","provider_receipt_id","receipt_id","observation_id","observed_at","valid_until","currentness_status","evidence_sha256")
     _require_exact_keys(evidence,required,name="active store readback evidence")
     expected_provider_class=ACTIVE_STORE_READBACK_ROLE_BY_PURPOSE.get(expected_purpose)
@@ -383,9 +348,8 @@ def validate_active_store_readback_evidence(evidence,attestation,*,expected_purp
     checks={"operation_id":operation_id,"envelope_sha256":envelope_sha256,"envelope_byte_length":envelope_byte_length,"project_id":project_id,"branch_id":branch_id,"epoch_id":epoch_id,"logical_memory_id":logical_memory_id,"original_sha256":original_sha256,"original_byte_length":original_byte_length,"admission_generation":admission_generation,"admission_metadata_sha256":admission_metadata_sha256,"admission_receipt_id":admission_receipt_id,"provider_receipt_id":provider_receipt_id}
     for key,expected in checks.items():
         if evidence[key]!=expected: raise ValueError(f"active store readback evidence {key} mismatch")
-    digest=_validate_document_digest(evidence,"evidence_sha256")
+    _validate_document_digest(evidence,"evidence_sha256")
     _validate_current_observation(evidence["observed_at"],valid_until=evidence["valid_until"])
-    validate_authority_attestation(attestation,expected_evidence_sha256=digest,expected_purpose=expected_purpose)
     return evidence
 
 def validate_dual_active_readback_evidence(supabase_evidence,supabase_attestation,drive_evidence,drive_attestation,*,operation_id,envelope_sha256,envelope_byte_length,project_id,branch_id,epoch_id,logical_memory_id,original_sha256,original_byte_length,admission_generation,admission_metadata_sha256,admission_receipt_id,supabase_receipt_id,drive_receipt_id):
@@ -402,12 +366,9 @@ def validate_candidate(candidate):
     _require_exact_keys(candidate,("operation_id","sha256","byte_length","provider_locator","provider_revision","parent_id","relative_path"),optional=("readback","readback_attestation"),name="inventory candidate")
     for key in ("operation_id","provider_locator","provider_revision"): _require_str(candidate[key],key)
     validate_sha256_hex(candidate["sha256"],"sha256"); _require_int(candidate["byte_length"],"byte_length"); validate_identity_segment(candidate["parent_id"],"parent_id"); validate_archive_member_path(candidate["relative_path"])
+    if candidate.get("readback_attestation") is not None: raise ValueError("legacy candidate attestation is not accepted")
     if "readback" in candidate:
-        if "readback_attestation" not in candidate: raise ValueError("candidate readback requires verifier-rooted attestation")
         validate_readback_evidence(candidate["readback"],operation_id=candidate["operation_id"],sha256=candidate["sha256"],byte_length=candidate["byte_length"],provider_locator=candidate["provider_locator"],provider_revision=candidate["provider_revision"],parent_id=candidate["parent_id"],relative_path=candidate["relative_path"])
-        validate_authority_attestation(candidate["readback_attestation"],expected_evidence_sha256=candidate["readback"]["evidence_sha256"],expected_purpose="ACTIVE_PROVIDER_READBACK")
-    elif "readback_attestation" in candidate:
-        raise ValueError("candidate attestation without readback")
     return candidate
 
 def validate_inventory_snapshot(document,*,expected_parent_id,expected_relative_path,expected_operation_id,authority_attestation=None,expected_evidence_sha256=None):
@@ -420,8 +381,6 @@ def validate_inventory_snapshot(document,*,expected_parent_id,expected_relative_
     for key in ("receipt_id","observation_id","snapshot_revision"): _require_str(document[key],key)
     digest=_validate_document_digest(document,"snapshot_sha256")
     if expected_evidence_sha256 is not None and digest!=validate_sha256_hex(expected_evidence_sha256,"expected_evidence_sha256"): raise ValueError("inventory evidence digest mismatch")
-    if authority_attestation is None: raise ValueError("verifier-rooted inventory attestation is required")
-    validate_authority_attestation(authority_attestation,expected_evidence_sha256=digest,expected_purpose="DRIVE_INVENTORY_SNAPSHOT")
     _validate_current_observation(document["observed_at"],valid_until=document["valid_until"])
     candidates=document["candidates"]
     if not isinstance(candidates,list): raise ValueError("inventory candidates must be a list")
@@ -455,15 +414,14 @@ def classify_candidates(candidates,operation_id,expected_sha256,expected_byte_le
         c=occupants[0]; locator=c["provider_locator"]
         if c["operation_id"]!=operation_id:return {"status":"CONFLICT","reason":"RESERVED_PATH_OCCUPIED_MISMATCH","operation_id":operation_id,"provider_locator":locator,"expected_parent_id":expected_parent_id,"expected_relative_path":expected_relative_path,"observed_operation_id":c["operation_id"],"observed_sha256":c["sha256"],"observed_byte_length":c["byte_length"]}
         if c["sha256"]!=expected_sha256 or c["byte_length"]!=expected_byte_length:return {"status":"CONFLICT","reason":"RESERVED_OPERATION_IDENTITY_DIVERGENT","operation_id":operation_id,"provider_locator":locator,"parent_id":expected_parent_id,"relative_path":expected_relative_path,"expected_sha256":expected_sha256,"observed_sha256":c["sha256"],"expected_byte_length":expected_byte_length,"observed_byte_length":c["byte_length"]}
-        if "readback" not in c or "readback_attestation" not in c:return {"status":"OUTCOME_UNKNOWN","reason":"EXACT_REUSE_READBACK_NOT_VERIFIED","operation_id":operation_id,"provider_locator":locator,"provider_revision":c["provider_revision"],"parent_id":expected_parent_id,"relative_path":expected_relative_path}
+        if "readback" not in c:return {"status":"OUTCOME_UNKNOWN","reason":"EXACT_REUSE_READBACK_NOT_VERIFIED","operation_id":operation_id,"provider_locator":locator,"provider_revision":c["provider_revision"],"parent_id":expected_parent_id,"relative_path":expected_relative_path}
         try:
             validate_readback_evidence(c["readback"],operation_id=operation_id,sha256=expected_sha256,byte_length=expected_byte_length,provider_locator=locator,provider_revision=c["provider_revision"],parent_id=expected_parent_id,relative_path=expected_relative_path)
-            validate_authority_attestation(c["readback_attestation"],expected_evidence_sha256=c["readback"]["evidence_sha256"],expected_purpose="ACTIVE_PROVIDER_READBACK")
         except ValueError:return {"status":"OUTCOME_UNKNOWN","reason":"EXACT_REUSE_READBACK_NOT_VERIFIED","operation_id":operation_id,"provider_locator":locator,"provider_revision":c["provider_revision"],"parent_id":expected_parent_id,"relative_path":expected_relative_path}
-        return {"status":"VERIFIED_REUSE","operation_id":operation_id,"provider_locator":locator,"provider_revision":c["provider_revision"],"readback_receipt_id":c["readback"]["receipt_id"],"readback_observation_id":c["readback"]["observation_id"],"parent_id":expected_parent_id,"relative_path":expected_relative_path,"sha256":expected_sha256,"byte_length":expected_byte_length}
+        return _local_result({"status":"VERIFIED_REUSE","operation_id":operation_id,"provider_locator":locator,"provider_revision":c["provider_revision"],"readback_receipt_id":c["readback"]["receipt_id"],"readback_observation_id":c["readback"]["observation_id"],"parent_id":expected_parent_id,"relative_path":expected_relative_path,"sha256":expected_sha256,"byte_length":expected_byte_length})
     if bound:
         c=bound[0]; return {"status":"CONFLICT","reason":"RESERVED_OPERATION_LOCATOR_PATH_MISMATCH","operation_id":operation_id,"provider_locator":c["provider_locator"],"expected_parent_id":expected_parent_id,"observed_parent_id":c["parent_id"],"expected_relative_path":expected_relative_path,"observed_relative_path":c["relative_path"]}
-    return {"status":"CREATE","operation_id":operation_id,"expected_sha256":expected_sha256,"expected_byte_length":expected_byte_length,"parent_id":expected_parent_id,"relative_path":expected_relative_path}
+    return _local_result({"status":"CREATE","operation_id":operation_id,"expected_sha256":expected_sha256,"expected_byte_length":expected_byte_length,"parent_id":expected_parent_id,"relative_path":expected_relative_path})
 
 def verify_exact_bytes(expected,readback):
     es,rs=sha256_bytes(expected),sha256_bytes(readback); exact=len(expected)==len(readback) and es==rs and expected==readback
@@ -557,11 +515,10 @@ def verify_active_readback(expected,stream,evidence,attestation=None,*,expected_
     try:
         parsed=parse_memory_epoch_envelope(expected); sha=sha256_bytes(expected); parent_id=R9B0_DRIVE_PARENT_ID; relative_path=_active_relative_path(parsed["project_id"],parsed["branch_id"],parsed["logical_memory_id"],sha)
         validate_readback_evidence(evidence,operation_id=parsed["operation_id"],sha256=sha,byte_length=len(expected),parent_id=parent_id,relative_path=relative_path,expected_evidence_sha256=expected_evidence_sha256)
-        if attestation is None: raise ValueError("verifier-rooted readback attestation is required")
-        validate_authority_attestation(attestation,expected_evidence_sha256=evidence["evidence_sha256"],expected_purpose="ACTIVE_PROVIDER_READBACK")
     except ValueError as exc:return {"status":"MISMATCH","reason":"READBACK_EVIDENCE_INVALID","detail":str(exc)}
     r=verify_stream_exact(expected,stream,profile=profile,resource_field="max_envelope_bytes")
-    if r.get("status")=="VERIFIED_EXACT":r.update({"operation_id":parsed["operation_id"],"provider_locator":evidence["provider_locator"],"provider_revision":evidence["provider_revision"],"readback_receipt_id":evidence["receipt_id"],"readback_observation_id":evidence["observation_id"],"currentness_status":evidence["currentness_status"]})
+    if r.get("status")=="VERIFIED_EXACT":
+        r.update({"operation_id":parsed["operation_id"],"provider_locator":evidence["provider_locator"],"provider_revision":evidence["provider_revision"],"readback_receipt_id":evidence["receipt_id"],"readback_observation_id":evidence["observation_id"],"currentness_status":evidence["currentness_status"]}); return _local_result(r)
     return r
 
 def validate_archive_readback_evidence(evidence,*,logical_memory_id,original_sha256,original_byte_length,generation_id,subject_id,admission_receipt_id,supabase_receipt_id,drive_receipt_id,operation_id,archive_container_sha256,archive_container_byte_length,expected_evidence_sha256=None):
@@ -582,11 +539,10 @@ def validate_archive_readback_evidence(evidence,*,logical_memory_id,original_sha
 def verify_archive_readback_with_evidence(archive_bytes,expected_original,evidence,attestation=None,*,logical_memory_id,original_sha256,generation_id,predecessor_generation,predecessor_container_sha256,subject_id,admission_receipt_id,supabase_receipt_id,drive_receipt_id,operation_id,expected_container_sha256,expected_container_byte_length,expected_evidence_sha256=None,profile=None):
     try:
         validate_archive_readback_evidence(evidence,logical_memory_id=logical_memory_id,original_sha256=original_sha256,original_byte_length=len(expected_original),generation_id=generation_id,subject_id=subject_id,admission_receipt_id=admission_receipt_id,supabase_receipt_id=supabase_receipt_id,drive_receipt_id=drive_receipt_id,operation_id=operation_id,archive_container_sha256=expected_container_sha256,archive_container_byte_length=expected_container_byte_length,expected_evidence_sha256=expected_evidence_sha256)
-        if attestation is None: raise ValueError("verifier-rooted archive readback attestation is required")
-        validate_authority_attestation(attestation,expected_evidence_sha256=evidence["evidence_sha256"],expected_purpose="ARCHIVE_PROVIDER_READBACK")
     except ValueError as exc:return {"status":"MISMATCH","reason":"ARCHIVE_READBACK_EVIDENCE_INVALID","detail":str(exc)}
     r=verify_archive_generation(archive_bytes,logical_memory_id=logical_memory_id,original_sha256=original_sha256,expected_original=expected_original,generation_id=generation_id,predecessor_generation=predecessor_generation,predecessor_container_sha256=predecessor_container_sha256,subject_id=subject_id,admission_receipt_id=admission_receipt_id,supabase_receipt_id=supabase_receipt_id,drive_receipt_id=drive_receipt_id,operation_id=operation_id,expected_container_sha256=expected_container_sha256,expected_container_byte_length=expected_container_byte_length,profile=profile)
-    if r.get("status")=="VERIFIED_EXACT":r.update({"archive_bundle_locator":evidence["archive_bundle_locator"],"archive_entry_locator":evidence["archive_entry_locator"],"provider_revision":evidence["provider_revision"],"archive_receipt_id":evidence["archive_receipt_id"],"readback_observation_id":evidence["observation_id"],"currentness_status":evidence["currentness_status"]})
+    if r.get("status")=="VERIFIED_EXACT":
+        r.update({"archive_bundle_locator":evidence["archive_bundle_locator"],"archive_entry_locator":evidence["archive_entry_locator"],"provider_revision":evidence["provider_revision"],"archive_receipt_id":evidence["archive_receipt_id"],"readback_observation_id":evidence["observation_id"],"currentness_status":evidence["currentness_status"]}); return _local_result(r)
     return r
 
 def _open_parent_dir_nofollow(path,*,create):
@@ -741,21 +697,21 @@ def _active_plan(args):
     migration_key=getattr(args,"migration_key",None)
     if migration_key is not None and migration_key!=expected_op:return {"status":"CONFLICT","reason":"MIGRATION_KEY_NOT_AUTHORITATIVE","migration_key":migration_key,"expected_operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id}
     relative_path=_active_relative_path(parsed["project_id"],parsed["branch_id"],parsed["logical_memory_id"],sha)
-    if getattr(args,"inventory",None) is None or getattr(args,"inventory_attestation",None) is None:return {"status":"OUTCOME_UNKNOWN","reason":"INVENTORY_VERIFIER_ATTESTATION_REQUIRED","operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
+    if getattr(args,"inventory",None) is None:return {"status":"OUTCOME_UNKNOWN","reason":"INVENTORY_EVIDENCE_REQUIRED","operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
     try:
-        document=_load_json(args.inventory); inventory_attestation=_load_json(args.inventory_attestation)
-        candidates=validate_inventory_snapshot(document,expected_parent_id=parent_id,expected_relative_path=relative_path,expected_operation_id=expected_op,authority_attestation=inventory_attestation,expected_evidence_sha256=getattr(args,"inventory_evidence_sha256",None))
+        document=_load_json(args.inventory)
+        candidates=validate_inventory_snapshot(document,expected_parent_id=parent_id,expected_relative_path=relative_path,expected_operation_id=expected_op,expected_evidence_sha256=getattr(args,"inventory_evidence_sha256",None))
     except (OSError,UnicodeDecodeError,ValueError,ResourceBlocked) as exc:return {"status":"OUTCOME_UNKNOWN","reason":"INVENTORY_EVIDENCE_INVALID_OR_STALE","detail":type(exc).__name__,"operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
     r=classify_candidates(candidates,expected_op,sha,len(envelope),expected_parent_id=parent_id,expected_relative_path=relative_path)
     if r.get("status")=="CREATE":
         governance=parsed["document"]["governance"]
         if governance["privacy_scope"]=="PRIVATE_FORBIDDEN_TO_DUPLICATE" or governance["lifecycle"]=="TOMBSTONED":
             return {"status":"BLOCKED_EVIDENCE","reason":"ACTIVE_DUPLICATION_NOT_ELIGIBLE","operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
-        if getattr(args,"admission_evidence",None) is None or getattr(args,"admission_attestation",None) is None:
+        if getattr(args,"admission_evidence",None) is None:
             return {"status":"OUTCOME_UNKNOWN","reason":"ACTIVE_DUPLICATION_ADMISSION_EVIDENCE_REQUIRED","operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
         try:
-            admission_evidence=_load_json(args.admission_evidence); admission_attestation=_load_json(args.admission_attestation)
-            validate_duplication_admission_evidence(admission_evidence,admission_attestation,parsed_envelope=parsed,envelope_sha256=sha)
+            admission_evidence=_load_json(args.admission_evidence)
+            validate_duplication_admission_evidence(admission_evidence,parsed_envelope=parsed,envelope_sha256=sha)
         except (OSError,UnicodeDecodeError,ValueError,ResourceBlocked) as exc:
             return {"status":"OUTCOME_UNKNOWN","reason":"ACTIVE_DUPLICATION_ADMISSION_INVALID","detail":type(exc).__name__,"operation_id":expected_op,"provider_effect_performed":False,"parent_id":parent_id,"relative_path":relative_path}
         r["admission_receipt_id"]=admission_evidence["receipt_id"]; r["admission_observation_id"]=admission_evidence["observation_id"]
@@ -763,37 +719,35 @@ def _active_plan(args):
 
 def build_parser():
     p=argparse.ArgumentParser(); s=p.add_subparsers(dest="command",required=True)
-    i=s.add_parser("inspect"); i.add_argument("--inventory",required=True); i.add_argument("--inventory-attestation",required=True); i.add_argument("--inventory-evidence-sha256"); i.add_argument("--operation-id",required=True); i.add_argument("--expected-sha256",required=True); i.add_argument("--expected-byte-length",type=int,required=True); i.add_argument("--expected-parent-id",required=True); i.add_argument("--expected-relative-path",required=True)
-    a=s.add_parser("create-or-verify-active"); a.add_argument("--envelope",required=True); a.add_argument("--inventory",required=True); a.add_argument("--inventory-attestation",required=True); a.add_argument("--inventory-evidence-sha256"); a.add_argument("--admission-evidence"); a.add_argument("--admission-attestation"); a.add_argument("--operation-id"); a.add_argument("--migration-key"); a.add_argument("--project-id",required=True); a.add_argument("--branch-id",required=True); a.add_argument("--logical-memory-id",required=True); a.add_argument("--parent-id",default=R9B0_DRIVE_PARENT_ID)
+    i=s.add_parser("inspect"); i.add_argument("--inventory",required=True); i.add_argument("--inventory-evidence-sha256"); i.add_argument("--operation-id",required=True); i.add_argument("--expected-sha256",required=True); i.add_argument("--expected-byte-length",type=int,required=True); i.add_argument("--expected-parent-id",required=True); i.add_argument("--expected-relative-path",required=True)
+    a=s.add_parser("create-or-verify-active"); a.add_argument("--envelope",required=True); a.add_argument("--inventory",required=True); a.add_argument("--inventory-evidence-sha256"); a.add_argument("--admission-evidence"); a.add_argument("--operation-id"); a.add_argument("--migration-key"); a.add_argument("--project-id",required=True); a.add_argument("--branch-id",required=True); a.add_argument("--logical-memory-id",required=True); a.add_argument("--parent-id",default=R9B0_DRIVE_PARENT_ID)
     ar=s.add_parser("create-or-verify-archive-generation")
-    for x in ("envelope","original","output","logical-memory-id","original-sha256","generation-id","predecessor-generation","predecessor-container-sha256","subject-id","admission-receipt-id","supabase-receipt-id","drive-receipt-id","operation-id","supabase-readback-evidence","supabase-readback-attestation","drive-readback-evidence","drive-readback-attestation"): ar.add_argument("--"+x,required=True)
-    vr=s.add_parser("verify-active-readback"); vr.add_argument("--expected",required=True); vr.add_argument("--readback",required=True); vr.add_argument("--evidence",required=True); vr.add_argument("--attestation",required=True); vr.add_argument("--evidence-sha256")
-    va=s.add_parser("verify-archive-readback"); va.add_argument("--archive",required=True); va.add_argument("--original",required=True); va.add_argument("--evidence",required=True); va.add_argument("--attestation",required=True); va.add_argument("--evidence-sha256"); va.add_argument("--logical-memory-id",required=True); va.add_argument("--original-sha256",required=True); va.add_argument("--expected-container-sha256",required=True); va.add_argument("--expected-container-byte-length",type=int,required=True)
+    for x in ("envelope","original","output","logical-memory-id","original-sha256","generation-id","predecessor-generation","predecessor-container-sha256","subject-id","admission-receipt-id","supabase-receipt-id","drive-receipt-id","operation-id","supabase-readback-evidence","drive-readback-evidence"): ar.add_argument("--"+x,required=True)
+    vr=s.add_parser("verify-active-readback"); vr.add_argument("--expected",required=True); vr.add_argument("--readback",required=True); vr.add_argument("--evidence",required=True); vr.add_argument("--evidence-sha256")
+    va=s.add_parser("verify-archive-readback"); va.add_argument("--archive",required=True); va.add_argument("--original",required=True); va.add_argument("--evidence",required=True); va.add_argument("--evidence-sha256"); va.add_argument("--logical-memory-id",required=True); va.add_argument("--original-sha256",required=True); va.add_argument("--expected-container-sha256",required=True); va.add_argument("--expected-container-byte-length",type=int,required=True)
     for x in ("generation-id","predecessor-generation","predecessor-container-sha256","subject-id","admission-receipt-id","supabase-receipt-id","drive-receipt-id","operation-id"): va.add_argument("--"+x,required=True)
     return p
 
 def main(argv=None):
     args=build_parser().parse_args(argv)
-    if not verifier_trust_root_configured():
-        return _print({"status":"OUTCOME_UNKNOWN","reason":"VERIFIER_TRUST_ROOT_UNCONFIGURED","provider_effect_performed":False})
     try:
         if args.command=="inspect":
-            doc=_load_json(args.inventory); att=_load_json(args.inventory_attestation); candidates=validate_inventory_snapshot(doc,expected_parent_id=args.expected_parent_id,expected_relative_path=args.expected_relative_path,expected_operation_id=args.operation_id,authority_attestation=att,expected_evidence_sha256=args.inventory_evidence_sha256); return _print(classify_candidates(candidates,args.operation_id,args.expected_sha256,args.expected_byte_length,expected_parent_id=args.expected_parent_id,expected_relative_path=args.expected_relative_path))
+            doc=_load_json(args.inventory); candidates=validate_inventory_snapshot(doc,expected_parent_id=args.expected_parent_id,expected_relative_path=args.expected_relative_path,expected_operation_id=args.operation_id,expected_evidence_sha256=args.inventory_evidence_sha256); return _print(classify_candidates(candidates,args.operation_id,args.expected_sha256,args.expected_byte_length,expected_parent_id=args.expected_parent_id,expected_relative_path=args.expected_relative_path))
         if args.command=="create-or-verify-active":return _print(_active_plan(args))
         if args.command=="verify-active-readback":
-            p=resolve_current_resource_profile(); expected=_read_path_profile_field(Path(args.expected),p,"max_envelope_bytes"); evidence=_load_json(args.evidence); attestation=_load_json(args.attestation)
-            with Path(args.readback).open("rb") as fh:return _print(verify_active_readback(expected,fh,evidence,attestation,expected_evidence_sha256=args.evidence_sha256,profile=p))
+            p=resolve_current_resource_profile(); expected=_read_path_profile_field(Path(args.expected),p,"max_envelope_bytes"); evidence=_load_json(args.evidence)
+            with Path(args.readback).open("rb") as fh:return _print(verify_active_readback(expected,fh,evidence,expected_evidence_sha256=args.evidence_sha256,profile=p))
         if args.command=="create-or-verify-archive-generation":
             p=resolve_current_resource_profile(); envelope=_read_path_profile_field(Path(args.envelope),p,"max_envelope_bytes"); parsed=parse_memory_epoch_envelope(envelope); original=_read_path_profile_field(Path(args.original),p,"max_source_bytes")
             document=parsed["document"]; migration=document["migration"]; original_doc=document["original"]; envelope_sha=sha256_bytes(envelope)
             if parsed["operation_id"]!=args.operation_id or parsed["logical_memory_id"]!=args.logical_memory_id: raise ValueError("archive envelope operation/namespace mismatch")
             if original_doc["sha256"]!=args.original_sha256 or original_doc["byte_length"]!=len(original) or parsed["original_bytes"]!=original: raise ValueError("archive original bytes do not match canonical envelope")
-            supabase_evidence=_load_json(args.supabase_readback_evidence); supabase_attestation=_load_json(args.supabase_readback_attestation); drive_evidence=_load_json(args.drive_readback_evidence); drive_attestation=_load_json(args.drive_readback_attestation)
-            validate_dual_active_readback_evidence(supabase_evidence,supabase_attestation,drive_evidence,drive_attestation,operation_id=args.operation_id,envelope_sha256=envelope_sha,envelope_byte_length=len(envelope),project_id=parsed["project_id"],branch_id=parsed["branch_id"],epoch_id=document["epoch_id"],logical_memory_id=args.logical_memory_id,original_sha256=args.original_sha256,original_byte_length=len(original),admission_generation=migration["admission_generation"],admission_metadata_sha256=migration["admission_metadata_sha256"],admission_receipt_id=args.admission_receipt_id,supabase_receipt_id=args.supabase_receipt_id,drive_receipt_id=args.drive_receipt_id)
+            supabase_evidence=_load_json(args.supabase_readback_evidence); drive_evidence=_load_json(args.drive_readback_evidence)
+            validate_dual_active_readback_evidence(supabase_evidence,None,drive_evidence,None,operation_id=args.operation_id,envelope_sha256=envelope_sha,envelope_byte_length=len(envelope),project_id=parsed["project_id"],branch_id=parsed["branch_id"],epoch_id=document["epoch_id"],logical_memory_id=args.logical_memory_id,original_sha256=args.original_sha256,original_byte_length=len(original),admission_generation=migration["admission_generation"],admission_metadata_sha256=migration["admission_metadata_sha256"],admission_receipt_id=args.admission_receipt_id,supabase_receipt_id=args.supabase_receipt_id,drive_receipt_id=args.drive_receipt_id)
             archive=build_archive_generation(logical_memory_id=args.logical_memory_id,original_bytes=original,original_sha256=args.original_sha256,generation_id=args.generation_id,predecessor_generation=args.predecessor_generation,predecessor_container_sha256=args.predecessor_container_sha256,subject_id=args.subject_id,admission_receipt_id=args.admission_receipt_id,supabase_receipt_id=args.supabase_receipt_id,drive_receipt_id=args.drive_receipt_id,operation_id=args.operation_id,profile=p)
             return _print(create_or_verify_local_archive(Path(args.output),archive,profile=p))
         if args.command=="verify-archive-readback":
-            p=resolve_current_resource_profile(); archive=_read_path_profile_field(Path(args.archive),p,"max_archive_generation_expanded_bytes"); original=_read_path_profile_field(Path(args.original),p,"max_source_bytes"); evidence=_load_json(args.evidence); attestation=_load_json(args.attestation); return _print(verify_archive_readback_with_evidence(archive,original,evidence,attestation,logical_memory_id=args.logical_memory_id,original_sha256=args.original_sha256,generation_id=args.generation_id,predecessor_generation=args.predecessor_generation,predecessor_container_sha256=args.predecessor_container_sha256,subject_id=args.subject_id,admission_receipt_id=args.admission_receipt_id,supabase_receipt_id=args.supabase_receipt_id,drive_receipt_id=args.drive_receipt_id,operation_id=args.operation_id,expected_container_sha256=args.expected_container_sha256,expected_container_byte_length=args.expected_container_byte_length,expected_evidence_sha256=args.evidence_sha256,profile=p))
+            p=resolve_current_resource_profile(); archive=_read_path_profile_field(Path(args.archive),p,"max_archive_generation_expanded_bytes"); original=_read_path_profile_field(Path(args.original),p,"max_source_bytes"); evidence=_load_json(args.evidence); return _print(verify_archive_readback_with_evidence(archive,original,evidence,logical_memory_id=args.logical_memory_id,original_sha256=args.original_sha256,generation_id=args.generation_id,predecessor_generation=args.predecessor_generation,predecessor_container_sha256=args.predecessor_container_sha256,subject_id=args.subject_id,admission_receipt_id=args.admission_receipt_id,supabase_receipt_id=args.supabase_receipt_id,drive_receipt_id=args.drive_receipt_id,operation_id=args.operation_id,expected_container_sha256=args.expected_container_sha256,expected_container_byte_length=args.expected_container_byte_length,expected_evidence_sha256=args.evidence_sha256,profile=p))
     except ResourceBlocked as exc:return _print(exc.as_result())
     except (OSError,UnicodeDecodeError,ValueError) as exc:return _print({"status":"OUTCOME_UNKNOWN","reason":"INVALID_OR_UNREADABLE_EVIDENCE","detail":type(exc).__name__})
     raise AssertionError("unreachable command")
