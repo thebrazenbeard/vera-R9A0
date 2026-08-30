@@ -308,18 +308,77 @@ BEGIN
   IF j->>'status'<>'CONFLICT' THEN RAISE EXCEPTION 'TEST_FAIL: changed bytes under same op not conflict %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','public.vera_memory_epoch_subjects_v1:'||sid::text,NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT',pg_catalog.jsonb_build_object('timestamp_is_provenance_only',true));
   IF j->>'state'<>'MIGRATION_INCOMPLETE' OR (j->>'state_version')::bigint<>4 THEN RAISE EXCEPTION 'TEST_FAIL: one-sided sup receipt %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    drive_receipt,sid,'MIGRATION_INCOMPLETE',4,attempt,'op-drive-read',drive_e,
+    drive_receipt,sid,'MIGRATION_INCOMPLETE',4,attempt,'op-dual-provider-read',drive_e,
     'GOOGLE_DRIVE_DURABLE','drive-test-root','drive-file-test','rev-1',
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:02-04:00','2026-08-22T12:00:03-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'DRIVE_EXACT_DOWNLOAD','VERIFIED_EXACT','{}'::jsonb);
   IF j->>'state'<>'DUAL_STORE_VERIFIED_PENDING_ARCHIVE' OR (j->>'state_version')::bigint<>5 THEN RAISE EXCEPTION 'TEST_FAIL: dual receipt convergence %',j; END IF;
+  IF (SELECT count(*) FROM public.vera_memory_epoch_events_v1
+      WHERE subject_id=sid AND operation_id='op-dual-provider-read' AND event_kind='PROVIDER_READBACK') <> 2 THEN
+    RAISE EXCEPTION 'TEST_FAIL: same logical operation did not record exactly two provider-distinct events';
+  END IF;
+  IF (SELECT count(DISTINCT event_payload->>'provider_class') FROM public.vera_memory_epoch_events_v1
+      WHERE subject_id=sid AND operation_id='op-dual-provider-read' AND event_kind='PROVIDER_READBACK') <> 2 THEN
+    RAISE EXCEPTION 'TEST_FAIL: provider discriminator did not distinguish dual readback events';
+  END IF;
+
+  BEGIN
+    INSERT INTO public.vera_memory_epoch_events_v1(
+      event_id,subject_id,state_version,prior_state,new_state,attempt_id,operation_id,event_kind,
+      expected_state_version,envelope_sha256,event_payload
+    ) VALUES (
+      '70000000-0000-4000-8000-000000000037',sid,100,'MIGRATION_INCOMPLETE','MIGRATION_INCOMPLETE',attempt,
+      'op-dual-provider-read','PROVIDER_READBACK',99,envelope_sha,
+      pg_catalog.jsonb_build_object('provider_class','SUPABASE_RUNTIME')
+    );
+    RAISE EXCEPTION 'TEST_FAIL: same operation/provider duplicate event unexpectedly inserted';
+  EXCEPTION WHEN unique_violation THEN NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.vera_memory_epoch_events_v1(
+      event_id,subject_id,state_version,prior_state,new_state,attempt_id,operation_id,event_kind,
+      expected_state_version,envelope_sha256,event_payload
+    ) VALUES (
+      '70000000-0000-4000-8000-000000000038',sid,101,'MIGRATION_INCOMPLETE','MIGRATION_INCOMPLETE',attempt,
+      'op-hostile-missing-provider','PROVIDER_READBACK',100,envelope_sha,'{}'::jsonb
+    );
+    RAISE EXCEPTION 'TEST_FAIL: missing provider class unexpectedly accepted';
+  EXCEPTION WHEN check_violation THEN NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.vera_memory_epoch_events_v1(
+      event_id,subject_id,state_version,prior_state,new_state,attempt_id,operation_id,event_kind,
+      expected_state_version,envelope_sha256,event_payload
+    ) VALUES (
+      '70000000-0000-4000-8000-000000000039',sid,102,'MIGRATION_INCOMPLETE','MIGRATION_INCOMPLETE',attempt,
+      'op-hostile-json-null-provider','PROVIDER_READBACK',101,envelope_sha,
+      pg_catalog.jsonb_build_object('provider_class',NULL)
+    );
+    RAISE EXCEPTION 'TEST_FAIL: JSON-null provider class unexpectedly accepted';
+  EXCEPTION WHEN check_violation THEN NULL;
+  END;
+
+  BEGIN
+    INSERT INTO public.vera_memory_epoch_events_v1(
+      event_id,subject_id,state_version,prior_state,new_state,attempt_id,operation_id,event_kind,
+      expected_state_version,envelope_sha256,event_payload
+    ) VALUES (
+      '70000000-0000-4000-8000-00000000003a',sid,103,'MIGRATION_INCOMPLETE','MIGRATION_INCOMPLETE',attempt,
+      'op-hostile-forged-provider','PROVIDER_READBACK',102,envelope_sha,
+      pg_catalog.jsonb_build_object('provider_class','FORGED_PROVIDER')
+    );
+    RAISE EXCEPTION 'TEST_FAIL: forged provider class unexpectedly accepted';
+  EXCEPTION WHEN check_violation THEN NULL;
+  END;
 
   -- A later ABSENT observation for Supabase invalidates the old exact receipt as the current binding.
   j := public.vera_memory_epoch_record_provider_readback_v1(
@@ -615,7 +674,7 @@ BEGIN
 
   -- PROVIDER READBACK: limitations are diagnostics; provider identity/locator/revision/verifier/time are material.
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','public.vera_memory_epoch_subjects_v1:'||sid::text,NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT',
@@ -623,35 +682,35 @@ BEGIN
   IF j->>'status'<>'REPLAY' THEN RAISE EXCEPTION 'TEST_FAIL: provider diagnostic-only retry %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','CHANGED_PROVIDER_ID','public.vera_memory_epoch_subjects_v1:'||sid::text,NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT','{}'::jsonb);
   IF j->>'status'<>'CONFLICT' THEN RAISE EXCEPTION 'TEST_FAIL: provider identity rebound %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','CHANGED_LOCATOR',NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT','{}'::jsonb);
   IF j->>'status'<>'CONFLICT' THEN RAISE EXCEPTION 'TEST_FAIL: provider locator rebound %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','public.vera_memory_epoch_subjects_v1:'||sid::text,'CHANGED_REV',
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT','{}'::jsonb);
   IF j->>'status'<>'CONFLICT' THEN RAISE EXCEPTION 'TEST_FAIL: provider revision rebound %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','public.vera_memory_epoch_subjects_v1:'||sid::text,NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2036-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'CHANGED_VERIFIER_ROUTE','VERIFIED_EXACT','{}'::jsonb);
   IF j->>'status'<>'CONFLICT' THEN RAISE EXCEPTION 'TEST_FAIL: provider verifier rebound %',j; END IF;
 
   j := public.vera_memory_epoch_record_provider_readback_v1(
-    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-sup-read',sup_e,
+    sup_receipt,sid,'MIGRATION_INCOMPLETE',3,attempt,'op-dual-provider-read',sup_e,
     'SUPABASE_RUNTIME','klmbpaigzeguvnpccqzz','public.vera_memory_epoch_subjects_v1:'||sid::text,NULL,
     pg_catalog.octet_length(envelope),'2026-08-22T12:00:00-04:00','2037-08-22T12:00:01-04:00',
     pg_catalog.octet_length(envelope),envelope_sha,'SUPABASE_DIRECT_READ','VERIFIED_EXACT','{}'::jsonb);

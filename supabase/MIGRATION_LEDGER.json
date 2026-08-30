@@ -1,54 +1,78 @@
 {
-  "schema": "VERA_R9A0_MIGRATION_LEDGER_V1",
-  "repository": "thebrazenbeard/vera-R9A0",
-  "branch": "feature/r9a0-supabase-rebuild-v1",
-  "base_sha": "d9255f97090fd0599ccb129911fec8b542a0804f",
-  "migrations": [
-    {
-      "source_version": "20260806133000",
-      "applied_version": "20260806133152",
-      "name": "r9a0_coordination_foundation",
-      "source_path": "supabase/migrations/20260806133000_r9a0_coordination_foundation.sql",
-      "source_sha256": "36898d94223bae026e809d11808e66222d036347465313516d24b20b6b7032c3",
-      "applied_path": "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
-      "applied_statements_sha256": "2a8f64ccf81251a06f23b0adf3bba6f74f43cf322a7719940281ae0f0d7d3df6",
-      "applied_commit": "e394132f7269a531029ccd985056f77dd7c726fd",
-      "rollback_path": "supabase/rollbacks/20260806133000_r9a0_coordination_foundation.down.sql",
-      "test_path": "supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql",
-      "target_project_ref": "agvhmutlrolbaijzlbqk",
-      "allowed_namespaces": [
-        "r9a0_governance",
-        "r9a0_coordination",
-        "r9a0_api"
-      ],
-      "test_status": "PASSED",
-      "synthetic_rows_persisted": 0,
-      "status": "APPLIED_AND_TESTED",
-      "provenance_note": "The readable source specification and the exact applied statement are both retained. The initial apply used a whitespace-compacted equivalent, so the applied statement has its own exact repository artifact and digest rather than a false byte-equality claim."
-    },
-    {
-      "source_version": "20260822153000",
-      "applied_version": null,
-      "name": "r9b0_memory_epoch_v1",
-      "source_path": "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
-      "source_sha256": "b3854fe5147f3868c716f0602e95d0ad84bcbad7421e6d223d4f4b10b2ac8b30",
-      "applied_path": null,
-      "applied_statements_sha256": null,
-      "applied_commit": null,
-      "rollback_path": "supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql",
-      "rollback_sha256": "e40732bb3c6446fd7611258b95b92d672368c58096c3b5266dbce9e106f4b9d6",
-      "test_path": "supabase/tests/r9b0_memory_epoch_v1.sql",
-      "test_sha256": "e2ac4fc30f36a11a5d0928ceff71983a85eba7b55e3d70fa1286f700beb72093",
-      "target_project_ref": "klmbpaigzeguvnpccqzz",
-      "source_branch": "feature/r9a0-combined-native-implementation-v1",
-      "source_base_sha": "4a3c571436a83cc70df9a4b7fce4101576f45919",
-      "allowed_namespaces": [
-        "public.vera_memory_epoch_*"
-      ],
-      "test_status": "PENDING_G1_DISPOSABLE_POSTGRESQL",
-      "synthetic_rows_persisted": 0,
-      "status": "CANDIDATE_G0_NOT_APPLIED",
-      "provenance_note": "DB-G7 local runtime-corrected successor derived from exact DB-G6 after CI-G1-R3 exposed invalid schema-qualified COALESCE calls. Git integration and Supabase application are not yet performed; applied_* remain null until separately authorized and independently read back."
-    }
-  ]
+    "schema":  "VERA_R9A0_MIGRATION_LEDGER_V1",
+    "repository":  "thebrazenbeard/vera-R9A0",
+    "branch":  "feature/r9a0-supabase-rebuild-v1",
+    "base_sha":  "d9255f97090fd0599ccb129911fec8b542a0804f",
+    "migrations":  [
+                       {
+                           "source_version":  "20260806133000",
+                           "applied_version":  "20260806133152",
+                           "name":  "r9a0_coordination_foundation",
+                           "source_path":  "supabase/migrations/20260806133000_r9a0_coordination_foundation.sql",
+                           "source_sha256":  "36898d94223bae026e809d11808e66222d036347465313516d24b20b6b7032c3",
+                           "applied_path":  "supabase/applied/20260806133152_r9a0_coordination_foundation.sql",
+                           "applied_statements_sha256":  "2a8f64ccf81251a06f23b0adf3bba6f74f43cf322a7719940281ae0f0d7d3df6",
+                           "applied_commit":  "e394132f7269a531029ccd985056f77dd7c726fd",
+                           "rollback_path":  "supabase/rollbacks/20260806133000_r9a0_coordination_foundation.down.sql",
+                           "test_path":  "supabase/tests/20260806133000_r9a0_coordination_foundation.test.sql",
+                           "target_project_ref":  "agvhmutlrolbaijzlbqk",
+                           "allowed_namespaces":  [
+                                                      "r9a0_governance",
+                                                      "r9a0_coordination",
+                                                      "r9a0_api"
+                                                  ],
+                           "test_status":  "PASSED",
+                           "synthetic_rows_persisted":  0,
+                           "status":  "APPLIED_AND_TESTED",
+                           "provenance_note":  "The readable source specification and the exact applied statement are both retained. The initial apply used a whitespace-compacted equivalent, so the applied statement has its own exact repository artifact and digest rather than a false byte-equality claim."
+                       },
+                       {
+                           "source_version":  "20260822153000",
+                           "applied_version":  "20260829104849",
+                           "name":  "r9b0_memory_epoch_v1",
+                           "source_path":  "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
+                           "source_sha256":  "b3854fe5147f3868c716f0602e95d0ad84bcbad7421e6d223d4f4b10b2ac8b30",
+                           "applied_path":  "supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql",
+                           "applied_statements_sha256":  "b3854fe5147f3868c716f0602e95d0ad84bcbad7421e6d223d4f4b10b2ac8b30",
+                           "applied_commit":  "50e2e177bd2de082b6b198f15c8ee16a0e69d366",
+                           "rollback_path":  "supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql",
+                           "rollback_sha256":  "e40732bb3c6446fd7611258b95b92d672368c58096c3b5266dbce9e106f4b9d6",
+                           "test_path":  "supabase/tests/r9b0_memory_epoch_v1.sql",
+                           "test_sha256":  "e2ac4fc30f36a11a5d0928ceff71983a85eba7b55e3d70fa1286f700beb72093",
+                           "target_project_ref":  "klmbpaigzeguvnpccqzz",
+                           "source_branch":  "feature/r9a0-combined-native-implementation-v1",
+                           "source_base_sha":  "50e2e177bd2de082b6b198f15c8ee16a0e69d366",
+                           "allowed_namespaces":  [
+                                                      "public.vera_memory_epoch_*"
+                                                  ],
+                           "test_status":  "PASSED_G1_AND_D0_PROVIDER_READBACK",
+                           "synthetic_rows_persisted":  0,
+                           "status":  "APPLIED_AND_PROVIDER_READBACK_VERIFIED",
+                           "provenance_note":  "Exact reviewed D0 source bytes were applied to Vera Supabase and independently provider-readback verified before the later R0 qualification exposed provider-readback event cardinality as a separate forward-correction issue."
+                       },
+                       {
+                           "source_version":  "20260830141000",
+                           "applied_version":  null,
+                           "name":  "r9b0_provider_readback_cardinality_v1",
+                           "source_path":  "supabase/migrations/20260830141000_r9b0_provider_readback_cardinality_v1.sql",
+                           "source_sha256":  "13c40c22554ac476e4019e00c75d1630d56c71b5aa5cb11f0735bfd197e72af3",
+                           "applied_path":  null,
+                           "applied_statements_sha256":  null,
+                           "applied_commit":  null,
+                           "rollback_path":  null,
+                           "rollback_sha256":  null,
+                           "test_path":  "supabase/tests/r9b0_memory_epoch_v1.sql",
+                           "test_sha256":  "2fbda7f781a7c66cada33729ed9a6ef4f73cade0e36d93d91741731a78562324",
+                           "target_project_ref":  "klmbpaigzeguvnpccqzz",
+                           "source_branch":  "feature/r9a0-combined-native-implementation-v1",
+                           "source_base_sha":  "29e8df7a009b6b44bc0d8d839dd69b925a6e195c",
+                           "allowed_namespaces":  [
+                                                      "public.vera_memory_epoch_*"
+                                                  ],
+                           "test_status":  "PENDING_G1_DISPOSABLE_POSTGRESQL",
+                           "synthetic_rows_persisted":  0,
+                           "status":  "CANDIDATE_G0_NOT_APPLIED",
+                           "provenance_note":  "Forward-only correction of provider-readback event cardinality/idempotency. Preserves the in-flight MIGRATION_INCOMPLETE v4 R0 attempt and its existing Supabase VERIFIED_EXACT receipt; applied fields remain null until separately authorized and provider-readback verified."
+                       }
+                   ]
 }

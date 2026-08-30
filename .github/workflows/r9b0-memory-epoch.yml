@@ -8,6 +8,7 @@ on:
       - '.github/workflows/r9b0-memory-epoch.yml'
       - 'scripts/r9b0_memory_epoch_drive.py'
       - 'supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql'
+      - 'supabase/migrations/20260830141000_r9b0_provider_readback_cardinality_v1.sql'
       - 'supabase/rollbacks/20260822153000_r9b0_memory_epoch_v1.sql'
       - 'supabase/tests/r9b0_memory_epoch_v1.sql'
       - 'tests/native-project/test_r9b0_dualstore_implementation.py'
@@ -74,6 +75,7 @@ jobs:
           mkdir -p validation-receipt
           sha256sum \
             supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql \
+            supabase/migrations/20260830141000_r9b0_provider_readback_cardinality_v1.sql \
             supabase/tests/r9b0_memory_epoch_v1.sql \
             scripts/r9b0_memory_epoch_drive.py \
             tests/native-project/test_r9b0_dualstore_implementation.py \
@@ -361,11 +363,12 @@ jobs:
           print(json.dumps(observed,sort_keys=True))
           PY
 
-      - name: Apply exact DB-G7 migration
+      - name: Apply exact DB-G7 migration and forward cardinality correction
         id: migration
         run: |
           set -euo pipefail
           psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql
+          psql -X -v ON_ERROR_STOP=1 -f supabase/migrations/20260830141000_r9b0_provider_readback_cardinality_v1.sql
 
       - name: Run exact DB-G7 SQL acceptance test
         id: sql_test
@@ -414,6 +417,7 @@ jobs:
           set -euo pipefail
           sha256sum \
             supabase/migrations/20260822153000_r9b0_memory_epoch_v1.sql \
+            supabase/migrations/20260830141000_r9b0_provider_readback_cardinality_v1.sql \
             supabase/tests/r9b0_memory_epoch_v1.sql \
             scripts/r9b0_memory_epoch_drive.py \
             tests/native-project/test_r9b0_dualstore_implementation.py \
