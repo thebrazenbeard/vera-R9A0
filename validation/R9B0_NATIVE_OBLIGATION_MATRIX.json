@@ -172,7 +172,7 @@
     },
     {
       "exact_detail_owner": null,
-      "full_surface_anchor": "Stop only at a genuine safety, permission, authority, verification, branch, or material-uncertainty boundary.",
+      "full_surface_anchor": "Stop only at a genuine safety boundary, real shared-writer collision, current repository-steward boundary, missing protected-effect authority, failed verification, unavailable required evidence, or material uncertainty preventing a trustworthy useful act.",
       "id": "K18",
       "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
       "native_clause_sha256": "142898e5da8acc126e05864e2762b7d9587c66c566d5868cba20491da42a8120",
