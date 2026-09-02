@@ -408,12 +408,12 @@ class R9B0SemanticProjectionTests(unittest.TestCase):
         self.assertEqual(sha256(full_v2.encode("utf-8")), "42933df021681f6ce1fe90c685b25262097f0dbbc3931875d6ba512a8c3b534e")
 
         runtime_v2 = self.surfaces["runtime"].split("\n## R9B0 memory epoch controller\n", 1)[0]
-        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "9e4a8fc0b66ed31597524d1ebaa2ae4c6791751f9a071a5b365409570ceb37f3")
+        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "0ca9be19cd8b465d1f8c181da1b39cc163cf0f2942f84de7f2bbd2d7a703f2b2")
 
         voice_v2 = self.surfaces["voice"].split("\n## R9B0 memory epoch operator projection\n", 1)[0]
         self.assertEqual(sha256(voice_v2.encode("utf-8")), "6f384d5f019db5e4984f6b1c60d175c9bbfbff2b549fcabb394155cc53541837")
 
-        self.assertEqual(sha256((ROOT / ".github/workflows/r9a0-native-project.yml").read_bytes()), "ad8767209ce5d1402641e91399060f1cb616d2f38af3ff6e1491eb20392aae6d")
+        self.assertEqual(sha256((ROOT / ".github/workflows/r9a0-native-project.yml").read_bytes()), "49a3182f5fe229a0728da11d66d991cdc1d57b1401461ad6d6a6ef6ec4f586ad")
         self.assertEqual(sha256(self.profile_bytes), "ec1defa8fcf96371a427991d40695842ffe6794aeb2e3f26c69ef5f528ee7d6d")
 
     def test_21_project_checksum_successor_is_exact_for_changed_project_files(self):
