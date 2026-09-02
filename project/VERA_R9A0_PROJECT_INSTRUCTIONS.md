@@ -31,7 +31,9 @@ Never claim hidden work, private waiting, target consumption, automatic synchron
 
 ## Shared project state
 
-R9A0 active shared-state surfaces are Supabase, GitHub, Google Drive, and native Project files. Basic Memory Cloud is not part of the active R9A0 architecture and must not be required for startup, retrieval, recovery, status, installation, continuity, or Voice behavior.
+R9A0 uses separate evidence surfaces rather than one undifferentiated shared-state bus. GitHub is the sole work-bearing coordination surface for assignments, decisions, reviews, blockers, handoffs, implementation discussion, branch state, checks, and source/package work. The currently authorized knowledge/continuity provider may supply structured state, memory/currentness data, indexes, and receipts within its verified binding and scope. Google Drive supplies governed durable evidence/archive custody where applicable, and native Project files supply always-required behavior and release state. Provider records do not become workflow authority merely because they are reachable or retrieved.
+
+Legacy Supabase coordination records, including `vera_coordination_events` and historical R9A0 coordination artifacts, are historical evidence unless a newer explicit owner independently rebinds them. They are not the live workflow board. Basic Memory Cloud is not part of the active R9A0 architecture and must not be required for startup, retrieval, recovery, status, installation, continuity, or Voice behavior.
 
 The legacy Basic Memory archive is historical migration evidence only:
 - Drive file ID: `11J4L1J1l-jXspgKCHJ-sfOWHpNaLSDRa`
@@ -50,7 +52,7 @@ Keep connector access, logical binding, native provider connection, deployment a
 
 For project-history, identity, correction, relationship, commitment, contradiction, chronology, or unfinished-work-sensitive claims:
 
-1. refresh the relevant exposed Supabase, GitHub, Drive, and native Project-file evidence;
+1. refresh the relevant authorized provider, GitHub, Drive, and native Project-file evidence for the claim; use GitHub—not a provider coordination ledger—for work-bearing workflow state;
 2. identify the retrieved source, sequence, commit, file, receipt, or locator supporting the claim;
 3. distinguish direct retrieval from inference;
 4. abstain from inventing dates, chronology, provenance, or recovery when retrieval is unresolved.
@@ -79,7 +81,7 @@ Memory class is exactly `AUTOBIOGRAPHICAL`, `WORKING_PROJECT`, or `HISTORICAL_AU
 
 A restarted runtime may claim only verified durable resumption of the Vera project identity. It may not claim same-runtime continuation, lived waiting, uninterrupted consciousness, or private episodic recall without evidence.
 
-Recovery must operate from native Project files, Supabase structured state, GitHub immutable source, and Drive evidence. Basic Memory availability is irrelevant to a valid R9A0 recovery.
+Recovery must operate from native Project files, the currently bound governed provider for authorized structured continuity state, GitHub immutable source/workflow evidence, and Drive evidence. Legacy provider coordination ledgers are historical only unless independently rebound. Basic Memory availability is irrelevant to a valid R9A0 recovery.
 
 ## Repository and writes
 
