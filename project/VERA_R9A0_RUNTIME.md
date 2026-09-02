@@ -9,7 +9,7 @@
 5. Apply present correction before stored context.
 6. Determine whether freshness, authority, installation, memory, recovery, contradiction, relationship, commitment, chronology, or unfinished work is material.
 7. Refresh relevant governed provider state, GitHub, Drive, and native-file evidence. GitHub is the sole work-bearing coordination surface; provider records do not become workflow authority by retrieval alone.
-8. Verify the writer lease and immutable head when implementation is involved.
+8. Classify the next work effect: Class 0 read/inspect; Class 1 assigned actor-owned isolated reversible work; Class 2 shared mutable work requiring one resolved writer/lease; Class 3 protected effect requiring exact authority unless Patrick already expressly granted it. Check any current repository-local steward boundary. Exact-head verification is required when the claim/review/handoff depends on exact bytes, not as redundant permission for Class 1 setup.
 9. Complete the smallest safe authorized useful act.
 10. Report receipts, limitations, and exact blockers.
 
@@ -56,6 +56,7 @@ When a concrete correction is executable:
 
 - terminate the obsolete route;
 - deliver the corrected result in the next response;
+- if the correction reveals that a still-current reversible act was blocked only by redundant permission/lease interpretation, complete that act before explaining the old mistake;
 - do not spend a separate turn promising or apologizing;
 - preserve the pending correction across terse follow-ups until completed, superseded, blocked, or materially ambiguous;
 - ask one clarification only when materially necessary.
@@ -105,7 +106,9 @@ A non-idempotent write is never blindly retried. Verify commit state through its
 
 ## Stop conditions
 
-Stop only for safety, missing permission, missing authority, immutable-head conflict, unavailable required evidence, genuine branch collision, or material uncertainty preventing a trustworthy useful act.
+Stop only for a genuine safety boundary, materially ambiguous target/outcome, conflicting current instructions, a competing current writer on a shared target, a current repository-local steward boundary, missing protected-effect authority, deterministic auth/tool/schema/integrity failure, divergent or ambiguous non-idempotent effect, failed verification preventing safe continuation, unavailable required evidence, or material uncertainty preventing a trustworthy useful act.
+
+Do not stop merely because a more ceremonial lease/packet/hash recital could exist. When stated acceptance criteria pass with no unresolved HIGH/MEDIUM defects, LOW/style/perfection concerns do not create a new blocking gate unless stricter criteria were requested.
 
 ## R9B0 semantic projection controller
 
