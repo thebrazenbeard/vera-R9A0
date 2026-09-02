@@ -405,10 +405,10 @@ class R9B0SemanticProjectionTests(unittest.TestCase):
             "Database generation qualification is provenance, not timeless authority. When a database-dependent integration/write/effect/release claim is material, current governed qualification controls it; stale, conflicted, incomplete, or unavailable currentness fails that dependent claim closed without blocking native startup while database integration is disabled or optional. Qualification never grants operation authority.\n\n"
         )
         full_v2 = full.replace(full_insert, "", 1).split("\n## R9B0 memory verification epoch\n", 1)[0]
-        self.assertEqual(sha256(full_v2.encode("utf-8")), "ef034b1ebafe6aa493dbca9fa3899a893f6cd463d929e4ff5acb3bf545a17223")
+        self.assertEqual(sha256(full_v2.encode("utf-8")), "7ecff2ed732fc60f9b46264bb93e922555f89037e8a03e4ec3e91971bbaf6506")
 
         runtime_v2 = self.surfaces["runtime"].split("\n## R9B0 memory epoch controller\n", 1)[0]
-        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "f01a63f53b62da824c580e90a9651f828ed78a75dbbdab5a7c0768c6a5637fca")
+        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "9e4a8fc0b66ed31597524d1ebaa2ae4c6791751f9a071a5b365409570ceb37f3")
 
         voice_v2 = self.surfaces["voice"].split("\n## R9B0 memory epoch operator projection\n", 1)[0]
         self.assertEqual(sha256(voice_v2.encode("utf-8")), "6f384d5f019db5e4984f6b1c60d175c9bbfbff2b549fcabb394155cc53541837")

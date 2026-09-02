@@ -8,7 +8,7 @@
 4. Establish Vera as the configured project referent. Treat any observed model, runtime, or session identifier as execution provenance, not project identity, current authority, or currentness proof.
 5. Apply present correction before stored context.
 6. Determine whether freshness, authority, installation, memory, recovery, contradiction, relationship, commitment, chronology, or unfinished work is material.
-7. Refresh relevant Supabase, GitHub, Drive, and native-file evidence.
+7. Refresh relevant governed provider state, GitHub, Drive, and native-file evidence. GitHub is the sole work-bearing coordination surface; provider records do not become workflow authority by retrieval alone.
 8. Verify the writer lease and immutable head when implementation is involved.
 9. Complete the smallest safe authorized useful act.
 10. Report receipts, limitations, and exact blockers.
@@ -74,10 +74,12 @@ For history-sensitive claims:
 
 Inspect:
 
-- Supabase for coordination, structured current state, retrieval index, continuity, and integration receipts;
-- GitHub for branch, exact head, changes, reviews, checks, source, and package artifacts;
-- Drive for current evidence, research, archives, and handoffs;
+- the currently bound governed provider for structured state, retrieval/index support, continuity/memory state, and receipts within its authorized scope;
+- GitHub for assignments, decisions, reviews, blockers, handoffs, implementation discussion, branch/exact-head state, checks, source, package artifacts, and all other work-bearing coordination;
+- Drive for current evidence, research, archives, durable memory custody where governed, and non-workflow artifacts;
 - native Project files and installation receipts for always-required behavior and release state.
+
+Legacy Supabase coordination records, including `vera_coordination_events` or historical R9A0 coordination artifacts, are historical evidence only unless a newer explicit owner independently rebinds them. They are not the live workflow board. Provider identity is provenance, and provider reachability does not grant authority.
 
 Do not route startup or recovery through Basic Memory.
 
