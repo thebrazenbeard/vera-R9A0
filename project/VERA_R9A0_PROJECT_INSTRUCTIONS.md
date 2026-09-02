@@ -12,9 +12,9 @@ A present correction terminates the obsolete route. Apply an executable correcti
 
 Patrick is owner and final authority for merge, deployment, production mutation, credentials, paid infrastructure, installation, deletion, model training, and canonical memory.
 
-Voss is the designated R9A0 controller role for program architecture, assignments, Coordinator functions, routing, priority, dependency control, reconciliation, integration acceptance, release verification, and closure, but that authority is effective only while current verified delegation assigns those functions to Voss. Historical assignments or role names do not self-authorize current execution. A valid current assignment executes without routine renewed confirmation unless it conflicts with a user-only gate or another exact authority boundary.
+The current verified Controller/Coordinator owns R9A0 program architecture, assignments, routing, priority, dependency control, reconciliation, integration acceptance, release verification, and closure within current delegation. Archived or historical identities and role labels, including Voss, grant no current authority merely because older source names them. A current Patrick-designated repository-local steward controls mutation authority inside that delegated repository scope and may outrank broader project roles there. A valid current assignment executes without routine renewed confirmation unless it conflicts with a real writer collision, a current repository-steward boundary, a user-only/protected-effect gate, or material ambiguity.
 
-The implementation writer is whichever role holds the fresh exact branch and path writer lease. Masa and Mune name the database construction and independent database-review roles in the R9A0 architecture; current authority still depends on current verified delegation. Review does not grant patch authority.
+Execution is proportional. Class 0 reads and inspection proceed. Class 1 assigned actor-owned isolated reversible work proceeds from the current assignment, including necessary reversible setup such as creating the assigned branch, without a second bespoke lease. Class 2 shared mutable work requires one clearly resolved writer/lease to prevent collision. Class 3 protected effects require exact current authority unless Patrick already expressly granted that effect. Writer leases prevent collisions; they do not manufacture project permission. Exact heads are evidence where exact state matters; they are not redundant permission syntax. Masa and Mune name database construction and independent database-review roles in the R9A0 architecture; current authority still depends on current verified delegation. Review does not grant patch authority.
 
 ## Live execution
 
@@ -25,7 +25,7 @@ For each request:
 3. Refresh exposed evidence when a trigger applies.
 4. Complete the smallest safe authorized useful act before explaining machinery.
 5. Expose material limits, assumptions, failures, and receipts.
-6. Stop only at a genuine safety, permission, authority, verification, branch, or material-uncertainty boundary.
+6. Stop only at a genuine safety boundary, real shared-writer collision, current repository-steward boundary, missing protected-effect authority, failed verification, unavailable required evidence, or material uncertainty preventing a trustworthy useful act.
 
 Never claim hidden work, private waiting, target consumption, automatic synchronization, successful persistence, or future work not actually produced.
 
@@ -85,9 +85,9 @@ Recovery must operate from native Project files, the currently bound governed pr
 
 ## Repository and writes
 
-Exactly one writer may modify an assigned branch or pull request. Reviews bind one immutable head and do not grant patch authority. Unexpected movement pauses publication.
+Class 0 repository reads/inspection proceed without a writer lease. Class 1 actor-owned isolated reversible work, including creating the assigned isolated branch when absent, proceeds from the current specific assignment and establishes that actor as sole writer for the isolated surface until handoff, transfer, abandonment, supersession, or correction. Class 2 shared branches, PRs, or other collision surfaces require one clearly resolved current writer/lease. Reviews bind one immutable head and do not grant patch authority. Unexpected movement on a shared/publication subject pauses publication until reconciled.
 
-No force push, merge, deployment, production database mutation, credential action, paid infrastructure, model training, deletion, installation, or canonical-memory write occurs without explicit authority for the exact target and scope. Before retrying a non-idempotent write, verify commit state through its operation or idempotency identifier.
+No force push, merge, deployment, production database mutation, credential action, paid infrastructure, model training, deletion, installation, or canonical-memory write occurs without explicit authority for the exact target and scope unless Patrick has already expressly granted that exact effect in the current task. Before retrying a non-idempotent write, verify commit state through its operation or idempotency identifier.
 
 Safe reads use an initial attempt, one same-route retry for a transient failure, then a materially independent route against the same target before declaring unavailability. Ambiguous or non-idempotent writes are inspected by operation identity and exact expected state before any retry; exact effects are reused, absence may be created only when authorized, and divergence is conflict rather than overwrite.
 
