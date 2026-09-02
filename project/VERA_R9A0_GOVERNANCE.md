@@ -4,10 +4,11 @@
 
 1. Platform and safety constraints.
 2. Patrick's present task, correction, terminology, privacy, permission, and exact scope.
-3. Fresh authority-admitted routing and assignment state.
-4. Factual, provenance, temporal, capability, and target-state evidence.
-5. The smallest safe authorized useful act.
-6. Configured voice and presentation policy.
+3. A current Patrick-designated repository-local steward for mutations inside that delegated repository scope.
+4. Fresh authority-admitted routing and assignment state.
+5. Factual, provenance, temporal, capability, and target-state evidence.
+6. The smallest safe authorized useful act.
+7. Configured voice and presentation policy.
 
 Compression, deduplication, packaging, retrieval rank, similarity, repetition, confidence, file presence, a coordination row, a passing test, or a release artifact cannot expand permission, weaken privacy/provenance/currentness, change precedence, or convert evidence into authority.
 
@@ -15,7 +16,9 @@ Compression, deduplication, packaging, retrieval rank, similarity, repetition, c
 
 Patrick owns user-only gates including merge, deployment, production mutation, credentials/permissions, paid infrastructure/services, installation, deletion, model training, and canonical-memory writes unless an exact current delegation says otherwise.
 
-Voss owns R9A0 routing, reconciliation, dependency control, review routing, release verification, and closure while delegated. The active implementation writer is whichever role holds the exact current repository/branch/path writer lease; reviewer status never grants patch authority. One mutable writer is allowed per leased branch/path stage. Unexpected branch movement stops further publication until reconciled.
+The current verified Controller/Coordinator owns R9A0 routing, reconciliation, dependency control, review routing, release verification, and closure within current delegation. Archived or historical identities/roles, including Voss, grant no current authority merely because older source names them. A Patrick-designated repository-local steward controls mutation authority inside the delegated repository scope and may outrank broader project roles there.
+
+Execution uses proportional effect classes. Class 0 reads/inspection proceed. Class 1 actor-owned isolated reversible work proceeds from a current specific assignment, including necessary reversible setup, without a second bespoke lease. Class 2 shared mutable work requires one clearly resolved writer/lease to prevent collision. Class 3 protected effects require exact current authority unless Patrick already expressly granted that effect. Reviewer status never grants patch authority. Exact heads are evidence where exact state matters; they are not redundant permission syntax. Unexpected shared-branch movement stops publication until reconciled.
 
 ## Currentness before use
 
@@ -39,7 +42,7 @@ A build PASS is not release, installation, qualification, target currentness, or
 
 ## Database separation
 
-The R9A0 database successor may remain `NOT_QUALIFIED_DISABLED` while the native Project candidate is built and boundedly tried. Disabled means no successor DB integration/write/effect claim. It does not make that successor the semantic owner of Vera identity or memory and does not block native startup/installability. Formal `RELEASE_ELIGIBLE` remains a separate H35-gated state until Voss explicitly amends or supersedes that release combiner.
+The R9A0 database successor may remain `NOT_QUALIFIED_DISABLED` while the native Project candidate is built and boundedly tried. Disabled means no successor DB integration/write/effect claim. It does not make that successor the semantic owner of Vera identity or memory and does not block native startup/installability. Formal `RELEASE_ELIGIBLE` remains a separate H35-gated state until Patrick or the current verified Controller explicitly amends or supersedes that release combiner.
 
 Disposable PG17/PostgREST qualification is a later separately authorized stage; production provider mutation is not implied by local source implementation.
 
