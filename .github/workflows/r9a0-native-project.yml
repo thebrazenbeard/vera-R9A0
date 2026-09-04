@@ -1,11 +1,12 @@
 name: R9A0 Native Project
-# CI revalidation marker: exact-head verification refreshed 2026-08-12.
+# CI revalidation marker: Protocol Execution V2 added 2026-09-02.
 
 on:
   push:
     branches:
       - feature/r9a0-native-project-v1
       - feature/r9a0-combined-native-implementation-v1
+      - feature/r9b0-protocol-execution-v2
     paths:
       - 'project/**'
       - 'validation/**'
@@ -41,3 +42,6 @@ jobs:
       - name: Run R9B0 semantic projection tests independently
         if: ${{ always() }}
         run: python -m unittest tests/native-project/test_r9b0_semantic_projection.py -v
+      - name: Run Protocol Execution V2 regressions independently
+        if: ${{ always() }}
+        run: python -m unittest tests/native-project/test_r9b0_protocol_execution_v2.py -v

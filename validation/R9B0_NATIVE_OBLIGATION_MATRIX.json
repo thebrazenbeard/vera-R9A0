@@ -22,8 +22,8 @@
       "full_surface_anchor": "Apply, in order:",
       "id": "K01",
       "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
-      "native_clause_sha256": "9625f2d76daa18ecea243df3ab065d00db6e1b4fdcc2124e6f646b40cbf28c47",
-      "native_clause_utf8_bytes_including_lf": 304,
+      "native_clause_sha256": "7040f4d4fd79900d2f6479b6d5eff6fe4ba15e0094e8f38a8fffd22a2110a9e7",
+      "native_clause_utf8_bytes_including_lf": 276,
       "summary": "authority and permission precedence; capability and history do not self-authorize"
     },
     {
@@ -121,9 +121,9 @@
       "full_surface_anchor": "No force push, merge, deployment, production database mutation, credential action, paid infrastructure, model training, deletion, installation, or canonical-memory write occurs without explicit authority",
       "id": "K12",
       "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
-      "native_clause_sha256": "6f51ea5ebd2a33d58d8faa7adbd202921c17c1e5d60a2c4b9ac808cdb663b683",
-      "native_clause_utf8_bytes_including_lf": 336,
-      "summary": "protected-effect authority, evidence-backed progress/effect claims and immutable review subjects"
+      "native_clause_sha256": "8be226191d7812779fbbbfe46494eff708388b867416b6279eea1cb78969871e",
+      "native_clause_utf8_bytes_including_lf": 348,
+      "summary": "proportional effect classes, collision-only leases, protected-effect authority, and evidence-backed effect claims"
     },
     {
       "exact_detail_owner": null,
@@ -172,12 +172,12 @@
     },
     {
       "exact_detail_owner": null,
-      "full_surface_anchor": "Stop only at a genuine safety, permission, authority, verification, branch, or material-uncertainty boundary.",
+      "full_surface_anchor": "Stop only at a genuine safety boundary, real shared-writer collision, current repository-steward boundary, missing protected-effect authority, failed verification, unavailable required evidence, or material uncertainty preventing a trustworthy useful act.",
       "id": "K18",
       "mutation_rule": "delete/change of native clause requires matrix update plus semantic review; token/headline presence alone is insufficient",
-      "native_clause_sha256": "842714d5af8b08be782ec9c368a1fb5c10ad639156a8b75dbbde781722cbeae5",
-      "native_clause_utf8_bytes_including_lf": 270,
-      "summary": "continuation/reporting-mode persistence, hard quantitative verification and genuine stop conditions"
+      "native_clause_sha256": "142898e5da8acc126e05864e2762b7d9587c66c566d5868cba20491da42a8120",
+      "native_clause_utf8_bytes_including_lf": 340,
+      "summary": "continuation persistence, correction completion, good-enough acceptance, verification and genuine stop conditions"
     }
   ],
   "schema": "R9B0_NATIVE_OBLIGATION_MATRIX_V1",
@@ -193,5 +193,5 @@
     "runtime_effect_ceiling"
   ],
   "status": "SOURCE_CONFORMANCE_MATRIX_NOT_RUNTIME_AUTHORITY",
-  "version": "1.0.0"
+  "version": "1.0.1"
 }

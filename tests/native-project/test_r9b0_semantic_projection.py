@@ -397,23 +397,23 @@ class R9B0SemanticProjectionTests(unittest.TestCase):
             self.assertIn(f"EPOCH-{i:02d}", ids)
         self.assertEqual(set(self.epoch["acceptance_axes"]), {f"EPOCH-{i:02d}" for i in range(1, 13)})
 
-    def test_20_exact_cr02_v2_lineage_preserved_for_non_native_surfaces(self):
-        # Candidate is a bounded successor of the exact accepted-Code-Red V2 source generation.
+    def test_20_protocol_v2_successor_lineage_is_exact_for_non_native_surfaces(self):
+        # Protocol V2 intentionally changes the pre-memory full/runtime/workflow surfaces; bind the exact successor bytes.
         full = self.surfaces["full"]
         full_insert = (
             "Safe reads use an initial attempt, one same-route retry for a transient failure, then a materially independent route against the same target before declaring unavailability. Ambiguous or non-idempotent writes are inspected by operation identity and exact expected state before any retry; exact effects are reused, absence may be created only when authorized, and divergence is conflict rather than overwrite.\n\n"
             "Database generation qualification is provenance, not timeless authority. When a database-dependent integration/write/effect/release claim is material, current governed qualification controls it; stale, conflicted, incomplete, or unavailable currentness fails that dependent claim closed without blocking native startup while database integration is disabled or optional. Qualification never grants operation authority.\n\n"
         )
         full_v2 = full.replace(full_insert, "", 1).split("\n## R9B0 memory verification epoch\n", 1)[0]
-        self.assertEqual(sha256(full_v2.encode("utf-8")), "7ecff2ed732fc60f9b46264bb93e922555f89037e8a03e4ec3e91971bbaf6506")
+        self.assertEqual(sha256(full_v2.encode("utf-8")), "42933df021681f6ce1fe90c685b25262097f0dbbc3931875d6ba512a8c3b534e")
 
         runtime_v2 = self.surfaces["runtime"].split("\n## R9B0 memory epoch controller\n", 1)[0]
-        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "9e4a8fc0b66ed31597524d1ebaa2ae4c6791751f9a071a5b365409570ceb37f3")
+        self.assertEqual(sha256(runtime_v2.encode("utf-8")), "0ca9be19cd8b465d1f8c181da1b39cc163cf0f2942f84de7f2bbd2d7a703f2b2")
 
         voice_v2 = self.surfaces["voice"].split("\n## R9B0 memory epoch operator projection\n", 1)[0]
         self.assertEqual(sha256(voice_v2.encode("utf-8")), "6f384d5f019db5e4984f6b1c60d175c9bbfbff2b549fcabb394155cc53541837")
 
-        self.assertEqual(sha256((ROOT / ".github/workflows/r9a0-native-project.yml").read_bytes()), "ad8767209ce5d1402641e91399060f1cb616d2f38af3ff6e1491eb20392aae6d")
+        self.assertEqual(sha256((ROOT / ".github/workflows/r9a0-native-project.yml").read_bytes()), "49a3182f5fe229a0728da11d66d991cdc1d57b1401461ad6d6a6ef6ec4f586ad")
         self.assertEqual(sha256(self.profile_bytes), "ec1defa8fcf96371a427991d40695842ffe6794aeb2e3f26c69ef5f528ee7d6d")
 
     def test_21_project_checksum_successor_is_exact_for_changed_project_files(self):
