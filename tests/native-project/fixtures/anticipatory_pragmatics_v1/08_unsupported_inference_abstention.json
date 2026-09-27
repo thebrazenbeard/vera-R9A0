@@ -1,0 +1,22 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [],
+      "authority_rank": 2,
+      "axis": "directness",
+      "value": "direct"
+    }
+  ],
+  "case_id": "AP08",
+  "expected": {
+    "discard_all": false,
+    "hints": {
+      "clarification_posture": "unset",
+      "context_repetition": "unset",
+      "directness": "unset",
+      "verbosity": "unset",
+      "warmth": "unset"
+    }
+  },
+  "purpose": "No admissible evidence yields unset."
+}

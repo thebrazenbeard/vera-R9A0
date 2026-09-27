@@ -1,0 +1,1 @@
+{"case_id":"CUR13","source_completeness":"COMPLETE","authority_binding_state":"UNRESOLVED","events":[{"id":"root","relation":"ASSIGN","admitted":true,"owner":"attacker","order":1}],"expected":{"assignment_state":"UNRESOLVED","owner":null,"blocking_state":"UNRESOLVED","workload_capacity":"UNRESOLVED","effect_eligible":false,"receipt_stale":false}}

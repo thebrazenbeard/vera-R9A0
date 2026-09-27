@@ -1,0 +1,43 @@
+{
+  "case_id": "SAFE08",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "stale"
+      },
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "current"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "current"
+    ]
+  },
+  "purpose": "A genuine elicited AFFIRM+SELF opens a new branch only while lifecycle-current.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "stale",
+      "lifecycle_current": false,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "current",
+      "lifecycle_current": true,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "case_id": "SAFE03",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "quote"
+      },
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "echo"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Quote and non-affirming echo remain frame-linked non-evidence.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "quote",
+      "lifecycle_current": true,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "QUOTE"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "echo",
+      "lifecycle_current": true,
+      "origin": "USER_RESPONSE_TO_ASSISTANT_FRAME",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "NON_AFFIRMING_ECHO"
+    }
+  ]
+}

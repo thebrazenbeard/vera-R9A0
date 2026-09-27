@@ -1,0 +1,1 @@
+{"case_id":"CUR15","source_completeness":"UNKNOWN","authority_binding_state":"UNRESOLVED","events":[{"id":"legacy","relation":"UNKNOWN","admitted":false,"owner":"bob","order":1}],"expected":{"assignment_state":"UNRESOLVED","owner":null,"blocking_state":"UNRESOLVED","workload_capacity":"UNRESOLVED","effect_eligible":false,"receipt_stale":false}}

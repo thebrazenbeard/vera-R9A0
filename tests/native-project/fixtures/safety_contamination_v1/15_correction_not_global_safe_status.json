@@ -1,0 +1,43 @@
+{
+  "case_id": "SAFE15",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "corrected"
+      },
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "separate"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "separate"
+    ]
+  },
+  "purpose": "Correction removes corrected lineage but does not suppress separate valid evidence.",
+  "spans": [
+    {
+      "corrected": true,
+      "historical_qualified": false,
+      "id": "corrected",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    },
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "separate",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}
