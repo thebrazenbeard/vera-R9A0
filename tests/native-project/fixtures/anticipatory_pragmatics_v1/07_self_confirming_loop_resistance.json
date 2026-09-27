@@ -1,0 +1,22 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [],
+      "authority_rank": 3,
+      "axis": "warmth",
+      "value": "careful"
+    }
+  ],
+  "case_id": "AP07",
+  "expected": {
+    "discard_all": false,
+    "hints": {
+      "clarification_posture": "unset",
+      "context_repetition": "unset",
+      "directness": "unset",
+      "verbosity": "unset",
+      "warmth": "unset"
+    }
+  },
+  "purpose": "Assistant hypothesis cannot bootstrap evidence."
+}

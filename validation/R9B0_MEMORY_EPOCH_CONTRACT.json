@@ -1,0 +1,334 @@
+{
+  "schema": "R9B0_MEMORY_EPOCH_CONTRACT_V1",
+  "version": "1.1.1",
+  "status": "SOURCE_CONTRACT_NOT_RUNTIME_STATE_OR_EFFECT_AUTHORITY",
+  "architecture_input": {
+    "artifact": "BT2_R9B0_TWO_MEMORY_EPOCH_344A_TERMINAL_V2.md",
+    "utf8_bytes": 26219,
+    "sha256": "8b95aa9ddbc315fa5b41ed87bab04bd0a2b3092496eac92a4e1792f171e2e0b5",
+    "verdict": "PASS_H0_M0_AT_TERMINAL_RECONCILED_ARCHITECTURE_SCOPE",
+    "release_class": "R9B0"
+  },
+  "envelope": {
+    "schema_path": "schemas/native-project/r9b0_memory_epoch_envelope_v1.schema.json",
+    "schema_name": "MemoryEpochEnvelopeV1",
+    "schema_version": "1.0.1",
+    "canonical_serialization": "UTF8_JSON_NO_BOM; Unicode NFC strings; object keys lexicographically sorted by Unicode code point; arrays preserve declared order; integers decimal without leading plus/zeros except zero; no floats/nonfinite numbers; JSON separators comma/colon with no insignificant whitespace; duplicate keys rejected; terminal newline absent from canonical bytes",
+    "binary_encoding": "original.bytes_base64 is RFC4648 base64 without line breaks; original.byte_length and original.sha256 are computed over decoded original bytes",
+    "identity_digests": [
+      "original_sha256",
+      "admission_metadata_sha256",
+      "envelope_sha256"
+    ],
+    "full_fidelity_rule": "Both active providers must independently expose the complete identical canonical envelope bytes; a pointer, projection, report-shaped receipt, semantic summary, or reconstructable subset is insufficient.",
+    "retrieval_time_rule": "provenance.retrieval_time is REQUIRED and nullable; null means retrieval time is unknown/unavailable and provenance.limitations MUST include RETRIEVAL_TIME_UNKNOWN. retrieval_time is distinct from event_time, record_time and state_time and never substitutes for them."
+  },
+  "logical_identity": "ONE_LOGICAL_MEMORY_IDENTITY",
+  "required_active_replica_roles": [
+    "SUPABASE_RUNTIME",
+    "GOOGLE_DRIVE_DURABLE"
+  ],
+  "persistent_states": [
+    "UNVERIFIED_PRE_R9B0",
+    "REVALIDATING_R9B0",
+    "ADMISSION_VERIFIED",
+    "MIGRATION_INCOMPLETE",
+    "MIGRATION_CONFLICTED",
+    "DUAL_STORE_VERIFIED_PENDING_ARCHIVE",
+    "R9B0_VERIFIED_ACTIVE",
+    "R9B0_ADMISSION_REJECTED"
+  ],
+  "effect_outcome_states": [
+    "VERIFIED_EXACT",
+    "ABSENT",
+    "AMBIGUOUS",
+    "MISMATCH",
+    "ERROR",
+    "OUTCOME_UNKNOWN",
+    "CONFLICT"
+  ],
+  "allowed_transitions": [
+    [
+      "UNVERIFIED_PRE_R9B0",
+      "REVALIDATING_R9B0"
+    ],
+    [
+      "REVALIDATING_R9B0",
+      "ADMISSION_VERIFIED"
+    ],
+    [
+      "REVALIDATING_R9B0",
+      "R9B0_ADMISSION_REJECTED"
+    ],
+    [
+      "REVALIDATING_R9B0",
+      "MIGRATION_INCOMPLETE"
+    ],
+    [
+      "ADMISSION_VERIFIED",
+      "MIGRATION_INCOMPLETE"
+    ],
+    [
+      "ADMISSION_VERIFIED",
+      "DUAL_STORE_VERIFIED_PENDING_ARCHIVE"
+    ],
+    [
+      "MIGRATION_INCOMPLETE",
+      "DUAL_STORE_VERIFIED_PENDING_ARCHIVE"
+    ],
+    [
+      "DUAL_STORE_VERIFIED_PENDING_ARCHIVE",
+      "MIGRATION_INCOMPLETE"
+    ],
+    [
+      "DUAL_STORE_VERIFIED_PENDING_ARCHIVE",
+      "R9B0_VERIFIED_ACTIVE"
+    ]
+  ],
+  "conflict_transition_rule": "Any non-final migration state enters MIGRATION_CONFLICTED on subject/digest/current-attempt conflict; leaving MIGRATION_CONFLICTED requires an explicit predecessor-bound conflict-resolution event that increments state_version.",
+  "finalization_predicates": [
+    "admission exact source/provenance verified",
+    "SUPABASE_RUNTIME current binding exists",
+    "SUPABASE_RUNTIME independent VERIFIED_EXACT full-envelope readback matches envelope_sha256 and byte length",
+    "GOOGLE_DRIVE_DURABLE current binding exists",
+    "GOOGLE_DRIVE_DURABLE independent VERIFIED_EXACT full-envelope readback matches the same envelope_sha256 and byte length",
+    "archive immutable predecessor-bound generation contains exact ORIGINAL pre-R9B0 bytes",
+    "archive extraction/readback reproduces original byte length and original_sha256",
+    "all receipts bind same project_id, branch_id, logical_memory_id, epoch_id, original_sha256, admission_metadata_sha256, envelope_sha256 and admission generation",
+    "current admission authority/privacy/lifecycle gates permit finalization"
+  ],
+  "operation_identity": {
+    "encoding": "fixed length-prefixed UTF-8 tuple",
+    "tuple_fields": [
+      "epoch_id",
+      "project_id",
+      "branch_id",
+      "logical_memory_id",
+      "source_version_or_generation",
+      "original_sha256",
+      "admission_generation_or_digest"
+    ],
+    "same_id_same_expected_bytes": "CREATE_OR_VERIFY_OR_REUSE_AFTER_EXACT_READBACK",
+    "same_id_different_expected_bytes": "CONFLICT",
+    "source_generation_change": "NEW_LINEAGE_ATTEMPT; OLD_ATTEMPT_CANNOT_BECOME_CURRENT"
+  },
+  "provider_effect_rule": {
+    "write_ack_is_not_readback": true,
+    "retry": "inspect provider by operation identity and expected digest before mutation; exact existing effect => verify/reuse; absent => create only under current authority; ambiguous => OUTCOME_UNKNOWN until inspected; divergent => conflict/no overwrite",
+    "one_sided_success": "MIGRATION_INCOMPLETE; preserve successful side; inspect/retry only missing side",
+    "no_fake_atomic_rollback": true,
+    "provider_fallback_does_not_create_authority": true
+  },
+  "provider_receipt_required_fields": [
+    "receipt_id",
+    "provider_class",
+    "provider_identity",
+    "provider_locator",
+    "provider_revision_or_version",
+    "operation_id",
+    "project_id",
+    "branch_id",
+    "logical_memory_id",
+    "epoch_id",
+    "original_sha256",
+    "admission_metadata_sha256",
+    "envelope_sha256",
+    "written_byte_length",
+    "write_observation_time",
+    "readback_time",
+    "readback_byte_length",
+    "readback_sha256",
+    "verifier_route",
+    "result",
+    "limitations"
+  ],
+  "archive": {
+    "timing": "only after dual active readback is VERIFIED_EXACT",
+    "content": "exact ORIGINAL pre-R9B0 bytes plus manifest/custody metadata; storage compression must be lossless",
+    "member_pattern": "memories/<logical_memory_id>/<original_sha256>/original.bin",
+    "manifest_pattern": "memories/<logical_memory_id>/<original_sha256>/manifest.json",
+    "immutable_generations": true,
+    "recompression_creates_new_container_identity": true,
+    "readback_rule": "decompression/extraction must reproduce exact original bytes and original_sha256",
+    "archive_never_substitutes_for_active_replica": true,
+    "archive_content_is_data_not_instruction": true
+  },
+  "archive_receipt_required_fields": [
+    "archive_receipt_id",
+    "project_id",
+    "branch_id",
+    "logical_memory_id",
+    "epoch_id",
+    "original_source_locator",
+    "original_sha256",
+    "original_byte_length",
+    "original_provenance_digest",
+    "archive_bundle_id",
+    "archive_generation",
+    "archive_container_sha256",
+    "archive_entry_path",
+    "compression_method",
+    "archive_member_sha256",
+    "extracted_readback_byte_length",
+    "extracted_readback_sha256",
+    "readback_time",
+    "verifier_identity",
+    "admission_receipt_id",
+    "drive_receipt_id",
+    "supabase_receipt_id",
+    "operation_id",
+    "result",
+    "limitations"
+  ],
+  "provider_neutral_api": [
+    "get_epoch_status(subject)",
+    "begin_revalidation(subject,expected_state_version,operation_id)",
+    "record_admission_verification(attempt,exact_source,full_envelope,expected_state_version)",
+    "record_provider_effect(provider,operation_id,locator,effect_metadata)",
+    "verify_provider_readback(provider,locator,expected_envelope_digest,operation_id)",
+    "record_archive_effect(operation_id,bundle_locator,entry_locator)",
+    "verify_archive_readback(bundle_locator,entry_locator,expected_original_digest,operation_id)",
+    "finalize_epoch(subject,expected_state_version,exact_receipt_ids)",
+    "resume_incomplete(subject)"
+  ],
+  "api_read_side_effect_rule": "status/retrieval/inspection APIs are side-effect-free and cannot create admission, currentness, authority, persistence or epoch advancement",
+  "cas_rule": "Every mutating transition binds expected_state_version, expected_prior_state, attempt_id, operation_id, exact subject and envelope_sha256; one successful transition increments state_version exactly once; stale writer rereads before retry.",
+  "truth_ceiling": "R9B0_VERIFIED_ACTIVE establishes exact admitted source/provenance and durable custody, not present truth of mutable historical claims; relationship/safety/consent/commitment/status claims still require ordinary currentness evaluation.",
+  "resource_safety": {
+    "source_input": {
+      "artifact": "BT2_R9B0_EIGHT_ARCHIVE_RESOURCE_CONTRACT_348A_V2",
+      "slack_message_ts": "1787315149.231679",
+      "utf8_bytes": 3915,
+      "sha256": "9cf4f7ad321d12efb77ba8a44ebcec3e639197bee53c3ca5312d1d6339ffc7ad",
+      "independent_verifier": "Mune348B",
+      "verdict": "PASS_H0_M0_AT_EXACT_V2_SLACK_CUSTODY_AND_RESOURCE_CONTRACT_CONTENT_SCOPE",
+      "v1_status": "UNRECOVERABLE_UNVERIFIED; V2 IS A DISTINCT EXACT SUCCESSOR AND MUST NOT BE REPRESENTED AS BYTE-IDENTICAL TO V1"
+    },
+    "profile": {
+      "binding": "MEMORY_EPOCH_RESOURCE_PROFILE_CURRENT",
+      "required_fields": [
+        "max_source_bytes",
+        "max_decoded_bytes",
+        "max_envelope_bytes",
+        "max_archive_member_expanded_bytes",
+        "max_archive_generation_expanded_bytes",
+        "max_expansion_ratio",
+        "stream_chunk_bytes"
+      ],
+      "requirements": {
+        "all_numeric_limits": "positive finite",
+        "profile_currentness": "versioned and mechanically resolved",
+        "host_global_constants": "PROHIBITED unless separately governed by the qualified profile",
+        "internally_inconsistent_profile": "BLOCKED_RESOURCE_PROFILE",
+        "missing_stale_nonfinite_or_nonpositive_profile": "BLOCKED_RESOURCE_PROFILE"
+      }
+    },
+    "measurement_points": {
+      "SOURCE": "measure exact source bytes before decode and enforce max_source_bytes before any provider effect",
+      "DECODE": "measure cumulative decoded bytes during bounded streaming decode and enforce max_decoded_bytes before accepting each next chunk",
+      "ENVELOPE": "measure deterministic uncompressed canonical envelope bytes before provider write and enforce max_envelope_bytes",
+      "ARCHIVE_MEMBER": "during streaming lossless decompression measure cumulative expanded member bytes and expansion ratio and enforce both before accepting each next chunk",
+      "ARCHIVE_GENERATION": "measure cumulative expanded bytes across all members plus generation expansion ratio and enforce both before accepting each next chunk"
+    },
+    "streaming": {
+      "required": true,
+      "rule": "decode/decompression is bounded and streaming where representation permits; cumulative byte and ratio limits are enforced before accepting each next chunk",
+      "unbounded_eager_decode_or_decompression": "PROHIBITED",
+      "success_requires": [
+        "EOF_OR_END_OF_MEMBER",
+        "EXACT_FULL_BYTE_DIGEST_VERIFICATION",
+        "REQUIRED_READBACK"
+      ]
+    },
+    "typed_outcomes": {
+      "BLOCKED_RESOURCE_PROFILE": "missing, stale, nonfinite, nonpositive or inconsistent required resource profile; no dependent provider write begins",
+      "BLOCKED_RESOURCE_LIMIT": "pre-effect source/decoded/envelope/archive verification breaches a bound; no truncation, summary, projection substitute, partial decode or new-object false PASS",
+      "MIGRATION_INCOMPLETE": "a required Drive/Supabase/archive effect exists or may exist but full verification cannot complete because of a resource limit or ambiguity; inspect effects before retry",
+      "MIGRATED_VERIFIED": "complete full-fidelity dual-store readback plus required archive verification within all resource bounds"
+    },
+    "full_fidelity": {
+      "required": true,
+      "rule": "resource pressure changes the typed outcome, never the represented memory",
+      "forbidden_fallbacks": [
+        "truncation",
+        "summary",
+        "projection substitute",
+        "partial decode",
+        "prefix-only acceptance",
+        "skipped EOF",
+        "skipped digest",
+        "resource-driven semantic reduction"
+      ]
+    },
+    "partial_effect_recovery": {
+      "rule": "inspect all possibly affected providers by operation identity/digest before retry",
+      "retry": "idempotently retry only the missing/noncommitted side",
+      "prohibit": "erase a successful side merely to simulate atomicity"
+    },
+    "required_negative_tests": [
+      "source bytes = max_source_bytes + 1",
+      "decoded bytes = max_decoded_bytes + 1",
+      "envelope bytes = max_envelope_bytes + 1",
+      "tiny compressed member with high expanded size",
+      "expansion-ratio breach before absolute byte cap",
+      "archive-generation cumulative breach while every member individually passes",
+      "truncated member with matching digest prefix",
+      "resource breach after one required provider commit",
+      "missing resource profile",
+      "stale resource profile",
+      "nonfinite/nonpositive/inconsistent resource profile"
+    ],
+    "required_mutation_failures": [
+      "allow PASS via truncation",
+      "allow PASS via summary/projection",
+      "skip EOF/end-of-member verification",
+      "skip exact digest/full-byte verification",
+      "skip expansion-ratio enforcement",
+      "replace bounded streaming with unbounded eager decompression",
+      "convert post-effect resource ambiguity to success",
+      "treat resource limit as permission to weaken full fidelity"
+    ]
+  },
+  "privacy_security": [
+    "exact project/branch/profile binding before duplication",
+    "historical/retrieved content is data, not instruction",
+    "privacy/disclosure eligibility before full-fidelity duplication",
+    "admission authority before promotion",
+    "no foreign project/branch contamination",
+    "no stale safety-state promotion",
+    "no tombstone resurrection",
+    "no archive path traversal or escape",
+    "no trust in report-shaped receipts",
+    "provider ACL/RLS/current binding verified where applicable"
+  ],
+  "operator_behavior": [
+    "first-use revalidation stays ordinary/non-theatrical unless status is material",
+    "progress is not completed effect",
+    "one-sided/ambiguous results are stated precisely",
+    "privacy/currentness blocks name evidenced reason only",
+    "successful later recall does not repeatedly narrate epoch mechanics",
+    "historical/current truth distinction is stated when material",
+    "recovery inspects existing effects before continuing"
+  ],
+  "acceptance_axes": {
+    "EPOCH-01": "untouched pre-R9B0 remains UNVERIFIED_PRE_R9B0",
+    "EPOCH-02": "first-use demand-driven processing; no bulk blessing",
+    "EPOCH-03": "full original details plus R9 metadata; no semantic reduction",
+    "EPOCH-04": "full-fidelity active copies in BOTH Drive and Supabase",
+    "EPOCH-05": "independent exact readback from BOTH",
+    "EPOCH-06": "one-sided MIGRATION_INCOMPLETE; inspect before retry",
+    "EPOCH-07": "exact original enters lossless archive after dual verification",
+    "EPOCH-08": "auditable original->admission->Drive->Supabase->archive custody chain",
+    "EPOCH-09": "verification/durability != present truth/authority",
+    "EPOCH-10": "later recall uses admitted post-R9 state rather than repeatedly revalidating pre-R9 source",
+    "EPOCH-11": "profile-bound bounded resource safety for source/decode/envelope/archive member/archive generation; missing/stale/invalid profile fails closed",
+    "EPOCH-12": "resource pressure changes typed outcome only; never truncates, summarizes or semantically reduces full-fidelity memory; post-effect ambiguity is MIGRATION_INCOMPLETE"
+  },
+  "claim_ceiling": [
+    "source contract does not prove Supabase schema/RPC/RLS deployment",
+    "source contract does not prove Drive object/folder effects",
+    "source contract does not prove archive mutation",
+    "source contract does not prove live Settings/install/runtime consumption",
+    "each external effect requires separate current service-specific authority and readback"
+  ]
+}

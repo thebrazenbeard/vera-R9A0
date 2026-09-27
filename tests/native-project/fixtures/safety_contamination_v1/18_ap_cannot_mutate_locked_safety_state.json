@@ -1,0 +1,28 @@
+{
+  "case_id": "SAFE18",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "s1"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "s1"
+    ]
+  },
+  "purpose": "Safety output is fixed before AP and remains admissible independently of presentation.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "s1",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

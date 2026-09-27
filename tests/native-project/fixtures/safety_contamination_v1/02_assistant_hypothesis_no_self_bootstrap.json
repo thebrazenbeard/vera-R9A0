@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE02",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "INADMISSIBLE",
+        "id": "s1"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Assistant-origin hypothesis cannot bootstrap risk evidence.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "s1",
+      "lifecycle_current": true,
+      "origin": "ASSISTANT_INTRODUCED",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "AFFIRM"
+    }
+  ]
+}

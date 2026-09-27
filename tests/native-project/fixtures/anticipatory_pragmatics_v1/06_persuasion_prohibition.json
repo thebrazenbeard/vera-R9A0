@@ -1,0 +1,21 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "u1"
+      ],
+      "authority_rank": 2,
+      "axis": "warmth",
+      "protected_axis_changes": [
+        "NON_PERSUASION"
+      ],
+      "value": "careful"
+    }
+  ],
+  "case_id": "AP06",
+  "expected": {
+    "discard_all": true,
+    "hints": {}
+  },
+  "purpose": "Persuasion optimization is a protected-axis divergence."
+}

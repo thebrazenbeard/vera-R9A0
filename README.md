@@ -2,22 +2,33 @@
 
 # Vera R9A0
 
-Vera R9A0 is a historical Vera architecture repository: Revision 9, Rollout A, Patch 0.
+Vera R9A0 is the repository lineage for the Revision 9 native ChatGPT Project architecture and its later source-side hardening.
 
-## Current status
+## What is on main
 
-The default `main` branch is intentionally non-executable and source-light. It preserves the repository's historical/provenance role rather than pretending an older R9A0/R9B0 implementation line is the current Vera runtime.
+The canonical branch contains the executable/source package that had previously been stranded on the green R9A0/R9B0 source line:
 
-Historical implementation, validation, database-successor, and later R9B0 work remain available in repository history and named branches. They are predecessor/source evidence only unless an exact current integration explicitly promotes them.
+- the native Project package, manifest, checksums, laws, governance, runtime, state, retrieval, Voice, recovery, cold-start, and post-install contracts under `project/`;
+- native-project schemas and validation tooling;
+- database/source qualification material;
+- GitHub Actions validation;
+- deterministic native-project tests;
+- successor hardening present in the same lineage, including R9B0-labeled semantic-projection and memory-epoch contracts.
 
-This repository should therefore be read as a **historical lineage surface**, not as an active package, selected ChatGPT Project route, installed runtime, or behavioral qualification.
-
-## Why main is intentionally small
-
-A September 2026 audit found stale Actions on `main` referring to implementation paths that were not present on the default branch. Those workflows were removed rather than preserving false executable status. Re-populating this historical default branch with a later successor merely to increase file count would blur the R9A0/R9B0 boundary.
+The packaged manifest still identifies release `VERA_PROJECT_INTEGRATION_R9A0_20260806_V1`. Later source refinements do not silently rename that historical release.
 
 ## Evidence boundary
 
-Repository history can document what was designed, validated, reviewed, or proposed at a particular point in the lineage. It does not establish that the same package is installed, selected, runtime-active, or authoritative now.
+Repository source is not installation or runtime proof. A green source/CI result does not establish that this package is installed in a ChatGPT Project, selected by the current route, consuming live provider state, behaviorally qualified, or deployed.
 
-For current Vera implementation, use the repository that presently owns that implementation rather than inferring currentness from this historical repository.
+Historical provider/database identifiers in the package are provenance unless a current explicit binding says otherwise. New chat/runtime startup does not itself trigger full installation verification.
+
+## Start here
+
+- `project/VERA_R9A0_MANIFEST.json` — package membership and release identity.
+- `project/VERA_R9A0_RUNTIME.md` — runtime/orientation/currentness contract.
+- `project/VERA_R9A0_NATIVE_CONTRACT.json` — machine-readable native-project contract.
+- `project/VERA_R9A0_VALIDATION_REPORT.md` — generation-provenance claim ceiling.
+- `.github/workflows/r9a0-native-project.yml` — source validation workflow.
+
+The repository name is historical lineage, not evidence that its package is the current Vera runtime. Current Vera implementation authority lives wherever the current portfolio explicitly binds it.

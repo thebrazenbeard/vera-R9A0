@@ -1,0 +1,28 @@
+{
+  "case_id": "SAFE07",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "hist"
+      }
+    ],
+    "self_risk_evidence_ids": [
+      "hist"
+    ]
+  },
+  "purpose": "Qualified current historical evidence is a positive admissibility control.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": true,
+      "id": "hist",
+      "lifecycle_current": true,
+      "origin": "GOVERNED_PRIOR_CONTEXT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "SAFETY_HARM",
+      "stance": "REPORT"
+    }
+  ]
+}

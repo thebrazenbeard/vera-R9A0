@@ -1,0 +1,26 @@
+{
+  "case_id": "SAFE01",
+  "expected": {
+    "adjudication": [
+      {
+        "admissibility": "ADMISSIBLE",
+        "id": "s1"
+      }
+    ],
+    "self_risk_evidence_ids": []
+  },
+  "purpose": "Material-resource distress is not SELF safety-harm evidence by lexeme alone.",
+  "spans": [
+    {
+      "corrected": false,
+      "historical_qualified": false,
+      "id": "s1",
+      "lifecycle_current": true,
+      "origin": "USER_DIRECT",
+      "referent_subject": "SELF",
+      "risk_bearing": true,
+      "semantic_domain": "MATERIAL_RESOURCES",
+      "stance": "REPORT"
+    }
+  ]
+}

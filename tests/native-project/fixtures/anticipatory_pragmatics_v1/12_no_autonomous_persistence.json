@@ -1,0 +1,24 @@
+{
+  "candidates": [
+    {
+      "admissible_evidence_ids": [
+        "current"
+      ],
+      "authority_rank": 1,
+      "axis": "warmth",
+      "value": "restrained"
+    }
+  ],
+  "case_id": "AP12",
+  "expected": {
+    "discard_all": false,
+    "hints": {
+      "clarification_posture": "unset",
+      "context_repetition": "unset",
+      "directness": "unset",
+      "verbosity": "unset",
+      "warmth": "restrained"
+    }
+  },
+  "purpose": "Presentation hint may be emitted without persistence."
+}
