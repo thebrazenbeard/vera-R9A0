@@ -1,0 +1,8 @@
+# Exact package/checksum tests must see stable LF bytes on every checkout.
+*.json text eol=lf
+*.md text eol=lf
+*.py text eol=lf
+*.txt text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.sha256 text eol=lf
