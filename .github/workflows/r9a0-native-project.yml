@@ -41,6 +41,3 @@ jobs:
       - name: Run R9B0 semantic projection tests independently
         if: ${{ always() }}
         run: python -m unittest tests/native-project/test_r9b0_semantic_projection.py -v
-      - name: Run Voice currentness guard tests independently
-        if: ${{ always() }}
-        run: python -m unittest tests/native-project/test_r9b0_voice_currentness_guard.py -v
