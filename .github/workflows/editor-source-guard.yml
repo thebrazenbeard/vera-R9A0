@@ -9,11 +9,19 @@ permissions:
 
 jobs:
   editor-source-guard:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Reject concealed editor-on-open source
+      - name: Reject editor startup execution before dependencies
+        run: python scripts/check_editor_source_safety.py
+      - name: Check inert adversarial fixtures
+        run: python -m unittest discover -s tests -p test_editor_source_safety.py -v
+      - name: Retain original editor security tests
         run: python -m unittest tests/native-project/test_r9a0_editor_security.py -v
